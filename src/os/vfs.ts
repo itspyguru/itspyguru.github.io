@@ -50,6 +50,7 @@ export const ROOT_VFS: VNode = {
       { name: 'files', type: 'app', icon: 'folder_open', label: 'Files' },
       { name: 'paint', type: 'app', icon: 'brush', label: 'Paint' },
       { name: 'weather', type: 'app', icon: 'partly_cloudy_day', label: 'Weather' },
+      { name: 'maps', type: 'app', icon: 'map', label: 'Maps' },
       { name: 'clock', type: 'app', icon: 'schedule', label: 'Clock' },
       { name: 'notes', type: 'app', icon: 'sticky_note_2', label: 'Notes' },
       { name: 'terminal', type: 'app', icon: 'terminal', label: 'Terminal' },
@@ -93,6 +94,7 @@ const ALIAS: Record<string, string[]> = {
   gallery: ['apps', 'gallery'], photos: ['apps', 'gallery'],
   radio: ['apps', 'radio'], music: ['apps', 'radio'],
   files: ['apps', 'files'], explorer: ['apps', 'files'], paint: ['apps', 'paint'], weather: ['apps', 'weather'],
+  maps: ['apps', 'maps'], map: ['apps', 'maps'],
 }
 export function resolveWithAlias(arg: string, cwd: string[]): { segs?: string[]; n?: VNode; special?: 'socials' } | null {
   const segs = resolveSegs(arg, cwd); const n = nodeAt(segs)

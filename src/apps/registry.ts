@@ -11,6 +11,7 @@ import Logs from './Logs'
 import FileManager from './FileManager'
 import Paint from './Paint'
 import Weather from './Weather'
+import Maps from './Maps'
 
 export interface AppMeta { id: string; label: string; icon: string; w: number; Component: React.FC }
 export const APPS: Record<string, AppMeta> = {
@@ -22,6 +23,7 @@ export const APPS: Record<string, AppMeta> = {
   files: { id: 'files', label: 'Files', icon: 'folder_open', w: 460, Component: FileManager },
   paint: { id: 'paint', label: 'Paint', icon: 'brush', w: 360, Component: Paint },
   weather: { id: 'weather', label: 'Weather', icon: 'partly_cloudy_day', w: 300, Component: Weather },
+  maps: { id: 'maps', label: 'Maps', icon: 'map', w: 424, Component: Maps },
   clock: { id: 'clock', label: 'Clock', icon: 'schedule', w: 300, Component: Clock },
   notes: { id: 'notes', label: 'Notes', icon: 'sticky_note_2', w: 344, Component: Notes },
   about: { id: 'about', label: 'About', icon: 'info', w: 360, Component: About },

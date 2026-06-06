@@ -20,8 +20,18 @@ export default function Weather() {
   const [place, setPlace] = useState('')
   const [status, setStatus] = useState<'loading' | 'ok' | 'error'>('loading')
 
-  function fetchAt(lat: number, lon: number, name: string) {
-    setStatus('loading'); setPlace(name)
+  function reverseGeo(lat: number, lon: number) {
+    fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`)
+      .then((r) => { if (!r.ok) throw 0; return r.json() })
+      .then((d) => {
+        const city = d.city || d.locality || d.principalSubdivision || d.countryName
+        setPlace(city ? city + (d.countryCode ? ', ' + d.countryCode : '') : `${lat.toFixed(2)}, ${lon.toFixed(2)}`)
+      })
+      .catch(() => setPlace(`${lat.toFixed(2)}, ${lon.toFixed(2)}`))
+  }
+  function fetchAt(lat: number, lon: number, name?: string) {
+    setStatus('loading'); setPlace(name || 'locating…')
+    if (!name) reverseGeo(lat, lon)
     fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,wind_speed_10m,relative_humidity_2m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=4`)
       .then((r) => { if (!r.ok) throw 0; return r.json() })
       .then((d) => { setData(d); setStatus('ok') })
@@ -29,7 +39,7 @@ export default function Weather() {
   }
   function locate() {
     if (navigator.geolocation) navigator.geolocation.getCurrentPosition(
-      (p) => fetchAt(p.coords.latitude, p.coords.longitude, 'Your location'),
+      (p) => fetchAt(p.coords.latitude, p.coords.longitude),
       () => fetchAt(VARANASI.lat, VARANASI.lon, VARANASI.name),
       { timeout: 6000 },
     )
