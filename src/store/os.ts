@@ -4,7 +4,7 @@ import { setSoundEnabled } from '../os/sound'
 import { nodeAt, VNode } from '../os/vfs'
 
 export type View = 'root' | 'scan' | 'breach' | 'clearance' | 'terminal' | 'settings'
-export interface WinSpec { id: number; type: 'folder' | 'text'; segs?: string[]; node?: VNode; x: number; y: number; z: number }
+export interface WinSpec { id: number; type: 'folder' | 'text' | 'app'; segs?: string[]; node?: VNode; appId?: string; title?: string; icon?: string; x: number; y: number; z: number }
 let winSeq = 0, winZ = 200
 
 interface OSState {
@@ -28,6 +28,7 @@ interface OSState {
   windows: WinSpec[]
   openWindow: (segs: string[]) => void
   openTextWindow: (node: VNode) => void
+  openAppWindow: (appId: string, title: string, icon: string) => void
   closeWindow: (id: number) => void
   focusWindow: (id: number) => void
   screensaverOn: boolean
@@ -80,6 +81,12 @@ export const useOS = create<OSState>((set, get) => ({
     set((s) => ({ windows: [...s.windows, { id: ++winSeq, type: 'folder', segs, node, x: 120 + off, y: 96 + off, z: ++winZ }] }))
   },
   openTextWindow: (node) => set((s) => ({ windows: [...s.windows, { id: ++winSeq, type: 'text', node, x: 160, y: 110, z: ++winZ }] })),
+  openAppWindow: (appId, title, icon) => set((s) => {
+    const existing = s.windows.find((w) => w.type === 'app' && w.appId === appId)
+    if (existing) return { windows: s.windows.map((w) => (w === existing ? { ...w, z: ++winZ } : w)) } // focus if already open
+    const off = (s.windows.length % 5) * 26
+    return { windows: [...s.windows, { id: ++winSeq, type: 'app', appId, title, icon, x: 180 + off, y: 100 + off, z: ++winZ }] }
+  }),
   closeWindow: (id) => set((s) => ({ windows: s.windows.filter((w) => w.id !== id) })),
   focusWindow: (id) => set((s) => ({ windows: s.windows.map((w) => (w.id === id ? { ...w, z: ++winZ } : w)) })),
   screensaverOn: false,

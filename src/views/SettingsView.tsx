@@ -72,10 +72,13 @@ export default function SettingsView() {
           <h3 className="text-terminal-bold text-primary-fixed-dim mb-4 flex items-center gap-2"><span className="material-symbols-outlined text-base">wallpaper</span> WALLPAPER</h3>
           <div className="flex flex-wrap gap-2 mb-3">
             {Object.entries(WALLPAPERS).map(([k, w]) => (
-              <button key={k} onClick={() => patch({ wallpaper: k })}
-                className={'px-3 py-1.5 border text-[11px] font-data-label hover:bg-primary-fixed-dim/5 ' + (curW === k ? 'border-primary-fixed-dim text-primary-fixed-dim' : 'border-outline-variant/30 text-outline')}>{w.label}</button>
+              <button key={k} onClick={() => patch({ wallpaper: k })} title={w.label}
+                className={'relative w-20 h-12 border overflow-hidden flex items-end hover:opacity-90 ' + (curW === k ? 'border-primary-fixed-dim outline outline-1 outline-primary-fixed-dim' : 'border-outline-variant/30')}
+                style={w.kind === 'img' ? { backgroundImage: `url(${w.src})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
+                <span className="w-full bg-black/60 text-primary-fixed-dim text-[8px] font-data-label px-1 truncate text-left">{w.label}</span>
+              </button>
             ))}
-            <span className={'px-3 py-1.5 border text-[11px] font-data-label ' + (curW === 'custom' ? 'border-primary-fixed-dim text-primary-fixed-dim' : 'border-outline-variant/30 text-outline/50')}>Custom URL ↓</span>
+            <span className={'self-center px-2 text-[10px] font-data-label ' + (curW === 'custom' ? 'text-primary-fixed-dim' : 'text-outline/50')}>+ Custom URL ↓</span>
           </div>
           <div className="flex items-center gap-2">
             <input value={url} onChange={(e) => setUrl(e.target.value)} type="text" placeholder="paste image URL…"

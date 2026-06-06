@@ -11,6 +11,7 @@ import Screensaver from './components/Screensaver'
 import CommandPalette from './components/CommandPalette'
 import Cheatsheet from './components/Cheatsheet'
 import { beep } from './os/sound'
+import { applyWallpaper } from './os/themes'
 import Desktop from './views/Desktop'
 import DevLab from './views/DevLab'
 import Projects from './views/Projects'
@@ -21,6 +22,9 @@ import Terminal from './terminal/Terminal'
 export default function App() {
   const booted = useOS((s) => s.booted)
   const view = useOS((s) => s.view)
+
+  // wallpaper depends on the #wallpaper-img element, which doesn't exist during the pre-render applySettings — re-apply once mounted
+  useEffect(() => { applyWallpaper(useOS.getState().settings) }, [])
 
   // idle screensaver
   useEffect(() => {

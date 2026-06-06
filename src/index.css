@@ -72,6 +72,8 @@ body.fx-reduced .scan-line { display:none !important; }
 .ov { position:fixed; inset:0; z-index:300; background:rgba(0,0,0,.7); backdrop-filter:blur(4px); }
 #screensaver { position:fixed; inset:0; z-index:280; background:#000; display:none; }
 #cmdk { position:fixed; inset:0; z-index:400; }
+@keyframes eq { 0%,100% { height:4px } 50% { height:22px } }
+.eq-bar { height:4px; animation: eq .9s ease-in-out infinite; }
 .swatch { height:34px; border:1px solid rgba(255,255,255,.12); cursor:pointer; transition:transform .1s; }
 .swatch:hover { transform:translateY(-2px); }
 .swatch.sel { outline:2px solid var(--accent); outline-offset:2px; }

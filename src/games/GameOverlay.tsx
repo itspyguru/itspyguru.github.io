@@ -4,8 +4,18 @@ import Snake from './Snake'
 import Game2048 from './Game2048'
 import Pong from './Pong'
 import TicTacToe from './TicTacToe'
+import Typing from './Typing'
+import Guess from './Guess'
+import Tetris from './Tetris'
+import BubbleShooter from './BubbleShooter'
+import SpaceImpact from './SpaceImpact'
+import Platformer from './Platformer'
+import Racing from './Racing'
 
-const MAP: Record<string, React.FC> = { snake: Snake, '2048': Game2048, pong: Pong, tictactoe: TicTacToe }
+const MAP: Record<string, React.FC> = {
+  snake: Snake, '2048': Game2048, pong: Pong, tictactoe: TicTacToe, typing: Typing, guess: Guess,
+  tetris: Tetris, bubble: BubbleShooter, spaceimpact: SpaceImpact, platformer: Platformer, racing: Racing,
+}
 
 export default function GameOverlay() {
   const id = useOS((s) => s.activeGame)

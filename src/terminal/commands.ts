@@ -22,9 +22,9 @@ export interface TermCtx {
   history: string[]
   write: (html: string) => void
   clear: () => void
-  setGameHandler: (fn: ((line: string) => void) | null) => void
   launchGame: (id: string) => void
   openDir: (segs: string[]) => void
+  openApp: (id: string) => void
   startScreensaver: () => void
   printResume: () => void
   os: {
@@ -73,7 +73,7 @@ function cmdOpen(ctx: TermCtx, arg: string): string {
     const n = r.n as VNode
     if (n.type === 'link') { window.open(n.url, '_blank'); return `<span class="text-primary-fixed-dim">Opening ${n.name}…</span>` }
     if (n.type === 'game') { ctx.launchGame(n.game || n.name); return `<span class="text-outline">launching ${n.label || n.name}…</span>` }
-    if (n.type === 'app') { ctx.os.setView(n.name === 'settings' ? 'settings' : 'terminal'); return `<span class="text-primary-fixed-dim">opening ${n.name}…</span>` }
+    if (n.type === 'app') { if (n.name === 'settings' || n.name === 'terminal') ctx.os.setView(n.name as any); else ctx.openApp(n.name); return `<span class="text-primary-fixed-dim">opening ${n.name}…</span>` }
     if (n.type === 'file' && n.render) return n.render()
     if (n.type === 'dir' && r.segs) { ctx.openDir(r.segs); return `<span class="text-outline">opening ${n.name}/ on desktop…</span>` }
   }
@@ -156,14 +156,14 @@ export function runCommand(ctx: TermCtx, raw: string, echo = true) {
     case 'fortune': out = fortune(); break
     case 'cowsay': out = cowsay(arg); break
     case 'gh': case 'github': out = cmdGh(arg.trim().toLowerCase()); break
-    case 'snake': case '2048': case 'pong': case 'tictactoe': case 'ttt': case 'typing': case 'guess': {
-      const gid = cmd === 'ttt' ? 'tictactoe' : cmd
-      ctx.launchGame(gid); out = '<span class="text-outline">launching ' + (GAME_BY_ID[gid]?.label || gid) + '…</span>'; break
-    }
     case 'cmatrix': ctx.startScreensaver(); out = '<span class="text-outline">entering the matrix… Esc / click to exit.</span>'; break
     case 'hack': case 'matrix': out = '<span class="text-primary-fixed-dim">breaching… ' + '10'.repeat(18) + ' ACCESS GRANTED. (kidding 😀) — try <span class="text-tertiary-fixed-dim">cmatrix</span></span>'; break
     case 'exit': case 'logout': out = '<span class="text-outline">There is no escape from itspyguru OS. Try the START menu instead.</span>'; break
-    default: out = `<span class="text-error">command not found: ${esc(cmd)}</span> — type <span class="text-primary-fixed-dim">help</span>`
+    default: {
+      const gid = cmd === 'ttt' ? 'tictactoe' : cmd
+      if (GAME_BY_ID[gid]) { ctx.launchGame(gid); out = '<span class="text-outline">launching ' + GAME_BY_ID[gid].label + '…</span>' }
+      else out = `<span class="text-error">command not found: ${esc(cmd)}</span> — type <span class="text-primary-fixed-dim">help</span>`
+    }
   }
   if (out != null) ctx.write(out)
 }

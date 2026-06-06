@@ -2,7 +2,6 @@ import { RESUME } from '../data/resume'
 import { ROOT_VFS } from '../os/vfs'
 import { openVNode } from '../os/openNode'
 import DeskIcon from '../components/DeskIcon'
-import FeaturedWindow from '../components/windows/FeaturedWindow'
 
 export default function Desktop() {
   const items = ROOT_VFS.children || []
@@ -26,8 +25,6 @@ export default function Desktop() {
       <div className="p-6 md:p-8 grid grid-cols-3 sm:grid-cols-4 gap-5 md:gap-7 w-fit relative z-10">
         {items.map((n) => <DeskIcon key={n.name} node={n} onOpen={() => openVNode(n, [n.name])} />)}
       </div>
-
-      <FeaturedWindow />
     </section>
   )
 }

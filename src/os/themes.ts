@@ -14,11 +14,17 @@ export const FONTS: Record<string, { label: string; css: string }> = {
   vt323:    { label:'VT323',          css:"'VT323'" },
   system:   { label:'System Mono',    css:'ui-monospace,SFMono-Regular,Menlo,monospace' },
 }
-export const WALLPAPERS: Record<string, { label: string; kind: 'img'|'css'|'none'; src?: string; css?: string; size?: string }> = {
-  server:{ label:'Server', kind:'img', src:'/assets/os/bg-env.png' },
+export const WALLPAPERS: Record<string, { label: string; kind: 'img'|'css'|'none'; src?: string; css?: string; size?: string; opacity?: number; filter?: string }> = {
+  server:{ label:'Server', kind:'img', src:'/assets/os/bg-env.png', opacity:0.07, filter:'grayscale(1)' },
   grid:{ label:'Grid', kind:'css', css:'linear-gradient(rgb(var(--accent-rgb) / 0.06) 1px,transparent 1px),linear-gradient(90deg,rgb(var(--accent-rgb) / 0.06) 1px,transparent 1px)', size:'42px 42px' },
   scan:{ label:'Scan', kind:'css', css:'repeating-linear-gradient(0deg, rgb(var(--accent-rgb) / 0.05) 0 2px, transparent 2px 5px)', size:'auto' },
   solid:{ label:'Solid', kind:'none' },
+  anime1:{ label:'Dreamworld', kind:'img', src:'/assets/wallpapers/anime-1.jpg', opacity:0.55 },
+  anime2:{ label:'Scenery', kind:'img', src:'/assets/wallpapers/anime-2.jpg', opacity:0.55 },
+  anime3:{ label:'Vista', kind:'img', src:'/assets/wallpapers/anime-3.jpg', opacity:0.55 },
+  anime4:{ label:'Night Sky', kind:'img', src:'/assets/wallpapers/anime-4.jpg', opacity:0.6 },
+  anime5:{ label:'Galaxy', kind:'img', src:'/assets/wallpapers/anime-5.jpg', opacity:0.55 },
+  anime6:{ label:'Aesthetic', kind:'img', src:'/assets/wallpapers/anime-6.jpg', opacity:0.5 },
 }
 
 export interface Settings {
@@ -59,11 +65,12 @@ export function applyWallpaper(s: Settings) {
   if (!wrap || !img) return
   const w = s.wallpaper
   wrap.style.background=''; wrap.style.backgroundSize=''; img.style.display='none'; img.style.opacity=''; img.style.filter=''
-  if (typeof w === 'object' && w.url) { img.src=w.url; img.style.display='block'; img.style.opacity='0.20'; return }
-  if (w === 'server') { img.src='/assets/os/bg-env.png'; img.style.display='block'; img.style.opacity='0.07'; img.style.filter='grayscale(1)'; return }
+  if (typeof w === 'object' && w.url) { img.src=w.url; img.style.display='block'; img.style.opacity='0.5'; return }
   if (w === 'solid') return
   const def = WALLPAPERS[w as string]
-  if (def && def.kind === 'css') { wrap.style.background = def.css!; wrap.style.backgroundSize = def.size! }
+  if (!def) return
+  if (def.kind === 'img') { img.src=def.src!; img.style.display='block'; img.style.opacity=String(def.opacity ?? 0.5); img.style.filter=def.filter || 'none'; return }
+  if (def.kind === 'css') { wrap.style.background = def.css!; wrap.style.backgroundSize = def.size! }
 }
 export function applySettings(s: Settings) {
   if (s.accent) setAccent(s.accent); else applyTheme(s.theme)

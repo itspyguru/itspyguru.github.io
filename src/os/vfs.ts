@@ -11,6 +11,11 @@ export interface GameMeta { id: string; label: string; icon: string; kind: 'canv
 export const GAMES: GameMeta[] = [
   { id: 'snake', label: 'Snake', icon: 'restaurant', kind: 'canvas' },
   { id: '2048', label: '2048', icon: 'grid_view', kind: 'canvas' },
+  { id: 'tetris', label: 'Tetris', icon: 'view_compact', kind: 'canvas' },
+  { id: 'bubble', label: 'Bubble Shooter', icon: 'bubble_chart', kind: 'canvas' },
+  { id: 'spaceimpact', label: 'Space Impact', icon: 'rocket_launch', kind: 'canvas' },
+  { id: 'platformer', label: 'Platformer', icon: 'directions_run', kind: 'canvas' },
+  { id: 'racing', label: 'Racing', icon: 'directions_car', kind: 'canvas' },
   { id: 'pong', label: 'Pong', icon: 'sports_tennis', kind: 'canvas' },
   { id: 'tictactoe', label: 'Tic-Tac-Toe', icon: 'grid_3x3', kind: 'canvas' },
   { id: 'typing', label: 'Typing Test', icon: 'keyboard', kind: 'term' },
@@ -34,6 +39,13 @@ export const ROOT_VFS: VNode = {
     { name: 'games', type: 'dir', icon: 'sports_esports', children:
       GAMES.map((g) => ({ name: g.id, type: 'game', icon: g.icon, game: g.id, label: g.label } as VNode)) },
     { name: 'apps', type: 'dir', icon: 'apps', children: [
+      { name: 'calculator', type: 'app', icon: 'calculate', label: 'Calculator' },
+      { name: 'calendar', type: 'app', icon: 'calendar_month', label: 'Calendar' },
+      { name: 'camera', type: 'app', icon: 'photo_camera', label: 'Camera' },
+      { name: 'gallery', type: 'app', icon: 'photo_library', label: 'Gallery' },
+      { name: 'radio', type: 'app', icon: 'radio', label: 'Radio' },
+      { name: 'clock', type: 'app', icon: 'schedule', label: 'Clock' },
+      { name: 'notes', type: 'app', icon: 'sticky_note_2', label: 'Notes' },
       { name: 'terminal', type: 'app', icon: 'terminal', label: 'Terminal' },
       { name: 'settings', type: 'app', icon: 'settings', label: 'Settings' },
     ] },
@@ -71,6 +83,9 @@ const ALIAS: Record<string, string[]> = {
   about: ['profile', 'about.txt'], contact: ['contact.txt'], 'contact.txt': ['contact.txt'],
   resume: ['resume.pdf'], 'resume.pdf': ['resume.pdf'], readme: ['README.md'],
   projects: ['projects'], games: ['games'], profile: ['profile'], apps: ['apps'],
+  calculator: ['apps', 'calculator'], calendar: ['apps', 'calendar'], camera: ['apps', 'camera'], clock: ['apps', 'clock'], notes: ['apps', 'notes'],
+  gallery: ['apps', 'gallery'], photos: ['apps', 'gallery'],
+  radio: ['apps', 'radio'], music: ['apps', 'radio'],
 }
 export function resolveWithAlias(arg: string, cwd: string[]): { segs?: string[]; n?: VNode; special?: 'socials' } | null {
   const segs = resolveSegs(arg, cwd); const n = nodeAt(segs)

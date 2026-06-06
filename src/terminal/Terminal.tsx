@@ -4,10 +4,9 @@ import { neofetch, esc } from '../os/render'
 import { GAME_BY_ID } from '../os/vfs'
 import { printResume } from '../os/print'
 import { runCommand, autocomplete, TermCtx } from './commands'
-import { beep } from '../os/sound'
+import { APPS } from '../apps/registry'
 
-const CHIPS = ['help', 'ls', 'cd games', 'cat resume.pdf', 'tree', 'whoami', 'neofetch', 'cat contact']
-const TYPING = ['The quick brown fox jumps over the lazy dog.', 'Ship early, ship often, and iterate fast.', 'Make it work, make it right, make it fast.', 'Code is poetry written for machines and humans.']
+const CHIPS =['help', 'ls', 'cd games', 'cat resume.pdf', 'tree', 'whoami', 'neofetch', 'cat contact']
 
 export default function Terminal({ active }: { active: boolean }) {
   const os = useOS()
@@ -15,7 +14,6 @@ export default function Terminal({ active }: { active: boolean }) {
   const [cwd, setCwd] = useState<string[]>([])
   const histRef = useRef<string[]>([])
   const histIdx = useRef(0)
-  const gameHandler = useRef<((line: string) => void) | null>(null)
   const ready = useRef(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const outRef = useRef<HTMLDivElement>(null)
@@ -34,41 +32,16 @@ export default function Terminal({ active }: { active: boolean }) {
   // focus + clear running indicator when opened
   useEffect(() => { if (active) { os.setTermRunning(false); setTimeout(() => inputRef.current?.focus(), 60) } }, [active])
 
-  function startTyping() {
-    const target = TYPING[(Math.random() * TYPING.length) | 0]; const t0 = performance.now()
-    write('<span class="text-outline">— TYPING TEST — retype the line, then Enter (or </span>quit<span class="text-outline">):</span>')
-    write('<span class="text-primary">' + esc(target) + '</span>')
-    gameHandler.current = (line) => {
-      if (line.toLowerCase() === 'quit') { gameHandler.current = null; write('<span class="text-outline">cancelled.</span>'); return }
-      const secs = (performance.now() - t0) / 1000, words = target.trim().split(/\s+/).length, wpm = Math.max(0, Math.round(words / (secs / 60)))
-      let ok = 0; for (let i = 0; i < Math.min(line.length, target.length); i++) if (line[i] === target[i]) ok++
-      const acc = Math.round((ok / target.length) * 100); gameHandler.current = null; beep(700, 0.05)
-      write(`<span class="text-primary-fixed-dim">${wpm} WPM</span> · accuracy <span class="text-primary-fixed-dim">${acc}%</span> · ${secs.toFixed(1)}s`)
-    }
-  }
-  function startGuess() {
-    const secret = 1 + ((Math.random() * 100) | 0); let tries = 0
-    write('<span class="text-outline">— NUMBER GUESS — I picked 1–100. Type a guess (or </span>quit<span class="text-outline">):</span>')
-    gameHandler.current = (line) => {
-      if (line.toLowerCase() === 'quit') { gameHandler.current = null; write('<span class="text-outline">it was ' + secret + '.</span>'); return }
-      const g = parseInt(line, 10); if (isNaN(g)) { write('<span class="text-error">enter a number 1–100</span>'); return }
-      tries++
-      if (g === secret) { gameHandler.current = null; beep(880, 0.08); write(`<span class="text-primary-fixed-dim">correct! 🎉 ${secret} in ${tries} tries.</span>`) }
-      else write(g < secret ? '<span class="text-tertiary-fixed-dim">higher ↑</span>' : '<span class="text-tertiary-fixed-dim">lower ↓</span>')
-    }
-  }
   function launchGame(id: string) {
-    if (id === 'typing') return startTyping()
-    if (id === 'guess') return startGuess()
-    if (GAME_BY_ID[id]) { os.setActiveGame(id); inputRef.current?.blur() } // release keys to the game
+    if (GAME_BY_ID[id]) { os.setActiveGame(id); inputRef.current?.blur() } // open in its own window; release keys to it
   }
 
   function makeCtx(): TermCtx {
     return {
       cwd, setCwd, history: histRef.current, write, clear: () => setLines([]),
-      setGameHandler: (fn) => { gameHandler.current = fn },
       launchGame,
       openDir: (segs) => { os.openWindow(segs); os.setView('root') },
+      openApp: (id) => { const a = APPS[id]; if (a) os.openAppWindow(id, a.label, a.icon) },
       startScreensaver: () => os.setScreensaver(true),
       printResume,
       os: { setView: os.setView, settings: os.settings, patchSettings: os.patchSettings, resetSettings: os.resetSettings, showToast: os.showToast },
@@ -77,7 +50,6 @@ export default function Terminal({ active }: { active: boolean }) {
   function submit(e: React.FormEvent) {
     e.preventDefault()
     const v = val; setVal('')
-    if (gameHandler.current) { write(promptStr() + '<span class="text-on-surface">' + esc(v) + '</span>'); gameHandler.current(v.trim()); return }
     if (v.trim()) { histRef.current.push(v.trim()); histIdx.current = histRef.current.length }
     runCommand(makeCtx(), v)
   }
@@ -87,7 +59,7 @@ export default function Terminal({ active }: { active: boolean }) {
   function onKey(e: React.KeyboardEvent) {
     // while a game overlay or screensaver is active, let those handle keys (don't minimize / grab arrows)
     if (useOS.getState().activeGame || useOS.getState().screensaverOn) return
-    if (e.key === 'Escape') { if (gameHandler.current) { gameHandler.current = null; write('<span class="text-outline">(game exited)</span>') } else minimize(); return }
+    if (e.key === 'Escape') { minimize(); return }
     if (e.key === 'ArrowUp') { e.preventDefault(); if (histRef.current.length) { histIdx.current = Math.max(0, histIdx.current - 1); setVal(histRef.current[histIdx.current] || '') } }
     else if (e.key === 'ArrowDown') { e.preventDefault(); if (histRef.current.length) { histIdx.current = Math.min(histRef.current.length, histIdx.current + 1); setVal(histRef.current[histIdx.current] || '') } }
     else if (e.key === 'Tab') { e.preventDefault(); const r = autocomplete(makeCtx(), val); if (r.fill) setVal(r.fill); else if (r.list) { write(promptStr() + esc(val)); write(r.list) } }
