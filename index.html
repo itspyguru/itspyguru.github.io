@@ -1259,13 +1259,11 @@ function cmdHelp(){
     '<span class="text-primary-fixed-dim font-bold">AVAILABLE COMMANDS</span>',
     '<span class="text-tertiary-fixed-dim">cat resume.pdf</span>      print the full resume',
     '<span class="text-tertiary-fixed-dim">download resume</span>     save resume as PDF',
-    '<span class="text-tertiary-fixed-dim">ls</span> / <span class="text-tertiary-fixed-dim">ls projects</span>      list files / projects',
+    '<span class="text-tertiary-fixed-dim">ls</span> / <span class="text-tertiary-fixed-dim">ls &lt;dir&gt;</span>          list (projects, skills, experience, education, certs, socials)',
+    '<span class="text-tertiary-fixed-dim">cat &lt;dir&gt;</span>           show a section (e.g. cat skills, cat experience)',
     '<span class="text-tertiary-fixed-dim">cat projects/&lt;name&gt;</span>  open a project',
-    '<span class="text-tertiary-fixed-dim">experience</span>          work history',
-    '<span class="text-tertiary-fixed-dim">skills</span>              tech stack',
-    '<span class="text-tertiary-fixed-dim">education</span> / <span class="text-tertiary-fixed-dim">certs</span>   credentials',
     '<span class="text-tertiary-fixed-dim">whoami</span> / <span class="text-tertiary-fixed-dim">whois</span>      short / long bio',
-    '<span class="text-tertiary-fixed-dim">contact</span> / <span class="text-tertiary-fixed-dim">socials</span>    how to reach me',
+    '<span class="text-tertiary-fixed-dim">cat contact</span>         how to reach me',
     '<span class="text-tertiary-fixed-dim">open &lt;name&gt;</span>         open a link (github, linkedin...)',
     '<span class="text-tertiary-fixed-dim">neofetch</span>            system info',
     '<span class="text-tertiary-fixed-dim">clear</span> · <span class="text-tertiary-fixed-dim">date</span> · <span class="text-tertiary-fixed-dim">echo</span> · <span class="text-tertiary-fixed-dim">history</span>',
@@ -1286,14 +1284,22 @@ function cmdCat(arg){
 }
 function cmdLs(arg){
   const a=(arg||'').trim().toLowerCase().replace(/\/$/,'');
-  if(!a||a==='.'||a==='~'||a==='-la'||a==='-a') return [
-    '<span class="text-primary-fixed-dim">projects/</span>   <span class="text-primary-fixed-dim">experience/</span>   <span class="text-primary-fixed-dim">skills/</span>',
-    '<span class="text-primary-fixed-dim">education/</span>  <span class="text-primary-fixed-dim">certs/</span>        <span class="text-tertiary-fixed-dim">resume.pdf</span>',
-    '<span class="text-tertiary-fixed-dim">contact.txt</span>'
+  if(!a||a==='.'||a==='~'||a==='-la'||a==='-a'||a==='-l') return [
+    '<span class="text-primary-fixed-dim">projects/</span>    <span class="text-primary-fixed-dim">experience/</span>  <span class="text-primary-fixed-dim">skills/</span>',
+    '<span class="text-primary-fixed-dim">education/</span>   <span class="text-primary-fixed-dim">certs/</span>       <span class="text-primary-fixed-dim">socials/</span>',
+    '<span class="text-tertiary-fixed-dim">resume.pdf</span>   <span class="text-tertiary-fixed-dim">contact.txt</span>'
   ].join('\n');
-  if(a==='projects') return listProjects();
-  if(a==='certs'||a==='certifications') return catCerts();
-  return `<span class="text-error">ls: ${esc(arg)}: No such directory</span>`;
+  switch(a){
+    case 'projects': return listProjects();
+    case 'experience': case 'exp': return catExperience();
+    case 'skills': return catSkills();
+    case 'education': case 'edu': return catEducation();
+    case 'certs': case 'certifications': return catCerts();
+    case 'socials': case 'links': return catSocials();
+    case 'contact': case 'contact.txt': return catContact();
+    case 'resume.pdf': case 'resume': case 'resume.txt': return buildResume();
+    default: return `<span class="text-error">ls: ${esc(arg)}: No such directory</span> — try <span class="text-primary-fixed-dim">ls</span>`;
+  }
 }
 function cmdOpen(arg){
   const k=(arg||'').trim().toLowerCase();
@@ -1330,13 +1336,6 @@ function runCommand(raw, echo){
     case 'ls': case 'dir': out=cmdLs(arg); break;
     case 'whoami': out='<span class="text-primary">'+RESUME.bioShort+'</span>'; break;
     case 'whois': out=RESUME.bioLong; break;
-    case 'experience': case 'exp': out=catExperience(); break;
-    case 'skills': out=catSkills(); break;
-    case 'education': case 'edu': out=catEducation(); break;
-    case 'certs': case 'certifications': out=catCerts(); break;
-    case 'projects': out=listProjects(); break;
-    case 'contact': out=catContact(); break;
-    case 'socials': case 'links': out=catSocials(); break;
     case 'open': out=cmdOpen(arg); break;
     case 'download': out=(arg.toLowerCase().includes('resume')||arg==='')?(printResume(),'<span class="text-primary-fixed-dim">Opening print dialog… choose “Save as PDF”.</span>'):'usage: download resume'; break;
     case 'neofetch': case 'screenfetch': out=neofetch(); break;
@@ -1355,7 +1354,7 @@ function runCommand(raw, echo){
 }
 function termAutocomplete(){
   const v=termInput.value; const t=v.trim();
-  const cmds=['help','cat resume.pdf','cat projects/','ls','ls projects','experience','skills','education','certs','projects','whoami','whois','contact','socials','open ','neofetch','download resume','history','clear','sudo hire-me','date','echo '];
+  const cmds=['help','cat resume.pdf','cat projects/','cat skills','cat experience','cat education','cat certs','cat contact','ls','ls projects','ls skills','ls experience','ls education','ls certs','ls socials','ls contact','whoami','whois','open ','neofetch','download resume','history','clear','sudo hire-me','date','echo '];
   if(t.startsWith('cat projects/')){
     const frag=t.slice(13).toLowerCase();
     const m=RESUME.projects.map(p=>p.slug).filter(s=>s.startsWith(frag));
@@ -1372,7 +1371,7 @@ function termInit(){
   termWrite('');
   termWrite('<span class="text-outline">Welcome to itspyguru OS shell. Type </span><span class="text-primary-fixed-dim">help</span><span class="text-outline"> to list commands, or </span><span class="text-primary-fixed-dim">cat resume.pdf</span><span class="text-outline">.</span>');
   // command chips
-  const chips=['help','cat resume.pdf','ls projects','experience','skills','neofetch','sudo hire-me','contact'];
+  const chips=['help','cat resume.pdf','ls projects','ls experience','ls skills','neofetch','sudo hire-me','cat contact'];
   const wrap=document.getElementById('term-chips');
   wrap.innerHTML=chips.map(c=>`<button class="term-chip text-[9px] border border-primary/30 px-2 py-1 text-primary hover:bg-primary/10 font-data-label" data-cmd="${c}">${c}</button>`).join('');
   wrap.querySelectorAll('.term-chip').forEach(b=> b.addEventListener('click', ()=>{ runCommand(b.dataset.cmd); termInput.focus(); }));
@@ -1412,7 +1411,8 @@ function buildPrintResume(){
 function printResume(){ buildPrintResume(); window.print(); }
 
 /* ===================== INIT ===================== */
-showView( (location.hash||'#root').slice(1) );
+// default landing view = PROFILE (clearance); deep-links via #hash still win
+showView( location.hash ? location.hash.slice(1) : 'clearance' );
 </script>
 </body>
 </html>
