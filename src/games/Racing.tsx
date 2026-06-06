@@ -10,7 +10,7 @@ type Seg = { index: number; curve: number; y: number; p1: Pt; p2: Pt; sprites: S
 type Car = { z: number; offset: number; speed: number; color: string; big: boolean; hit: number; prevD: number; scored: boolean }
 type Fuel = { z: number; offset: number; taken: boolean }
 
-const W = 360, H = 440, SEG = 200, ROAD_W = 1100, CAM_H = 1100, DEPTH = 0.84, DRAW = 110, RUMBLE = 7, LANES = 3
+const W = 360, H = 440, SEG = 200, ROAD_W = 1100, CAM_H = 1100, DEPTH = 0.84, DRAW = 110, RUMBLE = 9, LANES = 3
 const MAXBASE = 12000, MAXBOOST = 17000, STAGE_LEN = 600000
 const easeIn = (a: number, b: number, p: number) => a + (b - a) * p * p
 const easeIO = (a: number, b: number, p: number) => a + (b - a) * (-Math.cos(p * Math.PI) / 2 + 0.5)
@@ -147,9 +147,9 @@ export default function Racing() {
         x += dx; dx += seg.curve
         const p1 = seg.p1.screen, p2 = seg.p2.screen
         if (seg.p1.camera.z <= depth || p2.y >= p1.y || p2.y >= maxy) continue
-        const far = n > 58 // distant segments: flat colours (no rumble/lane alternation) to kill horizon shimmer
+        const far = n > 48 // distant segments: flat colours (no rumble/lane alternation) to kill horizon shimmer
         const dark = Math.floor(i / RUMBLE) % 2 === 0
-        const grass = mul(far ? st.grass : (dark ? st.grass : lerpC(st.grass, '#000', 0.08)), nf), road = mul(far ? '#494951' : (dark ? '#46464e' : '#4c4c54'), nf)
+        const grass = mul(st.grass, nf), road = mul(far ? '#494951' : (dark ? '#46464e' : '#4c4c54'), nf)
         poly(0, p1.y, 0, p2.y, W, p2.y, W, p1.y, grass)
         if (!far) { const rum = dark ? mul('#d4d4dc', nf) : '#b83b3b'; poly(p1.x - p1.w * 1.18, p1.y, p2.x - p2.w * 1.18, p2.y, p2.x - p2.w, p2.y, p1.x - p1.w, p1.y, rum); poly(p1.x + p1.w, p1.y, p2.x + p2.w, p2.y, p2.x + p2.w * 1.18, p2.y, p1.x + p1.w * 1.18, p1.y, rum) }
         poly(p1.x - p1.w, p1.y, p2.x - p2.w, p2.y, p2.x + p2.w, p2.y, p1.x + p1.w, p1.y, road)
