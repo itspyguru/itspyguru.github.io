@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>PRAJJWAL_OS_V3.0 // Prajjwal Pathak — AI Engineer &amp; Security Researcher</title>
-<meta name="description" content="PrajjwalOS v3.0 — the terminal-brutalist portfolio of Prajjwal Pathak (pyGuru): AI Engineer, Security Researcher, Python Instructor."/>
+<title>itspyguru OS // Prajjwal Pathak — Software Engineer (Backend &amp; AI)</title>
+<meta name="description" content="itspyguru OS v3.0 — the terminal-themed developer portfolio of Prajjwal Pathak (pyGuru): Software Engineer, backend &amp; AI/automation, Python instructor."/>
 <meta name="author" content="Prajjwal Pathak"/>
-<meta property="og:title" content="PrajjwalOS v3.0 — Prajjwal Pathak"/>
-<meta property="og:description" content="A cyberpunk SOC-themed portfolio. Boot in, decrypt the packet, run the investigation."/>
+<meta property="og:title" content="itspyguru OS — Prajjwal Pathak"/>
+<meta property="og:description" content="A cyberpunk terminal developer portfolio. Boot in, browse the builds, run the terminal."/>
 <meta property="og:type" content="website"/>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23131313'/%3E%3Ctext x='50' y='70' font-size='70' text-anchor='middle' fill='%2300ff41' font-family='monospace'%3E&gt;%3C/text%3E%3C/svg%3E"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -176,13 +176,26 @@
 <!-- =========================================================
      BOOT SCREEN
 ========================================================= -->
-<div class="fixed inset-0 bg-black z-[1000] flex flex-col p-margin-page transition-opacity duration-1000" id="boot-screen">
-  <div class="flex items-center gap-2 mb-8">
-    <span class="text-primary-fixed-dim font-terminal-bold text-terminal-bold tracking-tighter">BOOTING PRAJJWAL_OS_V3.0...</span>
-    <span class="w-2 h-5 bg-primary-fixed-dim cursor-blink"></span>
+<div class="fixed inset-0 bg-black z-[1000] flex flex-col items-center justify-center p-margin-page transition-opacity duration-1000" id="boot-screen">
+  <div class="w-full max-w-md">
+    <div class="text-center mb-7">
+      <div class="text-primary-fixed-dim font-terminal-bold text-3xl tracking-tighter matrix-glow">itspyguru<span class="text-outline">_OS</span></div>
+      <div class="text-outline font-data-label text-data-label mt-2">v3.0 // developer workspace</div>
+    </div>
+    <!-- progress bar -->
+    <div class="w-full h-3 bg-surface-container-low border border-primary/30 overflow-hidden">
+      <div id="boot-bar" class="h-full bg-primary-fixed-dim neon-glow-primary" style="width:0%;transition:width .25s linear"></div>
+    </div>
+    <div class="flex justify-between mt-2 font-data-label text-data-label">
+      <span id="boot-stage" class="text-outline">initializing…</span>
+      <span id="boot-pct" class="text-primary-fixed-dim">0%</span>
+    </div>
+    <!-- status lines below the bar -->
+    <div id="boot-status" class="mt-6 h-24 overflow-hidden font-terminal-code text-[12px] text-primary-fixed-dim/70 space-y-1"></div>
+    <div class="text-center">
+      <button id="skip-boot" class="mt-4 text-outline hover:text-primary-fixed text-data-label font-data-label border border-outline-variant/40 px-3 py-1 transition-all">[SKIP_BOOT]</button>
+    </div>
   </div>
-  <div class="boot-sequence overflow-y-auto font-terminal-code text-primary-fixed-dim/70 space-y-1 flex-1" id="boot-logs"></div>
-  <button id="skip-boot" class="self-start mt-4 text-outline hover:text-primary-fixed text-data-label font-data-label border border-outline-variant/40 px-3 py-1 transition-all">[SKIP_BOOT]</button>
 </div>
 
 <!-- =========================================================
@@ -193,7 +206,7 @@
   <!-- ===== TOP NAV BAR ===== -->
   <header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-page py-2 bg-background/80 backdrop-blur-md border-b border-outline-variant/30 shadow-[0_0_15px_rgba(0,230,57,0.1)]">
     <div class="flex items-center gap-4 md:gap-6">
-      <span class="text-terminal-bold font-terminal-bold text-primary-fixed-dim tracking-tighter">PRAJJWAL_OS_V3.0</span>
+      <span class="text-terminal-bold font-terminal-bold text-primary-fixed-dim tracking-tighter">ITSPYGURU_OS_V3.0</span>
       <div class="hidden md:block h-4 w-px bg-outline-variant/50"></div>
       <nav class="hidden md:flex gap-4">
         <button data-view="root" class="top-nav text-outline hover:text-primary-fixed transition-colors font-data-label text-data-label">SYSTEM</button>
@@ -219,11 +232,11 @@
     <div class="px-6 mb-6">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded bg-primary-container/20 border border-primary-fixed-dim flex items-center justify-center overflow-hidden">
-          <img alt="ADM_PRAJJWAL" class="w-full h-full object-cover grayscale contrast-125" src="assets/os/avatar.png"/>
+          <img alt="DEV_ITSPYGURU" class="w-full h-full object-cover grayscale contrast-125" src="assets/os/avatar.png"/>
         </div>
         <div>
-          <div class="text-primary font-headline-md text-sm leading-none">ADM_PRAJJWAL</div>
-          <div class="text-outline font-data-label text-[9px] mt-1">CLEARANCE: O5-LEVEL</div>
+          <div class="text-primary font-headline-md text-sm leading-none">DEV_ITSPYGURU</div>
+          <div class="text-outline font-data-label text-[9px] mt-1">ACCESS: ROOT</div>
         </div>
       </div>
       <div class="mt-4 bg-primary/10 border border-primary/30 p-2 text-center">
@@ -235,30 +248,30 @@
         <span class="material-symbols-outlined">shield</span><span class="font-data-label text-data-label">ROOT</span>
       </button>
       <button data-view="scan" class="nav-item w-full text-outline py-3 px-6 transition-all flex items-center gap-3 hover:bg-surface-container-high">
-        <span class="material-symbols-outlined">radar</span><span class="font-data-label text-data-label">SCAN</span>
+        <span class="material-symbols-outlined">build</span><span class="font-data-label text-data-label">BUILD</span>
       </button>
       <button data-view="breach" class="nav-item w-full text-outline py-3 px-6 transition-all flex items-center gap-3 hover:bg-surface-container-high">
-        <span class="material-symbols-outlined">terminal</span><span class="font-data-label text-data-label">BREACH</span>
+        <span class="material-symbols-outlined">folder</span><span class="font-data-label text-data-label">PROJECTS</span>
       </button>
       <button data-view="clearance" class="nav-item w-full text-outline py-3 px-6 transition-all flex items-center gap-3 hover:bg-surface-container-high">
-        <span class="material-symbols-outlined">verified_user</span><span class="font-data-label text-data-label">CLEARANCE</span>
+        <span class="material-symbols-outlined">badge</span><span class="font-data-label text-data-label">PROFILE</span>
       </button>
     </nav>
     <div class="px-6 space-y-4">
       <div class="p-3 border border-outline-variant/30 bg-surface-container-low">
-        <div class="text-data-label font-data-label text-outline mb-2">INVESTIGATION PROGRESS</div>
+        <div class="text-data-label font-data-label text-outline mb-2">QUICK START</div>
         <ul class="space-y-2 text-data-label">
           <li class="flex items-center gap-2">
             <span class="material-symbols-outlined text-primary-fixed-dim text-sm" style="font-variation-settings:'FILL' 1;">check_box</span>
-            <span class="text-primary-fixed-dim">Identify Subject</span>
+            <span class="text-primary-fixed-dim">Boot the system</span>
           </li>
           <li class="flex items-center gap-2" id="prog-2">
             <span class="material-symbols-outlined text-outline text-sm">check_box_outline_blank</span>
-            <span class="text-outline">Analyze Attack Surface</span>
+            <span class="text-outline">Browse the projects</span>
           </li>
-          <li class="flex items-center gap-2 opacity-50" id="prog-3">
-            <span class="material-symbols-outlined text-outline text-sm">lock</span>
-            <span>Exfiltrate Data</span>
+          <li class="flex items-center gap-2" id="prog-3">
+            <span class="material-symbols-outlined text-outline text-sm">check_box_outline_blank</span>
+            <span class="text-outline">Say hello</span>
           </li>
         </ul>
       </div>
@@ -299,7 +312,7 @@
           <div class="w-12 h-12 md:w-14 md:h-14 border border-primary/20 bg-surface-container-low flex items-center justify-center group-hover:bg-primary/10 group-hover:border-primary-fixed-dim transition-all">
             <span class="material-symbols-outlined text-primary-fixed-dim text-2xl md:text-3xl">folder</span>
           </div>
-          <span class="mt-2 text-[10px] font-data-label text-outline group-hover:text-primary-fixed text-center bg-background/50 px-1">Security_Research</span>
+          <span class="mt-2 text-[10px] font-data-label text-outline group-hover:text-primary-fixed text-center bg-background/50 px-1">Open_Source</span>
         </button>
         <button data-view="breach" class="flex flex-col items-center group cursor-pointer w-16 md:w-20">
           <div class="w-12 h-12 md:w-14 md:h-14 border border-primary/20 bg-surface-container-low flex items-center justify-center group-hover:bg-primary/10 group-hover:border-primary-fixed-dim transition-all">
@@ -321,7 +334,7 @@
           <div class="bg-surface-container-highest px-4 py-2 border-b border-outline-variant/50 flex justify-between items-center">
             <div class="flex items-center gap-3 min-w-0">
               <span class="material-symbols-outlined text-primary-fixed-dim text-sm">troubleshoot</span>
-              <span class="text-data-label font-data-label text-primary-fixed-dim truncate">~/investigation/review_security_findings</span>
+              <span class="text-data-label font-data-label text-primary-fixed-dim truncate">~/dev/featured_build</span>
             </div>
             <div class="flex gap-2 shrink-0">
               <div class="w-3 h-3 border border-outline hover:bg-outline transition-colors cursor-pointer"></div>
@@ -332,7 +345,7 @@
           <div class="p-6 flex flex-col md:flex-row gap-6">
             <div class="flex-1 space-y-6">
               <div>
-                <h2 class="text-headline-md font-headline-md text-primary-fixed-dim">Finding #001: AI Financial-Doc Engine</h2>
+                <h2 class="text-headline-md font-headline-md text-primary-fixed-dim">Build #001: AI Financial-Doc Engine</h2>
                 <div class="flex gap-2 mt-2 flex-wrap">
                   <span class="px-2 py-0.5 border border-secondary-container bg-secondary-container/20 text-secondary text-[10px] font-data-label">IMPACT: CRITICAL</span>
                   <span class="px-2 py-0.5 border border-outline-variant bg-surface-container-high text-on-surface-variant text-[10px] font-data-label">REF: LEADZEN-SDE2</span>
@@ -358,10 +371,10 @@
                   </div>
                 </div>
                 <div class="pt-4 border-t border-outline-variant/30">
-                  <span class="text-data-label font-data-label text-outline block mb-3">EVIDENCE REPOSITORY</span>
+                  <span class="text-data-label font-data-label text-outline block mb-3">LINKS</span>
                   <div class="flex flex-wrap gap-3">
                     <button data-view="breach" class="flex items-center gap-2 border border-primary/30 px-3 py-1.5 hover:bg-primary/10 transition-all text-primary text-[10px] font-data-label">
-                      <span class="material-symbols-outlined text-sm">list_alt</span> ALL_FINDINGS
+                      <span class="material-symbols-outlined text-sm">list_alt</span> ALL_PROJECTS
                     </button>
                     <a href="https://github.com/itspyguru" target="_blank" rel="noopener" class="flex items-center gap-2 border border-primary/30 px-3 py-1.5 hover:bg-primary/10 transition-all text-primary text-[10px] font-data-label">
                       <span class="material-symbols-outlined text-sm">code</span> GITHUB
@@ -379,26 +392,26 @@
                 <div class="space-y-4">
                   <div class="relative pl-4 border-l border-primary-fixed-dim">
                     <div class="absolute -left-1.5 top-0 w-3 h-3 bg-primary-fixed-dim rounded-full shadow-[0_0_8px_#00e639]"></div>
-                    <span class="text-[10px] font-data-label text-primary-fixed-dim block">Identify Subject</span>
+                    <span class="text-[10px] font-data-label text-primary-fixed-dim block">Architect</span>
                     <span class="text-[9px] font-data-label text-outline">COMPLETED <span class="text-primary-fixed-dim ml-1">+20 XP</span></span>
                   </div>
                   <div class="relative pl-4 border-l border-primary-fixed-dim">
                     <div class="absolute -left-1.5 top-0 w-3 h-3 bg-primary-fixed-dim rounded-full shadow-[0_0_8px_#00e639]"></div>
-                    <span class="text-[10px] font-data-label text-primary-fixed-dim block">Analyze Attack Surface</span>
+                    <span class="text-[10px] font-data-label text-primary-fixed-dim block">Build &amp; Test</span>
                     <span class="text-[9px] font-data-label text-outline">COMPLETED <span class="text-primary-fixed-dim ml-1">+50 XP</span></span>
                   </div>
                   <div class="relative pl-4 border-l border-outline-variant">
                     <div class="absolute -left-1.5 top-0 w-3 h-3 bg-surface-container-high border border-outline-variant rounded-full"></div>
-                    <span class="text-[10px] font-data-label text-outline block">Execute Exploit</span>
-                    <span class="text-[9px] font-data-label text-outline">LOCKED</span>
+                    <span class="text-[10px] font-data-label text-outline block">Deploy</span>
+                    <span class="text-[9px] font-data-label text-outline">SHIPPING</span>
                   </div>
                 </div>
               </div>
               <div class="bg-surface-container-low border border-outline-variant/30 p-3">
-                <h4 class="text-[10px] font-data-label text-primary-fixed-dim mb-3 border-b border-primary/20 pb-1">SUBJECT PROFILE</h4>
+                <h4 class="text-[10px] font-data-label text-primary-fixed-dim mb-3 border-b border-primary/20 pb-1">DEVELOPER</h4>
                 <div class="space-y-2">
                   <p class="text-terminal-bold font-terminal-bold text-on-surface leading-tight text-sm">Prajjwal Pathak</p>
-                  <p class="text-[9px] font-data-label text-outline uppercase tracking-wider">AI Engineer &amp; Security Researcher</p>
+                  <p class="text-[9px] font-data-label text-outline uppercase tracking-wider">Software Engineer &middot; Backend &amp; AI</p>
                   <div class="h-1 w-full bg-primary/20 mt-2"><div class="h-full bg-primary-fixed-dim w-3/4"></div></div>
                   <p class="text-[8px] font-data-label text-outline/60 text-right">SYST_SYNC: 78%</p>
                 </div>
@@ -426,7 +439,7 @@
 
       <div class="flex justify-between items-end mb-8 border-l-2 border-primary-fixed-dim pl-4">
         <div>
-          <h1 class="text-3xl md:text-display-lg font-display-lg text-primary-fixed-dim tracking-tighter">AI DIVISION</h1>
+          <h1 class="text-3xl md:text-display-lg font-display-lg text-primary-fixed-dim tracking-tighter">DEV LAB</h1>
           <div class="flex items-center gap-3 mt-1 flex-wrap">
             <span class="bg-primary/20 text-primary px-2 py-0.5 text-[10px] border border-primary/30 font-data-label">ACCESS: GRANTED</span>
             <span class="bg-surface-container-high text-outline px-2 py-0.5 text-[10px] border border-outline-variant/30 font-data-label">CLEARANCE_LEVEL: 2</span>
@@ -434,7 +447,7 @@
         </div>
         <div class="text-right hidden sm:block">
           <p class="text-data-label font-data-label text-outline uppercase">Subsystem Status</p>
-          <p class="text-primary-fixed-dim font-terminal-bold">SEC_AI_MODULE: ACTIVE</p>
+          <p class="text-primary-fixed-dim font-terminal-bold">BUILD_MODULE: ACTIVE</p>
         </div>
       </div>
 
@@ -531,7 +544,7 @@
                   <div class="w-2 h-2 rounded-full bg-primary-fixed-dim/50"></div>
                 </div>
                 <span class="text-data-label font-terminal-bold text-primary-fixed-dim flex items-center gap-2">
-                  <span class="material-symbols-outlined text-sm">terminal</span> Interview_Prajjwal.exe
+                  <span class="material-symbols-outlined text-sm">terminal</span> interview_itspyguru.exe
                 </span>
               </div>
               <span class="text-[9px] text-outline font-data-label">PID: 7721 | SEC: HIGH</span>
@@ -571,9 +584,9 @@
     <section id="view-breach" class="view relative z-10 px-margin-page">
       <div class="flex justify-between items-end mb-8 border-l-2 border-primary-fixed-dim pl-4">
         <div>
-          <h1 class="text-3xl md:text-display-lg font-display-lg text-primary-fixed-dim tracking-tighter">FINDINGS LOG</h1>
+          <h1 class="text-3xl md:text-display-lg font-display-lg text-primary-fixed-dim tracking-tighter">PROJECT INDEX</h1>
           <div class="flex items-center gap-3 mt-1 flex-wrap">
-            <span class="bg-secondary-container/20 text-secondary px-2 py-0.5 text-[10px] border border-secondary/30 font-data-label"><span id="threat-count">0</span> ARTIFACTS RECOVERED</span>
+            <span class="bg-primary/20 text-primary px-2 py-0.5 text-[10px] border border-primary/30 font-data-label"><span id="threat-count">0</span> PROJECTS DEPLOYED</span>
             <span class="bg-surface-container-high text-outline px-2 py-0.5 text-[10px] border border-outline-variant/30 font-data-label">~/breach/projects</span>
           </div>
         </div>
@@ -585,7 +598,7 @@
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter" id="findings-grid"></div>
 
-      <p class="text-center text-outline text-[10px] font-data-label mt-8">// END_OF_LOG — more artifacts at <a href="https://github.com/itspyguru" target="_blank" rel="noopener" class="text-primary-fixed-dim underline">github.com/itspyguru</a></p>
+      <p class="text-center text-outline text-[10px] font-data-label mt-8">// EOF — more on <a href="https://github.com/itspyguru" target="_blank" rel="noopener" class="text-primary-fixed-dim underline">github.com/itspyguru</a></p>
     </section>
 
     <!-- ============ VIEW: CLEARANCE (INVESTIGATION COMPLETE / ABOUT + CONTACT) ============ -->
@@ -605,9 +618,9 @@
                 <div class="w-2 h-2 rounded-full bg-tertiary-fixed-dim/50"></div>
                 <div class="w-2 h-2 rounded-full bg-primary-fixed-dim/50"></div>
               </div>
-              <span class="text-data-label text-outline ml-4 hidden sm:inline">~/mission/investigation_complete.exe</span>
+              <span class="text-data-label text-outline ml-4 hidden sm:inline">~/about/profile.json</span>
             </div>
-            <span class="text-data-label text-primary-fixed-dim font-bold">STRICT_CONFIDENTIALITY_REQUIRED</span>
+            <span class="text-data-label text-primary-fixed-dim font-bold">OPEN_TO_OPPORTUNITIES</span>
           </div>
 
           <div class="mt-8 flex flex-col md:flex-row gap-8">
@@ -619,9 +632,9 @@
                 <div class="absolute bottom-2 left-2 bg-primary/20 px-2 py-1 text-[8px] text-primary-fixed-dim backdrop-blur-sm">ID: 0x9F_PATHAK_P</div>
               </div>
               <div class="space-y-2">
-                <div class="flex justify-between text-data-label"><span class="text-outline">THREAT_LEVEL:</span><span class="text-tertiary-fixed-dim">MINIMAL / COLLABORATIVE</span></div>
-                <div class="h-1 w-full bg-surface-container-highest overflow-hidden"><div class="h-full bg-tertiary-fixed-dim w-1/4"></div></div>
-                <div class="flex justify-between text-data-label"><span class="text-outline">UTILITY_RATING:</span><span class="text-primary-fixed-dim">MAXIMAL (S-RANK)</span></div>
+                <div class="flex justify-between text-data-label"><span class="text-outline">COLLAB_MODE:</span><span class="text-primary-fixed-dim">OPEN</span></div>
+                <div class="h-1 w-full bg-surface-container-highest overflow-hidden"><div class="h-full bg-primary-fixed-dim w-[90%]"></div></div>
+                <div class="flex justify-between text-data-label"><span class="text-outline">BUILD_RATING:</span><span class="text-primary-fixed-dim">S-RANK</span></div>
                 <div class="h-1 w-full bg-surface-container-highest overflow-hidden"><div class="h-full bg-primary-fixed-dim w-[95%]"></div></div>
               </div>
               <!-- socials -->
@@ -644,13 +657,13 @@
             <!-- right: assessment -->
             <div class="flex-1 space-y-6">
               <header>
-                <h1 class="text-3xl md:text-display-lg text-primary-fixed-dim mb-1 tracking-tighter leading-none">INVESTIGATION COMPLETE</h1>
-                <p class="text-data-label text-outline uppercase tracking-[0.2em]">Subject: Prajjwal Pathak (pyGuru) | Analysis Node: ALPHA-7</p>
+                <h1 class="text-3xl md:text-display-lg text-primary-fixed-dim mb-1 tracking-tighter leading-none">DEVELOPER PROFILE</h1>
+                <p class="text-data-label text-outline uppercase tracking-[0.2em]">Developer: Prajjwal Pathak (pyGuru) &middot; Node: ALPHA-7</p>
               </header>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="p-4 bg-surface-container border border-outline-variant/30 space-y-3">
-                  <div class="flex items-center gap-2 text-primary-fixed-dim"><span class="material-symbols-outlined text-[18px]">analytics</span><span class="text-terminal-bold">RISK ASSESSMENT</span></div>
-                  <p class="text-body-sm text-on-surface-variant leading-relaxed">Software Engineer (SDE-2) with 1+ yr scaling backend &amp; automation at <span class="text-primary-fixed-dim">Leadzen.ai</span>. Achieved <span class="text-primary-fixed-dim">90%</span> reduction in manual workloads and <span class="text-primary-fixed-dim">30%</span> system-performance gains. Heuristics flag subject as an <span class="text-primary-fixed-dim font-bold">EXCEPTIONAL BUILDER</span> — no malicious intent, purely constructive. Currently scaling <span class="text-primary-fixed-dim">cybiqon.in</span>.</p>
+                  <div class="flex items-center gap-2 text-primary-fixed-dim"><span class="material-symbols-outlined text-[18px]">analytics</span><span class="text-terminal-bold">SUMMARY</span></div>
+                  <p class="text-body-sm text-on-surface-variant leading-relaxed">Software Engineer (SDE-2) with 1+ yr building backend systems, automation &amp; AI agents at <span class="text-primary-fixed-dim">Leadzen.ai</span>. Achieved <span class="text-primary-fixed-dim">90%</span> reduction in manual workloads and <span class="text-primary-fixed-dim">30%</span> performance gains. Flagged as an <span class="text-primary-fixed-dim font-bold">EXCEPTIONAL BUILDER</span> — ships fast, automates everything, cares about clean architecture. Currently scaling <span class="text-primary-fixed-dim">cybiqon.in</span>.</p>
                 </div>
                 <div class="p-4 bg-surface-container border border-outline-variant/30 space-y-3">
                   <div class="flex items-center gap-2 text-primary-fixed-dim"><span class="material-symbols-outlined text-[18px]">psychology</span><span class="text-terminal-bold">PRIMARY SKILLS</span></div>
@@ -658,8 +671,8 @@
                 </div>
               </div>
               <div class="text-center py-5 border-y border-outline-variant/20">
-                <p class="text-data-label text-outline mb-2">SYSTEM RECOMMENDATION:</p>
-                <h2 class="text-headline-md flash-text font-bold tracking-widest uppercase">IMMEDIATE RECRUITMENT</h2>
+                <p class="text-data-label text-outline mb-2">CURRENT STATUS:</p>
+                <h2 class="text-headline-md flash-text font-bold tracking-widest uppercase">AVAILABLE FOR HIRE</h2>
               </div>
               <div class="flex flex-col items-center gap-4">
                 <a href="mailto:prajjwalpathak35@gmail.com" class="group relative px-8 md:px-12 py-4 md:py-5 bg-primary-fixed-dim text-on-primary-fixed font-terminal-bold text-base md:text-lg overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_#00e63944]">
@@ -707,7 +720,7 @@
 
           <div class="mt-10 pt-4 border-t border-outline-variant/30 flex flex-wrap justify-between items-center gap-2 text-[9px] text-outline/50 font-terminal-code uppercase">
             <div class="flex gap-4 flex-wrap"><span>LATENCY: 12ms</span><span>BITRATE: 4.8 GB/S</span><span>PACKET_LOSS: 0.00%</span></div>
-            <div>© PRAJJWAL_OS_SYSTEMS_2026_V3.0</div>
+            <div>© ITSPYGURU_OS_2026</div>
           </div>
         </div>
       </div>
@@ -738,14 +751,14 @@
               <div class="w-2.5 h-2.5 rounded-full bg-tertiary-fixed-dim/50"></div>
               <div class="w-2.5 h-2.5 rounded-full bg-primary-fixed-dim/50"></div>
             </div>
-            <span class="text-data-label font-data-label text-primary-fixed-dim">prajjwal@prajjwal-os: ~/root — bash</span>
+            <span class="text-data-label font-data-label text-primary-fixed-dim">itspyguru@itspyguru-os: ~/dev — bash</span>
           </div>
           <button id="term-clear" class="text-[9px] text-outline hover:text-primary-fixed font-data-label border border-outline-variant/40 px-2 py-0.5">CLEAR</button>
         </div>
         <div id="term-output" class="flex-1 overflow-y-auto p-4 font-terminal-code text-[12px] md:text-[13px] text-primary-fixed-dim/90 bg-[#0a0a0a]/60 leading-relaxed"></div>
         <div class="px-3 pt-2 flex gap-2 flex-wrap bg-surface-container-lowest/60" id="term-chips"></div>
         <form id="term-form" class="flex items-center gap-2 p-3 border-t border-primary/20 bg-surface-container-lowest">
-          <span class="text-primary-fixed-dim font-terminal-bold text-[12px] whitespace-nowrap">prajjwal@os:~$</span>
+          <span class="text-primary-fixed-dim font-terminal-bold text-[12px] whitespace-nowrap">itspyguru@os:~$</span>
           <input id="term-input" class="flex-1 bg-transparent border-none focus:ring-0 text-terminal-code text-primary placeholder:text-primary/20" placeholder="type a command... (help)" type="text" autocomplete="off" spellcheck="false"/>
         </form>
       </div>
@@ -800,7 +813,7 @@ const LINKS = {
 const RESUME = {
   name: "Prajjwal Pathak",
   alias: "pyGuru",
-  title: "Software Engineer (SDE-2) · AI & Security",
+  title: "Software Engineer (SDE-2) · Backend & AI",
   location: "Varanasi, India",
   email: "prajjwalpathak35@gmail.com",
   links: LINKS,
@@ -892,50 +905,48 @@ const RESUME = {
 };
 
 /* ===================== BOOT SEQUENCE ===================== */
-const bootLogs = [
-  "Initializing kernel 5.15.0-71-generic...",
-  "Loading PrajjwalOS Core V3.0 [STABLE]",
-  "Mounting /career: Leadzen.ai [SDE-2] ... [OK]",
-  "Activating AI Neural Agents (CrewAI + LangChain)... [OK]",
-  "Spinning up FastAPI backend services... [OK]",
-  "Decrypting RSA-4096 master keys...",
-  "Indexing 10,000+ scraped data points/day...",
-  "Alert: Unexpected protocol detected on Port 8080.",
-  "Loading Incident Response Module...",
-  "Boot sequence complete. Welcome back, Admin."
+const bootLines = [
+  "Booting itspyguru_OS v3.0 …",
+  "Loading kernel modules … ok",
+  "Mounting /home/itspyguru/dev … ok",
+  "Initializing Python 3.12 runtime … ok",
+  "Starting FastAPI dev server :8000 … ok",
+  "Spinning up AI agents (CrewAI · LangChain) … ok",
+  "Installing dependencies … 1,240 packages … ok",
+  "Connecting to GitHub @itspyguru … ok",
+  "Running test suite … 142 passed … ok",
+  "Compiling portfolio assets … ok",
+  "Build passed. Launching workspace …"
 ];
-const logContainer = document.getElementById('boot-logs');
+const bootStatus = document.getElementById('boot-status');
+const bootBar = document.getElementById('boot-bar');
+const bootPct = document.getElementById('boot-pct');
+const bootStage = document.getElementById('boot-stage');
 const bootScreen = document.getElementById('boot-screen');
 const osEnv = document.getElementById('os-environment');
-let booted = false;
+let booted = false, bootIdx = 0;
 
-function typeText(el, text){
-  return new Promise(res=>{
-    let i=0;
-    (function step(){
-      if(i<text.length){ el.textContent += text[i++]; setTimeout(step, 10 + Math.random()*18); }
-      else res();
-    })();
-  });
-}
-let logIndex=0;
-async function printLog(){
+function bootStep(){
   if(booted) return;
-  if(logIndex < bootLogs.length){
-    const p=document.createElement('p');
-    p.textContent='> '; p.classList.add('typing-cursor');
-    logContainer.appendChild(p);
-    logContainer.scrollTop=logContainer.scrollHeight;
-    await typeText(p, bootLogs[logIndex]);
-    p.classList.remove('typing-cursor');
-    logIndex++;
-    setTimeout(printLog, 60 + Math.random()*90);
-  } else {
-    setTimeout(revealOS, 900);
+  if(bootIdx < bootLines.length){
+    const p = document.createElement('p');
+    p.innerHTML = '<span class="text-outline">&gt;</span> ' + bootLines[bootIdx];
+    [...bootStatus.children].forEach(c=>c.classList.remove('typing-cursor'));
+    bootStatus.appendChild(p);
+    p.classList.add('typing-cursor');
+    while(bootStatus.children.length > 5) bootStatus.removeChild(bootStatus.firstChild);
+    bootIdx++;
+    const pct = Math.round(bootIdx / bootLines.length * 100);
+    bootBar.style.width = pct + '%';
+    bootPct.textContent = pct + '%';
+    bootStage.textContent = (bootIdx >= bootLines.length) ? 'ready' : 'loading…';
+    if(bootIdx >= bootLines.length) setTimeout(revealOS, 750);
+    else setTimeout(bootStep, 230 + Math.random()*230);
   }
 }
 function revealOS(){
   if(booted) return; booted=true;
+  bootBar.style.width='100%'; bootPct.textContent='100%'; bootStage.textContent='ready';
   bootScreen.classList.add('opacity-0');
   setTimeout(()=>{
     bootScreen.style.display='none';
@@ -944,7 +955,7 @@ function revealOS(){
   },800);
 }
 document.getElementById('skip-boot').addEventListener('click', revealOS);
-window.addEventListener('load', ()=> setTimeout(printLog, 400));
+window.addEventListener('load', ()=> setTimeout(bootStep, 400));
 
 /* ===================== VIEW ROUTER ===================== */
 const views = ['root','scan','breach','clearance','terminal'];
@@ -977,7 +988,7 @@ document.getElementById('start-btn').addEventListener('click', ()=>{
   document.getElementById('sidebar').classList.toggle('-translate-x-full');
 });
 document.getElementById('logout-btn').addEventListener('click', ()=>{
-  if(confirm('REBOOT PRAJJWAL_OS? This will replay the boot sequence.')) location.reload();
+  if(confirm('REBOOT ITSPYGURU_OS? This will replay the boot sequence.')) location.reload();
 });
 
 /* ===================== CLOCK ===================== */
@@ -995,7 +1006,7 @@ const grid = document.getElementById('findings-grid');
 grid.innerHTML = RESUME.projects.map(p=>`
   <div class="glass-panel flex flex-col">
     <div class="bg-surface-container-highest px-4 py-2 border-b border-outline-variant/50 flex justify-between items-center">
-      <span class="text-data-label font-data-label text-primary-fixed-dim truncate">~/breach/${p.slug}</span>
+      <span class="text-data-label font-data-label text-primary-fixed-dim truncate">~/projects/${p.slug}</span>
       <div class="flex gap-2 shrink-0">
         <div class="w-2.5 h-2.5 border border-outline"></div>
         <div class="w-2.5 h-2.5 border border-outline"></div>
@@ -1013,7 +1024,7 @@ grid.innerHTML = RESUME.projects.map(p=>`
         ${p.tech.map(t=>`<span class="text-[9px] border border-outline-variant px-1.5 py-0.5 text-outline font-data-label">${t}</span>`).join('')}
       </div>
       <a href="${p.link}" target="_blank" rel="noopener" class="mt-4 inline-flex items-center gap-2 self-start border border-primary/30 px-3 py-1.5 hover:bg-primary/10 transition-all text-primary text-[10px] font-data-label">
-        <span class="material-symbols-outlined text-sm">open_in_new</span> INSPECT_EVIDENCE
+        <span class="material-symbols-outlined text-sm">open_in_new</span> OPEN_PROJECT
       </a>
     </div>
   </div>`).join('');
@@ -1058,21 +1069,21 @@ const knowledge = [
   { k:['stack','tech','technolog','language','tools','python'],
     a:`Primary weapon: <span class="text-primary-fixed-dim">Python</span>. Stack: FastAPI, Flask, CrewAI, LangChain, Redis, MongoDB/MySQL, Generative AI. Automation: Selenium, BeautifulSoup, Apps Script, Telegram bots. Security: Burp Suite, nmap, sublist3r, Kali.` },
   { k:['experience','work history','job','leadzen','career','sde','role'],
-    a:`1+ yr at <span class="text-primary-fixed-dim">Leadzen.ai</span> — Intern &rarr; SDE-1 &rarr; SDE-2. Shipped financial-doc automation, an end-to-end data pipeline for listed companies, and a security audit. Earlier: Research Intern @ PixelNib. See the full timeline in <button data-view="clearance" class="text-primary-fixed-dim underline">CLEARANCE</button>.` },
+    a:`1+ yr at <span class="text-primary-fixed-dim">Leadzen.ai</span> — Intern &rarr; SDE-1 &rarr; SDE-2. Shipped financial-doc automation, an end-to-end data pipeline for listed companies, and a security audit. Earlier: Research Intern @ PixelNib. See the full timeline in <button data-view="clearance" class="text-primary-fixed-dim underline">PROFILE</button>.` },
   { k:['who','about','yourself','name','prajjwal','pyguru','bio'],
     a:`I'm <span class="text-primary-fixed">Prajjwal Pathak</span>, aka <span class="text-primary-fixed-dim">pyGuru</span> — Software Engineer (SDE-2), backend + automation + AI agents, and a Python instructor with 20k+ on YouTube. Otaku, melomaniac & Ruskin Bond fan. Building cybiqon.in.` },
   { k:['contact','reach','email','hire','talk','connect','telegram'],
-    a:`Email <a href="mailto:prajjwalpathak35@gmail.com" class="text-primary-fixed-dim underline">prajjwalpathak35@gmail.com</a> or ping <a href="https://t.me/itspyguru" target="_blank" class="text-primary-fixed-dim underline">Telegram @itspyguru</a> (fastest). Also on <a href="https://www.linkedin.com/in/itspyguru/" target="_blank" class="text-primary-fixed-dim underline">LinkedIn</a>. Full details in <button data-view="clearance" class="text-primary-fixed-dim underline">CLEARANCE</button>.` },
+    a:`Email <a href="mailto:prajjwalpathak35@gmail.com" class="text-primary-fixed-dim underline">prajjwalpathak35@gmail.com</a> or ping <a href="https://t.me/itspyguru" target="_blank" class="text-primary-fixed-dim underline">Telegram @itspyguru</a> (fastest). Also on <a href="https://www.linkedin.com/in/itspyguru/" target="_blank" class="text-primary-fixed-dim underline">LinkedIn</a>. Full details in <button data-view="clearance" class="text-primary-fixed-dim underline">PROFILE</button>.` },
   { k:['project','build','portfolio','github','decrypto','bot'],
-    a:`Projects: AI Financial-Doc Engine, Company Data Pipeline, Web-App Security Audit, Telegram Bot API (3k+ users), Decrypto (PyPI), Gita Shloka Translator & more. Open the <button data-view="breach" class="text-primary-fixed-dim underline">FINDINGS LOG</button>, or run <button data-view="terminal" data-term="ls projects" class="text-primary-fixed-dim underline">ls projects</button> in the terminal.` },
+    a:`Projects: AI Financial-Doc Engine, Company Data Pipeline, Web-App Security Audit, Telegram Bot API (3k+ users), Decrypto (PyPI), Gita Shloka Translator & more. Open the <button data-view="breach" class="text-primary-fixed-dim underline">PROJECT INDEX</button>, or run <button data-view="terminal" data-term="ls projects" class="text-primary-fixed-dim underline">ls projects</button> in the terminal.` },
   { k:['resume','cv','download'],
-    a:`Grab the resume: open the <button data-view="terminal" data-term="cat resume.pdf" class="text-primary-fixed-dim underline">terminal</button> and run <span class="text-primary-fixed-dim">cat resume.pdf</span>, or hit DOWNLOAD_RESUME in <button data-view="clearance" class="text-primary-fixed-dim underline">CLEARANCE</button>.` },
+    a:`Grab the resume: open the <button data-view="terminal" data-term="cat resume.pdf" class="text-primary-fixed-dim underline">terminal</button> and run <span class="text-primary-fixed-dim">cat resume.pdf</span>, or hit DOWNLOAD_RESUME in <button data-view="clearance" class="text-primary-fixed-dim underline">PROFILE</button>.` },
   { k:['teach','youtube','udemy','course','content','educator'],
     a:`As <span class="text-primary-fixed-dim">pyGuru</span>: 20,000+ YouTube subscribers, 10,000+ on Telegram, and an Ethical Hacking course on Udemy with 4,500+ enrollments @ 4.7 rating.` },
   { k:['cybiqon','company','startup','venture','2026','goal'],
     a:`2026 mission objective: scaling <a href="https://cybiqon.in" target="_blank" class="text-primary-fixed-dim underline">cybiqon.in</a> to great heights — security & automation, productized.` },
   { k:['cert','iit','isro','certification','study','education','degree'],
-    a:`Certified by IIT Kanpur (Cyber Security & Bug Bounty), IIRS/ISRO (Geoprocessing w/ Python), Packt (Flask Full-Stack) & LinkedIn (Unit Testing/TDD). M.Sc + B.Sc Computer Science. Listed in <button data-view="clearance" class="text-primary-fixed-dim underline">CLEARANCE</button>.` },
+    a:`Certified by IIT Kanpur (Cyber Security & Bug Bounty), IIRS/ISRO (Geoprocessing w/ Python), Packt (Flask Full-Stack) & LinkedIn (Unit Testing/TDD). M.Sc + B.Sc Computer Science. Listed in <button data-view="clearance" class="text-primary-fixed-dim underline">PROFILE</button>.` },
   { k:['hobby','fun','anime','music','interest','otaku'],
     a:`Fun fact: melomaniac + Otaku + a fan of Ruskin Bond stories. Into cryptography, design, photography and decoding the universe. &#129315;` },
 ];
@@ -1123,7 +1134,7 @@ setInterval(()=>{
 },1000);
 
 // live-ish system log
-const logFeed=["AUDIT_AGENT: heartbeat OK.","CRM_AGENT: dispatched 12 outreach packets.","PDF_RESEARCHER: vectorized batch #441.","KERNEL: GC cycle complete.","SCANNER: 0 intrusions on port 8080.","NEURAL: weights checkpoint saved."];
+const logFeed=["BUILD: compiled in 1.2s","TESTS: 142/142 passed","CI: pipeline green","API: 200 OK · 24ms","GIT: pushed to main","DEPLOY: shipped to prod","CACHE: warm · 99% hit rate","AGENT: task completed"];
 setInterval(()=>{
   const sl=document.getElementById('sys-log'); if(!sl) return;
   const n=new Date(); const p=x=>x.toString().padStart(2,'0');
@@ -1135,7 +1146,7 @@ setInterval(()=>{
 
 /* ===================== CLEARANCE scrolling bg ===================== */
 const stContainer=document.getElementById('scrolling-terminal');
-const stLines=["ROOT ACCESS GRANTED...","DECRYPTING hidden_story.txt...","SUCCESS: Accessing kernel modules...","ANALYZING NEURAL SIGNATURES...","MATCH FOUND: Prajjwal Pathak","EXECUTING final_recruitment_sequence.sh","BYPASSING FIREWALL: node_771...","LOADING ASSETS: 100%","IDENTITY VERIFIED: Architecture Expert","MISSION PARAMETERS ACHIEVED...","ESTABLISHING SECURE CONNECTION...","WAITING FOR USER INPUT...","---------------------------","SYSTEM_LOG: Connection established via RSA-4096","REMOTE_ADDR: 127.0.0.1","USER_AGENT: PrajjwalOS/3.0 (Security Focus)","STATUS: Investigation Complete","REASON: Exceptional builder detected","ACTION: Initiate Recruitment Protocol"];
+const stLines=["$ git commit -m 'ship it'","$ npm run build … done","BUILD PASSED ✓","$ pytest -q … 142 passed","Deploying to production…","DEPLOY SUCCEEDED ✓","$ docker compose up -d","container healthy ✓","$ git push origin main","CI pipeline: green","Booting itspyguru_OS…","loading projects…","$ uvicorn main:app --reload","INFO: Application startup complete.","listening on :8000","$ whoami → prajjwal","STATUS: open to opportunities","welcome to itspyguru OS","---------------------------"];
 stContainer.innerHTML = Array.from({length:200},()=>`<div>${stLines[Math.floor(Math.random()*stLines.length)]}</div>`).join('');
 let stPos=0;
 (function st(){ stPos=(stPos+0.4)%200; stContainer.style.transform=`translateY(-${stPos}px)`; requestAnimationFrame(st); })();
@@ -1145,7 +1156,7 @@ const termOut=document.getElementById('term-output');
 const termForm=document.getElementById('term-form');
 const termInput=document.getElementById('term-input');
 let termReady=false, termHist=[], termHistIdx=0;
-const PROMPT='<span class="text-primary-fixed-dim">prajjwal@os</span><span class="text-outline">:</span><span class="text-tertiary-fixed-dim">~</span><span class="text-outline">$</span> ';
+const PROMPT='<span class="text-primary-fixed-dim">itspyguru@os</span><span class="text-outline">:</span><span class="text-tertiary-fixed-dim">~</span><span class="text-outline">$</span> ';
 
 function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 function termWrite(html){ const d=document.createElement('div'); d.className='term-line'; d.innerHTML=html; termOut.appendChild(d); termOut.scrollTop=termOut.scrollHeight; }
@@ -1230,9 +1241,9 @@ function catSocials(){
 function neofetch(){
   const logo=[
 "   <span class=\"text-primary-fixed-dim\">_ __  _   _ </span>",
-"  <span class=\"text-primary-fixed-dim\">| '_ \\| | | |</span>   <span class=\"text-primary\">prajjwal@prajjwal-os</span>",
+"  <span class=\"text-primary-fixed-dim\">| '_ \\| | | |</span>   <span class=\"text-primary\">itspyguru@itspyguru-os</span>",
 "  <span class=\"text-primary-fixed-dim\">| |_) | |_| |</span>   <span class=\"text-outline\">----------------------</span>",
-"  <span class=\"text-primary-fixed-dim\">| .__/ \\__, |</span>   OS:       PrajjwalOS v3.0",
+"  <span class=\"text-primary-fixed-dim\">| .__/ \\__, |</span>   OS:       itspyguru OS v3.0",
 "  <span class=\"text-primary-fixed-dim\">|_|    |___/ </span>   Role:     SDE-2 @ Leadzen.ai",
 "               Shell:    bash",
 "               Stack:    FastAPI · CrewAI · LangChain · Redis",
@@ -1330,14 +1341,14 @@ function runCommand(raw, echo){
     case 'download': out=(arg.toLowerCase().includes('resume')||arg==='')?(printResume(),'<span class="text-primary-fixed-dim">Opening print dialog… choose “Save as PDF”.</span>'):'usage: download resume'; break;
     case 'neofetch': case 'screenfetch': out=neofetch(); break;
     case 'date': out=new Date().toString(); break;
-    case 'pwd': out='/home/prajjwal/root'; break;
+    case 'pwd': out='/home/itspyguru/dev'; break;
     case 'echo': out=esc(arg); break;
     case 'history': out=termHist.map((h,i)=>`  ${(i+1).toString().padStart(3)}  ${esc(h)}`).join('\n')||'(empty)'; break;
     case 'clear': case 'cls': termOut.innerHTML=''; return;
     case 'sudo': out=cmdSudo(arg); break;
     case 'hire': case 'hire-me': out=cmdSudo('hire-me'); break;
     case 'hack': case 'matrix': out='<span class="text-primary-fixed-dim">breaching… '+'10'.repeat(18)+' ACCESS GRANTED. (kidding \u{1f600})</span>'; break;
-    case 'exit': case 'logout': out='<span class="text-outline">There is no escape from PrajjwalOS. Try the START menu instead.</span>'; break;
+    case 'exit': case 'logout': out='<span class="text-outline">There is no escape from itspyguru OS. Try the START menu instead.</span>'; break;
     default: out=`<span class="text-error">command not found: ${esc(cmd)}</span> — type <span class="text-primary-fixed-dim">help</span>`;
   }
   if(out!=null) termWrite(out);
@@ -1359,7 +1370,7 @@ function termInit(){
   if(termReady) return; termReady=true;
   termWrite(neofetch());
   termWrite('');
-  termWrite('<span class="text-outline">Welcome to PrajjwalOS shell. Type </span><span class="text-primary-fixed-dim">help</span><span class="text-outline"> to list commands, or </span><span class="text-primary-fixed-dim">cat resume.pdf</span><span class="text-outline">.</span>');
+  termWrite('<span class="text-outline">Welcome to itspyguru OS shell. Type </span><span class="text-primary-fixed-dim">help</span><span class="text-outline"> to list commands, or </span><span class="text-primary-fixed-dim">cat resume.pdf</span><span class="text-outline">.</span>');
   // command chips
   const chips=['help','cat resume.pdf','ls projects','experience','skills','neofetch','sudo hire-me','contact'];
   const wrap=document.getElementById('term-chips');
