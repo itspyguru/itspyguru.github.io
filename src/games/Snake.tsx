@@ -1,10 +1,12 @@
 import { useEffect, useRef } from 'react'
 import { beep } from '../os/sound'
+import { getBest, setBest } from './scores'
 const accent = () => (getComputedStyle(document.documentElement).getPropertyValue('--accent') || '#00e639').trim()
 
 export default function Snake() {
   const cvRef = useRef<HTMLCanvasElement>(null)
   const scoreRef = useRef<HTMLSpanElement>(null)
+  const bestRef = useRef<HTMLSpanElement>(null)
   useEffect(() => {
     const cv = cvRef.current!, ctx = cv.getContext('2d')!, N = 16, S = cv.width / N
     let snake = [{ x: 8, y: 8 }], dir = { x: 1, y: 0 }, food = { x: 4, y: 4 }, score = 0, over = false
@@ -18,7 +20,7 @@ export default function Snake() {
       if (k.startsWith('arrow')) e.preventDefault()
     }
     document.addEventListener('keydown', key)
-    const end = () => { const a = accent(); ctx.fillStyle = 'rgba(0,0,0,0.72)'; ctx.fillRect(0, 0, cv.width, cv.height); ctx.fillStyle = a; ctx.font = '20px monospace'; ctx.textAlign = 'center'; ctx.fillText('GAME OVER · ' + score, cv.width / 2, cv.height / 2) }
+    const end = () => { const a = accent(); const b = setBest('snake', score); if (bestRef.current) bestRef.current.textContent = String(b); ctx.fillStyle = 'rgba(0,0,0,0.72)'; ctx.fillRect(0, 0, cv.width, cv.height); ctx.fillStyle = a; ctx.font = '20px monospace'; ctx.textAlign = 'center'; ctx.fillText('GAME OVER · ' + score, cv.width / 2, cv.height / 2) }
     const tick = () => {
       if (over) return
       const h = { x: (snake[0].x + dir.x + N) % N, y: (snake[0].y + dir.y + N) % N }
@@ -36,7 +38,7 @@ export default function Snake() {
   return (
     <>
       <canvas ref={cvRef} width={320} height={320} className="border border-primary-fixed-dim/40" />
-      <div className="text-data-label text-outline">score: <span ref={scoreRef} className="text-primary-fixed-dim">0</span> · arrows/WASD · Esc to quit</div>
+      <div className="text-data-label text-outline">score: <span ref={scoreRef} className="text-primary-fixed-dim">0</span> · best: <span ref={bestRef} className="text-primary-fixed-dim">{getBest('snake')}</span> · arrows/WASD · Esc</div>
     </>
   )
 }

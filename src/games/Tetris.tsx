@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { beep } from '../os/sound'
+import { getBest, setBest } from './scores'
 
 const PIECES = [
   { c: '#00e6e6', m: [[1, 1, 1, 1]] },
@@ -15,6 +16,7 @@ const accent = () => (getComputedStyle(document.documentElement).getPropertyValu
 export default function Tetris() {
   const cvRef = useRef<HTMLCanvasElement>(null)
   const scoreRef = useRef<HTMLSpanElement>(null)
+  const bestRef = useRef<HTMLSpanElement>(null)
   useEffect(() => {
     const cv = cvRef.current!, ctx = cv.getContext('2d')!, C = 10, R = 20, S = cv.width / C
     let grid: string[][] = Array.from({ length: R }, () => Array(C).fill(''))
@@ -23,7 +25,7 @@ export default function Tetris() {
       for (let r = 0; r < mm.length; r++) for (let c = 0; c < mm[r].length; c++) if (mm[r][c]) { const nx = x + c, ny = y + r; if (nx < 0 || nx >= C || ny >= R || (ny >= 0 && grid[ny][nx])) return true }
       return false
     }
-    const newPiece = () => { const p = PIECES[(Math.random() * PIECES.length) | 0]; m = p.m.map((r) => r.slice()); col = p.c; px = ((C - m[0].length) / 2) | 0; py = 0; if (collide(px, py, m)) over = true }
+    const newPiece = () => { const p = PIECES[(Math.random() * PIECES.length) | 0]; m = p.m.map((r) => r.slice()); col = p.c; px = ((C - m[0].length) / 2) | 0; py = 0; if (collide(px, py, m)) { over = true; const b = setBest('tetris', score); if (bestRef.current) bestRef.current.textContent = String(b) } }
     const merge = () => m.forEach((row, r) => row.forEach((v, c) => { if (v && py + r >= 0) grid[py + r][px + c] = col }))
     const clearLines = () => {
       let n = 0; grid = grid.filter((row) => { if (row.every((c) => c)) { n++; return false } return true })
@@ -58,7 +60,7 @@ export default function Tetris() {
   return (
     <>
       <canvas ref={cvRef} width={200} height={400} className="border border-primary-fixed-dim/40" />
-      <div className="text-data-label text-outline">score: <span ref={scoreRef} className="text-primary-fixed-dim">0</span> · ←→ move · ↑ rotate · ↓ soft · space drop · Esc quit</div>
+      <div className="text-data-label text-outline">score: <span ref={scoreRef} className="text-primary-fixed-dim">0</span> · best: <span ref={bestRef} className="text-primary-fixed-dim">{getBest('tetris')}</span> · ←→ ↑rotate ↓ space · Esc</div>
     </>
   )
 }

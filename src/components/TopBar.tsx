@@ -4,6 +4,7 @@ import { LINKS } from '../data/resume'
 export default function TopBar() {
   const setView = useOS((s) => s.setView)
   const toggleSidebar = useOS((s) => s.toggleSidebar)
+  const openApp = useOS((s) => s.openAppWindow)
   const icon = 'material-symbols-outlined hover:bg-primary-fixed-dim/10 transition-all p-1 cursor-pointer rounded text-primary-fixed-dim'
   return (
     <header className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-page py-2 bg-background/80 backdrop-blur-md border-b border-outline-variant/30 shadow-[0_0_15px_rgb(var(--accent-rgb)_/_0.1)]">
@@ -12,9 +13,9 @@ export default function TopBar() {
         <span className="text-terminal-bold font-terminal-bold text-primary-fixed-dim tracking-tighter">ITSPYGURU_OS_V3.0</span>
         <div className="hidden md:block h-4 w-px bg-outline-variant/50" />
         <nav className="hidden md:flex gap-4">
-          <button onClick={() => setView('root')} className="text-outline hover:text-primary-fixed transition-colors font-data-label text-data-label">SYSTEM</button>
-          <button onClick={() => setView('scan')} className="text-outline hover:text-primary-fixed transition-colors font-data-label text-data-label">NETWORK</button>
-          <button onClick={() => setView('breach')} className="text-outline hover:text-primary-fixed transition-colors font-data-label text-data-label">LOGS</button>
+          <button onClick={() => openApp('about', 'About', 'info')} className="text-outline hover:text-primary-fixed transition-colors font-data-label text-data-label">SYSTEM</button>
+          <button onClick={() => openApp('network', 'Network', 'lan')} className="text-outline hover:text-primary-fixed transition-colors font-data-label text-data-label">NETWORK</button>
+          <button onClick={() => openApp('logs', 'Logs', 'receipt_long')} className="text-outline hover:text-primary-fixed transition-colors font-data-label text-data-label">LOGS</button>
         </nav>
       </div>
       <div className="flex items-center gap-4">

@@ -11,10 +11,14 @@ import BubbleShooter from './BubbleShooter'
 import SpaceImpact from './SpaceImpact'
 import Platformer from './Platformer'
 import Racing from './Racing'
+import Minesweeper from './Minesweeper'
+import Breakout from './Breakout'
+import Flappy from './Flappy'
 
 const MAP: Record<string, React.FC> = {
   snake: Snake, '2048': Game2048, pong: Pong, tictactoe: TicTacToe, typing: Typing, guess: Guess,
   tetris: Tetris, bubble: BubbleShooter, spaceimpact: SpaceImpact, platformer: Platformer, racing: Racing,
+  minesweeper: Minesweeper, breakout: Breakout, flappy: Flappy,
 }
 
 export default function GameOverlay() {

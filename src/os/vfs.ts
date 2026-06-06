@@ -18,6 +18,9 @@ export const GAMES: GameMeta[] = [
   { id: 'racing', label: 'Racing', icon: 'directions_car', kind: 'canvas' },
   { id: 'pong', label: 'Pong', icon: 'sports_tennis', kind: 'canvas' },
   { id: 'tictactoe', label: 'Tic-Tac-Toe', icon: 'grid_3x3', kind: 'canvas' },
+  { id: 'minesweeper', label: 'Minesweeper', icon: 'flag', kind: 'canvas' },
+  { id: 'breakout', label: 'Breakout', icon: 'gamepad', kind: 'canvas' },
+  { id: 'flappy', label: 'Flappy', icon: 'flutter_dash', kind: 'canvas' },
   { id: 'typing', label: 'Typing Test', icon: 'keyboard', kind: 'term' },
   { id: 'guess', label: 'Number Guess', icon: 'casino', kind: 'term' },
 ]
@@ -44,6 +47,9 @@ export const ROOT_VFS: VNode = {
       { name: 'camera', type: 'app', icon: 'photo_camera', label: 'Camera' },
       { name: 'gallery', type: 'app', icon: 'photo_library', label: 'Gallery' },
       { name: 'radio', type: 'app', icon: 'radio', label: 'Radio' },
+      { name: 'files', type: 'app', icon: 'folder_open', label: 'Files' },
+      { name: 'paint', type: 'app', icon: 'brush', label: 'Paint' },
+      { name: 'weather', type: 'app', icon: 'partly_cloudy_day', label: 'Weather' },
       { name: 'clock', type: 'app', icon: 'schedule', label: 'Clock' },
       { name: 'notes', type: 'app', icon: 'sticky_note_2', label: 'Notes' },
       { name: 'terminal', type: 'app', icon: 'terminal', label: 'Terminal' },
@@ -86,6 +92,7 @@ const ALIAS: Record<string, string[]> = {
   calculator: ['apps', 'calculator'], calendar: ['apps', 'calendar'], camera: ['apps', 'camera'], clock: ['apps', 'clock'], notes: ['apps', 'notes'],
   gallery: ['apps', 'gallery'], photos: ['apps', 'gallery'],
   radio: ['apps', 'radio'], music: ['apps', 'radio'],
+  files: ['apps', 'files'], explorer: ['apps', 'files'], paint: ['apps', 'paint'], weather: ['apps', 'weather'],
 }
 export function resolveWithAlias(arg: string, cwd: string[]): { segs?: string[]; n?: VNode; special?: 'socials' } | null {
   const segs = resolveSegs(arg, cwd); const n = nodeAt(segs)

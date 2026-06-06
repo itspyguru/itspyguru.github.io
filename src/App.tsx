@@ -10,6 +10,7 @@ import GameOverlay from './games/GameOverlay'
 import Screensaver from './components/Screensaver'
 import CommandPalette from './components/CommandPalette'
 import Cheatsheet from './components/Cheatsheet'
+import ContextMenu from './components/ContextMenu'
 import { beep } from './os/sound'
 import { applyWallpaper } from './os/themes'
 import Desktop from './views/Desktop'
@@ -97,6 +98,7 @@ export default function App() {
       <Screensaver />
       <CommandPalette />
       <Cheatsheet />
+      <ContextMenu />
       <Toast />
     </>
   )

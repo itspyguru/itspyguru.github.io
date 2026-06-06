@@ -4,6 +4,7 @@ import { LINKS } from '../data/resume'
 import { printResume } from '../os/print'
 import { THEMES } from '../os/themes'
 import { APPS } from '../apps/registry'
+import { GAMES } from '../os/vfs'
 
 export default function CommandPalette() {
   const open = useOS((s) => s.cmdkOpen)
@@ -29,7 +30,7 @@ export default function CommandPalette() {
     { label: 'Open: Projects folder', icon: 'folder', run: () => { setView('root'); openWindow(['projects']) } },
     { label: 'Resume: download PDF', icon: 'download', run: () => printResume() },
     ...Object.values(APPS).map((a) => ({ label: 'App: ' + a.label, icon: a.icon, run: () => openAppWindow(a.id, a.label, a.icon) })),
-    ...[['snake', 'Snake', 'sports_esports'], ['2048', '2048', 'grid_view'], ['tetris', 'Tetris', 'view_compact'], ['bubble', 'Bubble Shooter', 'bubble_chart'], ['spaceimpact', 'Space Impact', 'rocket_launch'], ['platformer', 'Platformer', 'directions_run'], ['racing', 'Racing', 'directions_car'], ['pong', 'Pong', 'sports_tennis'], ['tictactoe', 'Tic-Tac-Toe', 'grid_3x3'], ['typing', 'Typing Test', 'keyboard'], ['guess', 'Number Guess', 'casino']].map(([id, label, icon]) => ({ label: 'Play: ' + label, icon, run: () => setActiveGame(id) })),
+    ...GAMES.map((g) => ({ label: 'Play: ' + g.label, icon: g.icon, run: () => setActiveGame(g.id) })),
     ...Object.entries(THEMES).filter(([k]) => k !== 'hacker').map(([k, t]) => ({ label: 'Theme: ' + t.label, icon: 'palette', run: () => { patchSettings({ theme: k, accent: null }); showToast('Theme: ' + t.label) } })),
     { label: 'Open: GitHub', icon: 'open_in_new', run: () => window.open(LINKS.github, '_blank') },
     { label: 'Open: LinkedIn', icon: 'open_in_new', run: () => window.open(LINKS.linkedin, '_blank') },
