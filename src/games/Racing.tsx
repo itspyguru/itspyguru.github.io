@@ -147,13 +147,13 @@ export default function Racing() {
         x += dx; dx += seg.curve
         const p1 = seg.p1.screen, p2 = seg.p2.screen
         if (seg.p1.camera.z <= depth || p2.y >= p1.y || p2.y >= maxy) continue
+        const far = n > 58 // distant segments: flat colours (no rumble/lane alternation) to kill horizon shimmer
         const dark = Math.floor(i / RUMBLE) % 2 === 0
-        const grass = mul(dark ? st.grass : lerpC(st.grass, '#000', 0.12), nf), road = mul(dark ? '#46464e' : '#4c4c54', nf), rum = dark ? mul('#d4d4dc', nf) : '#b83b3b'
+        const grass = mul(far ? st.grass : (dark ? st.grass : lerpC(st.grass, '#000', 0.08)), nf), road = mul(far ? '#494951' : (dark ? '#46464e' : '#4c4c54'), nf)
         poly(0, p1.y, 0, p2.y, W, p2.y, W, p1.y, grass)
-        poly(p1.x - p1.w * 1.18, p1.y, p2.x - p2.w * 1.18, p2.y, p2.x - p2.w, p2.y, p1.x - p1.w, p1.y, rum)
-        poly(p1.x + p1.w, p1.y, p2.x + p2.w, p2.y, p2.x + p2.w * 1.18, p2.y, p1.x + p1.w * 1.18, p1.y, rum)
+        if (!far) { const rum = dark ? mul('#d4d4dc', nf) : '#b83b3b'; poly(p1.x - p1.w * 1.18, p1.y, p2.x - p2.w * 1.18, p2.y, p2.x - p2.w, p2.y, p1.x - p1.w, p1.y, rum); poly(p1.x + p1.w, p1.y, p2.x + p2.w, p2.y, p2.x + p2.w * 1.18, p2.y, p1.x + p1.w * 1.18, p1.y, rum) }
         poly(p1.x - p1.w, p1.y, p2.x - p2.w, p2.y, p2.x + p2.w, p2.y, p1.x + p1.w, p1.y, road)
-        if (!dark) for (let l = 1; l < LANES; l++) { const o = l / LANES * 2 - 1; poly(p1.x + o * p1.w - p1.w * 0.02, p1.y, p2.x + o * p2.w - p2.w * 0.02, p2.y, p2.x + o * p2.w + p2.w * 0.02, p2.y, p1.x + o * p1.w + p1.w * 0.02, p1.y, 'rgba(230,230,240,0.45)') }
+        if (!far && !dark) for (let l = 1; l < LANES; l++) { const o = l / LANES * 2 - 1; poly(p1.x + o * p1.w - p1.w * 0.02, p1.y, p2.x + o * p2.w - p2.w * 0.02, p2.y, p2.x + o * p2.w + p2.w * 0.02, p2.y, p1.x + o * p1.w + p1.w * 0.02, p1.y, 'rgba(230,230,240,0.4)') }
         if (seg.tunnel) { const t1 = p1.w * 2.1, t2 = p2.w * 2.1, wall = mul('#2a2a32', nf), ceil = mul('#1c1c22', nf); poly(p1.x - p1.w * 1.18, p1.y, p2.x - p2.w * 1.18, p2.y, p2.x - p2.w * 1.18, p2.y - t2, p1.x - p1.w * 1.18, p1.y - t1, wall); poly(p1.x + p1.w * 1.18, p1.y, p2.x + p2.w * 1.18, p2.y, p2.x + p2.w * 1.18, p2.y - t2, p1.x + p1.w * 1.18, p1.y - t1, wall); poly(p1.x - p1.w * 1.18, p1.y - t1, p2.x - p2.w * 1.18, p2.y - t2, p2.x + p2.w * 1.18, p2.y - t2, p1.x + p1.w * 1.18, p1.y - t1, ceil) }
         maxy = p2.y; drawn.push(seg)
       }
