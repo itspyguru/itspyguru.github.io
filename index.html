@@ -12,6 +12,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23131313'/%3E%3Ctext x='50' y='70' font-size='70' text-anchor='middle' fill='%2300ff41' font-family='monospace'%3E&gt;%3C/text%3E%3C/svg%3E"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&amp;family=IBM+Plex+Mono:wght@400;500;700&amp;family=VT323&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
     tailwind.config = {
@@ -24,7 +25,7 @@
                     "tertiary-fixed-dim": "#fbbc00", "on-error-container": "#ffdad6",
                     "error": "#ffb4ab", "inverse-on-surface": "#313030",
                     "on-background": "#e5e2e1", "on-tertiary-container": "#7c5c00",
-                    "surface-tint": "#00e639", "inverse-surface": "#e5e2e1",
+                    "surface-tint": "rgb(var(--accent-rgb) / <alpha-value>)", "inverse-surface": "#e5e2e1",
                     "on-tertiary-fixed-variant": "#5c4300", "on-primary": "#003907",
                     "background": "#131313", "secondary-fixed-dim": "#ffb4ab",
                     "on-secondary-fixed": "#410002", "surface-container": "#201f1f",
@@ -33,11 +34,11 @@
                     "secondary": "#ffb4ab", "outline": "#84967e",
                     "surface-container-highest": "#353534", "on-secondary": "#690006",
                     "surface-bright": "#3a3939", "tertiary": "#fff8f3",
-                    "error-container": "#93000a", "primary-fixed": "#72ff70",
+                    "error-container": "#93000a", "primary-fixed": "rgb(var(--accent-bright-rgb) / <alpha-value>)",
                     "inverse-primary": "#006e16", "tertiary-fixed": "#ffdfa0",
-                    "on-secondary-container": "#ffe2de", "primary-container": "#00ff41",
+                    "on-secondary-container": "#ffe2de", "primary-container": "rgb(var(--accent-bright-rgb) / <alpha-value>)",
                     "surface": "#131313", "on-primary-fixed": "#002203",
-                    "primary": "#ebffe2", "primary-fixed-dim": "#00e639",
+                    "primary": "#ebffe2", "primary-fixed-dim": "rgb(var(--accent-rgb) / <alpha-value>)",
                     "surface-variant": "#353534", "on-surface": "#e5e2e1",
                     "on-surface-variant": "#b9ccb2", "on-tertiary": "#402d00",
                     "tertiary-container": "#ffd889", "surface-container-low": "#1c1b1b",
@@ -47,9 +48,9 @@
                 borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
                 spacing: { "margin-page": "24px", "gutter": "16px", "unit": "4px", "panel-padding": "12px" },
                 fontFamily: {
-                    "headline-md": ["Fira Sans"], "data-label": ["JetBrains Mono"],
-                    "body-sm": ["JetBrains Mono"], "terminal-code": ["JetBrains Mono"],
-                    "terminal-bold": ["JetBrains Mono"], "display-lg": ["Fira Sans"]
+                    "headline-md": ["Fira Sans"], "data-label": ["var(--mono)","JetBrains Mono","monospace"],
+                    "body-sm": ["var(--mono)","JetBrains Mono","monospace"], "terminal-code": ["var(--mono)","JetBrains Mono","monospace"],
+                    "terminal-bold": ["var(--mono)","JetBrains Mono","monospace"], "display-lg": ["Fira Sans"]
                 },
                 fontSize: {
                     "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
@@ -64,6 +65,11 @@
     }
 </script>
 <style>
+    :root{
+      --accent:#00e639; --accent-rgb:0 230 57;
+      --accent-bright:#00ff41; --accent-bright-rgb:0 255 65;
+      --mono:'JetBrains Mono';
+    }
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
     .cursor-blink { animation: blink 1s step-end infinite; }
 
@@ -73,7 +79,7 @@
         pointer-events: none;
     }
     .scan-line {
-        width: 100%; height: 2px; background: rgba(0,230,57,0.12);
+        width: 100%; height: 2px; background: rgb(var(--accent-rgb) / 0.12);
         position: fixed; top: 0; left: 0; pointer-events: none; z-index: 95;
         animation: scan 8s linear infinite;
     }
@@ -90,51 +96,51 @@
         15% { opacity: 0.98; } 30% { opacity: 0.96; } 100% { opacity: 1; }
     }
     .neon-glow-primary {
-        box-shadow: 0 0 10px rgba(0,230,57,0.4), inset 0 0 5px rgba(0,230,57,0.2);
-        text-shadow: 0 0 8px rgba(0,230,57,0.6);
+        box-shadow: 0 0 10px rgb(var(--accent-rgb) / 0.4), inset 0 0 5px rgb(var(--accent-rgb) / 0.2);
+        text-shadow: 0 0 8px rgb(var(--accent-rgb) / 0.6);
     }
     .neon-glow-error { box-shadow: 0 0 15px rgba(255,180,171,0.3); text-shadow: 0 0 8px rgba(255,180,171,0.5); }
-    .matrix-glow { text-shadow: 0 0 8px rgba(0,230,57,0.6); }
-    .glow-border-active { box-shadow: 0 0 25px rgba(0,230,57,0.18), inset 0 0 1px rgba(0,230,57,0.4); }
+    .matrix-glow { text-shadow: 0 0 8px rgb(var(--accent-rgb) / 0.6); }
+    .glow-border-active { box-shadow: 0 0 25px rgb(var(--accent-rgb) / 0.18), inset 0 0 1px rgb(var(--accent-rgb) / 0.4); }
 
     .boot-sequence { scrollbar-width: none; }
     .boot-sequence::-webkit-scrollbar { display: none; }
 
     .success-flash { animation: successFlash 0.6s ease-out; }
     @keyframes successFlash {
-        0% { background-color: rgba(0,230,57,0); }
-        50% { background-color: rgba(0,230,57,0.3); }
-        100% { background-color: rgba(0,230,57,0); }
+        0% { background-color: rgb(var(--accent-rgb) / 0); }
+        50% { background-color: rgb(var(--accent-rgb) / 0.3); }
+        100% { background-color: rgb(var(--accent-rgb) / 0); }
     }
     .glass-panel {
         background: rgba(26,26,26,0.8); backdrop-filter: blur(12px);
-        border: 1px solid rgba(0,230,57,0.2); box-shadow: 0 4px 30px rgba(0,0,0,0.5);
+        border: 1px solid rgb(var(--accent-rgb) / 0.2); box-shadow: 0 4px 30px rgba(0,0,0,0.5);
         transition: box-shadow .25s, border-color .25s;
     }
-    .glass-panel:hover { box-shadow: 0 0 15px rgba(0,230,57,0.2); }
-    .ai-core-glow { filter: drop-shadow(0 0 20px rgba(0,230,57,0.4)); }
+    .glass-panel:hover { box-shadow: 0 0 15px rgb(var(--accent-rgb) / 0.2); }
+    .ai-core-glow { filter: drop-shadow(0 0 20px rgb(var(--accent-rgb) / 0.4)); }
     .terminal-cursor {
-        display: inline-block; width: 8px; height: 18px; background-color: #00e639;
+        display: inline-block; width: 8px; height: 18px; background-color: var(--accent);
         animation: blink 1s step-end infinite; vertical-align: middle; margin-left: 4px;
     }
     .typing-cursor::after { content: '_'; animation: blink 1s step-end infinite; }
     .blinking-cursor::after { content: '_'; animation: blink 1s step-end infinite; }
 
-    .flash-text { color: #00e639; animation: flashText 1.5s ease-in-out infinite; }
+    .flash-text { color: var(--accent); animation: flashText 1.5s ease-in-out infinite; }
     @keyframes flashText {
-        0%,100% { color:#00e639; text-shadow:0 0 8px rgba(0,230,57,.6); }
-        50% { color:#72ff70; text-shadow:0 0 16px rgba(0,230,57,.9); }
+        0%,100% { color:var(--accent); text-shadow:0 0 8px rgb(var(--accent-rgb) / .6); }
+        50% { color:var(--accent-bright); text-shadow:0 0 16px rgb(var(--accent-rgb) / .9); }
     }
     .status-pulse { animation: statusPulse 4s ease-in-out infinite; }
     @keyframes statusPulse {
-        0%,100% { box-shadow: 0 0 50px rgba(0,230,57,0.15); }
-        50% { box-shadow: 0 0 70px rgba(0,230,57,0.28); }
+        0%,100% { box-shadow: 0 0 50px rgb(var(--accent-rgb) / 0.15); }
+        50% { box-shadow: 0 0 70px rgb(var(--accent-rgb) / 0.28); }
     }
-    .glitch-text:hover { text-shadow: 2px 0 #ffb4ab, -2px 0 #00e639; }
+    .glitch-text:hover { text-shadow: 2px 0 #ffb4ab, -2px 0 var(--accent); }
 
     ::-webkit-scrollbar { width: 5px; height: 5px; }
     ::-webkit-scrollbar-track { background: #0e0e0e; }
-    ::-webkit-scrollbar-thumb { background: #00e639; border-radius: 2px; }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
 
     /* higher specificity than Tailwind's single-class display utilities (.flex etc.) */
     #os-environment .view { display: none !important; }
@@ -142,14 +148,49 @@
     @keyframes viewIn { from { opacity: 0; transform: translateY(8px);} to { opacity: 1; transform: none; } }
 
     .nav-item.active-nav {
-        background: rgba(235,255,226,0.10); color: #00e639;
-        border-left: 4px solid #00e639;
+        background: rgba(235,255,226,0.10); color: var(--accent);
+        border-left: 4px solid var(--accent);
     }
     html { scroll-behavior: smooth; }
 
     /* terminal */
     .term-line { white-space: pre-wrap; word-break: break-word; }
     #term-output { scrollbar-width: thin; }
+
+    /* ===== effect toggles (Settings) ===== */
+    body.fx-noscan .scanlines, body.fx-noscan .scan-line { display:none !important; }
+    body.fx-noflicker .crt-flicker { animation:none !important; }
+    body.fx-noglow .neon-glow-primary, body.fx-noglow .neon-glow-error,
+    body.fx-noglow .matrix-glow, body.fx-noglow .glow-border-active { box-shadow:none !important; text-shadow:none !important; }
+    body.fx-reduced *, body.fx-reduced *::before, body.fx-reduced *::after { animation:none !important; transition:none !important; }
+    body.fx-reduced .scan-line { display:none !important; }
+
+    /* ===== overlays / components ===== */
+    .ov { position:fixed; inset:0; z-index:300; background:rgba(0,0,0,.7); backdrop-filter:blur(4px); }
+    #screensaver { position:fixed; inset:0; z-index:280; background:#000; display:none; }
+    #cmdk { position:fixed; inset:0; z-index:400; display:none; }
+    #cheatsheet { z-index:360; display:none; }
+    #game-overlay { z-index:340; display:none; }
+    .swatch { height:34px; border:1px solid rgba(255,255,255,.12); cursor:pointer; transition:transform .1s; }
+    .swatch:hover { transform:translateY(-2px); }
+    .swatch.sel { outline:2px solid var(--accent); outline-offset:2px; }
+    .cmdk-item.sel { background:rgb(var(--accent-rgb) / .12); color:var(--accent); }
+    #toast { position:fixed; bottom:88px; left:50%; transform:translateX(-50%); z-index:500;
+             opacity:0; transition:opacity .3s; pointer-events:none; }
+    #toast.show { opacity:1; }
+    .toggle-pill { width:38px; height:20px; border-radius:9999px; background:#3b4b37; position:relative; transition:background .2s; flex:none; }
+    .toggle-pill.on { background:var(--accent); }
+    .toggle-pill::after { content:''; position:absolute; top:2px; left:2px; width:16px; height:16px; border-radius:50%; background:#0e0e0e; transition:left .2s; }
+    .toggle-pill.on::after { left:20px; }
+    /* taskbar 'terminal running' indicator (while minimized) */
+    #taskbar-terminal.task-running { color:var(--accent); }
+    #taskbar-terminal.task-running::after { content:''; position:absolute; top:3px; right:6px; width:6px; height:6px; border-radius:50%; background:var(--accent); box-shadow:0 0 6px var(--accent); }
+    /* desktop icons + draggable windows */
+    .desk-icon { width:84px; }
+    .desk-icon .ic { width:56px; height:56px; }
+    .os-window { position:fixed; background:rgba(18,18,18,0.97); backdrop-filter:blur(6px); border:1px solid rgb(var(--accent-rgb) / 0.4); box-shadow:0 12px 44px rgba(0,0,0,0.7); display:flex; flex-direction:column; min-width:260px; z-index:200; }
+    .os-window .titlebar { cursor:move; user-select:none; touch-action:none; }
+    @media (max-width:640px){ .os-window { left:4vw !important; right:4vw; width:92vw !important; top:72px !important; } }
 
     /* ===== print-to-PDF resume ===== */
     #resume-print { display: none; }
@@ -204,8 +245,9 @@
 <div class="hidden opacity-0 transition-opacity duration-1000 min-h-screen flex flex-col" id="os-environment">
 
   <!-- ===== TOP NAV BAR ===== -->
-  <header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-page py-2 bg-background/80 backdrop-blur-md border-b border-outline-variant/30 shadow-[0_0_15px_rgba(0,230,57,0.1)]">
+  <header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-page py-2 bg-background/80 backdrop-blur-md border-b border-outline-variant/30 shadow-[0_0_15px_rgb(var(--accent-rgb)_/_0.1)]">
     <div class="flex items-center gap-4 md:gap-6">
+      <button id="menu-btn" title="Menu" class="lg:hidden material-symbols-outlined text-primary-fixed-dim p-1 -ml-1 cursor-pointer">menu</button>
       <span class="text-terminal-bold font-terminal-bold text-primary-fixed-dim tracking-tighter">ITSPYGURU_OS_V3.0</span>
       <div class="hidden md:block h-4 w-px bg-outline-variant/50"></div>
       <nav class="hidden md:flex gap-4">
@@ -222,13 +264,14 @@
       <div class="flex gap-2 md:gap-3 text-primary-fixed-dim">
         <a href="https://t.me/itspyguru" target="_blank" rel="noopener" title="Telegram" class="material-symbols-outlined hover:bg-primary/10 transition-all p-1 cursor-pointer rounded">notifications_active</a>
         <button data-view="terminal" title="Terminal" class="material-symbols-outlined hover:bg-primary/10 transition-all p-1 cursor-pointer rounded">terminal</button>
-        <button data-view="clearance" title="Clearance" class="material-symbols-outlined hover:bg-primary/10 transition-all p-1 cursor-pointer rounded">account_circle</button>
+        <button data-view="settings" title="Settings" class="material-symbols-outlined hover:bg-primary/10 transition-all p-1 cursor-pointer rounded">settings</button>
+        <button data-view="clearance" title="Profile" class="material-symbols-outlined hover:bg-primary/10 transition-all p-1 cursor-pointer rounded">account_circle</button>
       </div>
     </div>
   </header>
 
   <!-- ===== LEFT SIDEBAR HUD ===== -->
-  <aside id="sidebar" class="fixed left-0 top-0 h-full z-40 flex flex-col pt-16 pb-8 bg-surface-container-lowest/95 backdrop-blur-xl border-r border-outline-variant/30 shadow-[5px_0_15px_rgba(0,0,0,0.5)] w-64 transform -translate-x-full lg:translate-x-0 transition-transform duration-300">
+  <aside id="sidebar" class="fixed left-0 top-0 h-full z-40 flex flex-col pt-16 pb-24 bg-surface-container-lowest/95 backdrop-blur-xl border-r border-outline-variant/30 shadow-[5px_0_15px_rgba(0,0,0,0.5)] w-64 transform -translate-x-full lg:translate-x-0 transition-transform duration-300">
     <div class="px-6 mb-6">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded bg-primary-container/20 border border-primary-fixed-dim flex items-center justify-center overflow-hidden">
@@ -275,9 +318,9 @@
           </li>
         </ul>
       </div>
-      <button data-view="clearance" class="w-full py-2 bg-primary-fixed-dim text-on-primary-fixed font-terminal-bold hover:bg-primary transition-all active:scale-95 shadow-[0_0_10px_rgba(0,230,57,0.3)]">EXECUTE_TASK</button>
+      <button data-view="clearance" class="w-full py-2 bg-primary-fixed-dim text-on-primary-fixed font-terminal-bold hover:bg-primary transition-all active:scale-95 shadow-[0_0_10px_rgb(var(--accent-rgb)_/_0.3)]">EXECUTE_TASK</button>
       <div class="flex justify-between text-outline pt-1">
-        <button title="Settings" class="material-symbols-outlined cursor-pointer hover:text-primary">settings</button>
+        <button data-view="settings" title="Settings" class="material-symbols-outlined cursor-pointer hover:text-primary">settings</button>
         <button id="logout-btn" title="Reboot" class="material-symbols-outlined cursor-pointer hover:text-error">power_settings_new</button>
       </div>
     </div>
@@ -286,8 +329,8 @@
   <!-- ===== MAIN CANVAS ===== -->
   <main class="flex-1 lg:ml-64 pt-16 pb-24 relative">
     <!-- background environment -->
-    <div class="absolute inset-0 z-0 pointer-events-none">
-      <img alt="" class="w-full h-full object-cover opacity-[0.07] grayscale fixed inset-0 lg:left-64 lg:w-[calc(100%-16rem)]" src="assets/os/bg-env.png"/>
+    <div id="desktop-bg" class="absolute inset-0 z-0 pointer-events-none">
+      <img id="wallpaper-img" alt="" class="w-full h-full object-cover fixed inset-0 lg:left-64 lg:w-[calc(100%-16rem)]" src="assets/os/bg-env.png"/>
     </div>
 
     <!-- ============ VIEW: ROOT (DESKTOP + FINDING) ============ -->
@@ -300,48 +343,19 @@
         <div class="border border-primary/20 bg-surface-container-lowest/70 backdrop-blur-md grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 divide-y sm:divide-y-0 sm:divide-x divide-outline-variant/20" id="vitals-strip"></div>
       </div>
 
-      <!-- desktop icons -->
-      <div class="p-6 md:p-8 grid grid-flow-row md:grid-flow-col grid-cols-4 md:grid-cols-none md:grid-rows-6 gap-6 md:gap-8 w-fit relative z-10">
-        <button data-view="scan" class="flex flex-col items-center group cursor-pointer w-16 md:w-20">
-          <div class="w-12 h-12 md:w-14 md:h-14 border border-primary/20 bg-surface-container-low flex items-center justify-center group-hover:bg-primary/10 group-hover:border-primary-fixed-dim transition-all">
-            <span class="material-symbols-outlined text-primary-fixed-dim text-2xl md:text-3xl">folder</span>
-          </div>
-          <span class="mt-2 text-[10px] font-data-label text-outline group-hover:text-primary-fixed text-center bg-background/50 px-1">AI_Agents</span>
-        </button>
-        <button data-view="breach" class="flex flex-col items-center group cursor-pointer w-16 md:w-20">
-          <div class="w-12 h-12 md:w-14 md:h-14 border border-primary/20 bg-surface-container-low flex items-center justify-center group-hover:bg-primary/10 group-hover:border-primary-fixed-dim transition-all">
-            <span class="material-symbols-outlined text-primary-fixed-dim text-2xl md:text-3xl">folder</span>
-          </div>
-          <span class="mt-2 text-[10px] font-data-label text-outline group-hover:text-primary-fixed text-center bg-background/50 px-1">Open_Source</span>
-        </button>
-        <button data-view="breach" class="flex flex-col items-center group cursor-pointer w-16 md:w-20">
-          <div class="w-12 h-12 md:w-14 md:h-14 border border-primary/20 bg-surface-container-low flex items-center justify-center group-hover:bg-primary/10 group-hover:border-primary-fixed-dim transition-all">
-            <span class="material-symbols-outlined text-primary-fixed-dim text-2xl md:text-3xl">folder</span>
-          </div>
-          <span class="mt-2 text-[10px] font-data-label text-outline group-hover:text-primary-fixed text-center bg-background/50 px-1">Backend_Projects</span>
-        </button>
-        <button data-view="terminal" data-term="cat resume.pdf" class="flex flex-col items-center group cursor-pointer w-16 md:w-20">
-          <div class="w-12 h-12 md:w-14 md:h-14 border border-primary/20 bg-surface-container-low flex items-center justify-center group-hover:bg-primary/10 group-hover:border-primary-fixed-dim transition-all">
-            <span class="material-symbols-outlined text-primary-fixed-dim text-2xl md:text-3xl">description</span>
-          </div>
-          <span class="mt-2 text-[10px] font-data-label text-outline group-hover:text-primary-fixed text-center bg-background/50 px-1">Resume.pdf</span>
-        </button>
-      </div>
+      <!-- desktop icons (generated from the VFS) -->
+      <div id="desktop-icons" class="p-6 md:p-8 grid grid-cols-3 sm:grid-cols-4 gap-5 md:gap-7 w-fit relative z-10"></div>
 
-      <!-- featured investigation window -->
-      <div class="px-4 md:px-0 md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 w-full max-w-3xl mx-auto md:mx-0 z-30 mt-4 md:mt-0">
-        <div class="bg-surface-dim/95 border border-primary/40 backdrop-blur-xl shadow-[0_0_40px_rgba(0,0,0,0.8)] glow-border-active flex flex-col">
-          <div class="bg-surface-container-highest px-4 py-2 border-b border-outline-variant/50 flex justify-between items-center">
+      <!-- featured project window (draggable + closable, lg only) -->
+      <div id="featured-win" class="os-window hidden lg:flex flex-col" style="top:172px;right:28px;width:min(600px,44vw);max-height:72vh;">
+          <div class="titlebar bg-surface-container-highest px-4 py-2 border-b border-outline-variant/50 flex justify-between items-center">
             <div class="flex items-center gap-3 min-w-0">
               <span class="material-symbols-outlined text-primary-fixed-dim text-sm">troubleshoot</span>
               <span class="text-data-label font-data-label text-primary-fixed-dim truncate">~/dev/featured_build</span>
             </div>
-            <div class="flex gap-2 shrink-0">
-              <div class="w-3 h-3 border border-outline hover:bg-outline transition-colors cursor-pointer"></div>
-              <div class="w-3 h-3 border border-outline hover:bg-primary transition-colors cursor-pointer"></div>
-              <div class="w-3 h-3 border border-error hover:bg-error transition-colors cursor-pointer"></div>
-            </div>
+            <button data-feat-close title="Close" class="material-symbols-outlined text-outline hover:text-error text-[18px] leading-none shrink-0 cursor-pointer">close</button>
           </div>
+          <div class="overflow-y-auto">
           <div class="p-6 flex flex-col md:flex-row gap-6">
             <div class="flex-1 space-y-6">
               <div>
@@ -391,12 +405,12 @@
                 <h4 class="text-[10px] font-data-label text-primary-fixed-dim mb-3 border-b border-primary/20 pb-1">PROGRESS TRACKER</h4>
                 <div class="space-y-4">
                   <div class="relative pl-4 border-l border-primary-fixed-dim">
-                    <div class="absolute -left-1.5 top-0 w-3 h-3 bg-primary-fixed-dim rounded-full shadow-[0_0_8px_#00e639]"></div>
+                    <div class="absolute -left-1.5 top-0 w-3 h-3 bg-primary-fixed-dim rounded-full shadow-[0_0_8px_var(--accent)]"></div>
                     <span class="text-[10px] font-data-label text-primary-fixed-dim block">Architect</span>
                     <span class="text-[9px] font-data-label text-outline">COMPLETED <span class="text-primary-fixed-dim ml-1">+20 XP</span></span>
                   </div>
                   <div class="relative pl-4 border-l border-primary-fixed-dim">
-                    <div class="absolute -left-1.5 top-0 w-3 h-3 bg-primary-fixed-dim rounded-full shadow-[0_0_8px_#00e639]"></div>
+                    <div class="absolute -left-1.5 top-0 w-3 h-3 bg-primary-fixed-dim rounded-full shadow-[0_0_8px_var(--accent)]"></div>
                     <span class="text-[10px] font-data-label text-primary-fixed-dim block">Build &amp; Test</span>
                     <span class="text-[9px] font-data-label text-outline">COMPLETED <span class="text-primary-fixed-dim ml-1">+50 XP</span></span>
                   </div>
@@ -473,7 +487,7 @@
               <p class="text-[10px] text-outline">Scrape → clean → store → analyze → realtime + cache for listed companies.</p>
               <div class="mt-3 h-1 bg-surface-container-highest w-full"><div class="h-full bg-primary-fixed-dim w-4/5"></div></div>
             </div>
-            <div class="glass-panel p-panel-padding cursor-pointer border-primary-fixed-dim shadow-[0_0_10px_rgba(0,230,57,0.15)]" data-view="breach">
+            <div class="glass-panel p-panel-padding cursor-pointer border-primary-fixed-dim shadow-[0_0_10px_rgb(var(--accent-rgb)_/_0.15)]" data-view="breach">
               <div class="flex justify-between items-start mb-2">
                 <span class="material-symbols-outlined text-primary text-xl">policy</span>
                 <span class="text-[8px] text-primary/40 font-data-label">PENTEST</span>
@@ -535,7 +549,7 @@
 
         <!-- interview window -->
         <div class="col-span-12 lg:col-span-7 flex flex-col">
-          <div class="glass-panel flex-1 flex flex-col overflow-hidden border-primary shadow-[0_0_20px_rgba(0,255,65,0.05)] min-h-[480px]">
+          <div class="glass-panel flex-1 flex flex-col overflow-hidden border-primary shadow-[0_0_20px_rgb(var(--accent-bright-rgb)_/_0.05)] min-h-[480px]">
             <div class="bg-primary/10 px-4 py-2 flex justify-between items-center border-b border-primary/30">
               <div class="flex items-center gap-3">
                 <div class="flex gap-1">
@@ -652,6 +666,11 @@
                 <div class="flex items-center gap-2 text-outline"><span class="material-symbols-outlined text-sm text-primary-fixed-dim">location_on</span><span>Varanasi, India</span></div>
                 <div class="flex items-center gap-2 text-outline"><span class="material-symbols-outlined text-sm text-primary-fixed-dim">send</span><a href="https://t.me/itspyguru" target="_blank" rel="noopener" class="text-primary-fixed-dim hover:underline">@itspyguru (fastest)</a></div>
               </div>
+              <!-- live github -->
+              <div class="border border-outline-variant/30 bg-surface-container-low p-3">
+                <div class="text-[9px] text-outline font-data-label mb-2 flex items-center gap-1"><span class="material-symbols-outlined text-xs">hub</span> GITHUB · LIVE</div>
+                <div id="gh-panel" class="text-data-label"><span class="text-outline">loading…</span></div>
+              </div>
             </div>
 
             <!-- right: assessment -->
@@ -675,7 +694,7 @@
                 <h2 class="text-headline-md flash-text font-bold tracking-widest uppercase">AVAILABLE FOR HIRE</h2>
               </div>
               <div class="flex flex-col items-center gap-4">
-                <a href="mailto:prajjwalpathak35@gmail.com" class="group relative px-8 md:px-12 py-4 md:py-5 bg-primary-fixed-dim text-on-primary-fixed font-terminal-bold text-base md:text-lg overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_#00e63944]">
+                <a href="mailto:prajjwalpathak35@gmail.com" class="group relative px-8 md:px-12 py-4 md:py-5 bg-primary-fixed-dim text-on-primary-fixed font-terminal-bold text-base md:text-lg overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgb(var(--accent-rgb)_/_0.27)]">
                   <span class="relative z-10">[ESTABLISH COMMUNICATION]</span>
                   <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
                 </a>
@@ -743,37 +762,87 @@
         </div>
       </div>
 
-      <div class="glass-panel border-primary shadow-[0_0_20px_rgba(0,255,65,0.05)] flex flex-col h-[62vh] min-h-[440px]">
+      <div class="glass-panel border-primary shadow-[0_0_20px_rgb(var(--accent-bright-rgb)_/_0.05)] flex flex-col h-[62vh] min-h-[440px]">
         <div class="bg-surface-container-highest px-4 py-2 border-b border-outline-variant/50 flex justify-between items-center">
           <div class="flex items-center gap-3">
             <div class="flex gap-1">
               <div class="w-2.5 h-2.5 rounded-full bg-error/50"></div>
-              <div class="w-2.5 h-2.5 rounded-full bg-tertiary-fixed-dim/50"></div>
+              <button id="term-min-dot" title="Minimize" class="w-2.5 h-2.5 rounded-full bg-tertiary-fixed-dim/50 hover:bg-tertiary-fixed-dim cursor-pointer p-0"></button>
               <div class="w-2.5 h-2.5 rounded-full bg-primary-fixed-dim/50"></div>
             </div>
             <span class="text-data-label font-data-label text-primary-fixed-dim">itspyguru@itspyguru-os: ~/dev — bash</span>
           </div>
-          <button id="term-clear" class="text-[9px] text-outline hover:text-primary-fixed font-data-label border border-outline-variant/40 px-2 py-0.5">CLEAR</button>
+          <div class="flex items-center gap-2">
+            <button id="term-min" title="Minimize (Esc)" class="material-symbols-outlined text-outline hover:text-primary-fixed text-[18px] leading-none">minimize</button>
+            <button id="term-clear" class="text-[9px] text-outline hover:text-primary-fixed font-data-label border border-outline-variant/40 px-2 py-0.5">CLEAR</button>
+          </div>
         </div>
         <div id="term-output" class="flex-1 overflow-y-auto p-4 font-terminal-code text-[12px] md:text-[13px] text-primary-fixed-dim/90 bg-[#0a0a0a]/60 leading-relaxed"></div>
         <div class="px-3 pt-2 flex gap-2 flex-wrap bg-surface-container-lowest/60" id="term-chips"></div>
         <form id="term-form" class="flex items-center gap-2 p-3 border-t border-primary/20 bg-surface-container-lowest">
-          <span class="text-primary-fixed-dim font-terminal-bold text-[12px] whitespace-nowrap">itspyguru@os:~$</span>
+          <span id="term-prompt" class="text-primary-fixed-dim font-terminal-bold text-[12px] whitespace-nowrap">itspyguru@os:~$</span>
           <input id="term-input" class="flex-1 bg-transparent border-none focus:ring-0 text-terminal-code text-primary placeholder:text-primary/20" placeholder="type a command... (help)" type="text" autocomplete="off" spellcheck="false"/>
         </form>
+      </div>
+    </section>
+
+    <!-- ============ VIEW: SETTINGS ============ -->
+    <section id="view-settings" class="view relative z-10 px-margin-page">
+      <div class="flex justify-between items-end mb-8 border-l-2 border-primary-fixed-dim pl-4">
+        <div>
+          <h1 class="text-3xl md:text-display-lg font-display-lg text-primary-fixed-dim tracking-tighter">SETTINGS</h1>
+          <div class="flex items-center gap-3 mt-1 flex-wrap">
+            <span class="bg-primary/20 text-primary px-2 py-0.5 text-[10px] border border-primary/30 font-data-label">~/etc/itspyguru.conf</span>
+            <span class="bg-surface-container-high text-outline px-2 py-0.5 text-[10px] border border-outline-variant/30 font-data-label">saved on this device</span>
+          </div>
+        </div>
+        <button id="settings-close" class="flex items-center gap-2 border border-outline-variant/40 px-3 py-1.5 text-outline hover:text-primary-fixed hover:border-primary/40 transition-all text-data-label font-data-label shrink-0">
+          <span class="material-symbols-outlined text-sm">close</span> CLOSE <span class="text-[9px] text-outline/60">ESC</span>
+        </button>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter max-w-4xl">
+        <div class="glass-panel p-5">
+          <h3 class="text-terminal-bold text-primary-fixed-dim mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-base">palette</span> ACCENT</h3>
+          <div class="grid grid-cols-3 gap-2" id="set-themes"></div>
+          <div class="flex items-center gap-3 mt-4">
+            <label class="text-data-label text-outline" for="set-custom">CUSTOM</label>
+            <input type="color" id="set-custom" value="#00e639" class="w-10 h-8 bg-transparent border border-outline-variant/40 cursor-pointer p-0"/>
+            <span class="text-[10px] text-outline font-data-label" id="set-custom-hex">#00e639</span>
+          </div>
+        </div>
+        <div class="glass-panel p-5">
+          <h3 class="text-terminal-bold text-primary-fixed-dim mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-base">text_fields</span> FONT</h3>
+          <div class="flex flex-col gap-2" id="set-fonts"></div>
+        </div>
+        <div class="glass-panel p-5 lg:col-span-2">
+          <h3 class="text-terminal-bold text-primary-fixed-dim mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-base">wallpaper</span> WALLPAPER</h3>
+          <div class="flex flex-wrap gap-2 mb-3" id="set-walls"></div>
+          <div class="flex items-center gap-2">
+            <input id="set-wall-url" type="text" placeholder="paste image URL…" class="flex-1 bg-surface-container-low border border-outline-variant/30 px-3 py-1.5 text-data-label text-primary placeholder:text-outline/50 focus:ring-0 focus:border-primary/40"/>
+            <button id="set-wall-apply" class="border border-primary/40 text-primary-fixed-dim px-3 py-1.5 text-[11px] font-data-label hover:bg-primary/10">SET</button>
+          </div>
+        </div>
+        <div class="glass-panel p-5 lg:col-span-2">
+          <h3 class="text-terminal-bold text-primary-fixed-dim mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-base">tune</span> EFFECTS</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3" id="set-toggles"></div>
+        </div>
+        <div class="lg:col-span-2 flex flex-wrap gap-3 justify-between items-center">
+          <span class="text-[10px] text-outline font-data-label">Tip: from the terminal too — <span class="text-primary-fixed-dim">theme amber</span> · <span class="text-primary-fixed-dim">font vt323</span> · <span class="text-primary-fixed-dim">reset</span></span>
+          <button id="set-reset" class="border border-error/40 text-error px-4 py-2 text-[11px] font-data-label hover:bg-error/10 transition-all">RESET TO DEFAULTS</button>
+        </div>
       </div>
     </section>
 
   </main>
 
   <!-- ===== BOTTOM TASKBAR ===== -->
-  <footer class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 md:px-4 py-2 gap-2 bg-surface-dim/95 border-t border-primary/20 shadow-[0_-4px_20px_rgba(0,230,57,0.05)]">
-    <button id="start-btn" class="flex items-center gap-2 group cursor-pointer p-2 rounded-lg hover:bg-primary/5 transition-all">
-      <span class="material-symbols-outlined text-outline group-hover:text-primary-fixed text-xl">apps</span>
-      <span class="text-data-label font-data-label text-outline group-hover:text-primary-fixed hidden sm:block">START</span>
+  <footer class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 md:px-4 py-2 gap-2 bg-surface-dim/95 border-t border-primary/20 shadow-[0_-4px_20px_rgb(var(--accent-rgb)_/_0.05)]">
+    <button id="start-btn" title="Home (desktop)" class="flex items-center gap-2 group cursor-pointer p-2 rounded-lg hover:bg-primary/5 transition-all">
+      <span class="material-symbols-outlined text-outline group-hover:text-primary-fixed text-xl">home</span>
+      <span class="text-data-label font-data-label text-outline group-hover:text-primary-fixed hidden sm:block">HOME</span>
     </button>
     <div class="h-8 w-px bg-outline-variant/30 hidden sm:block"></div>
-    <button data-view="terminal" class="task-btn flex flex-col items-center justify-center text-outline p-2 hover:text-primary-fixed hover:scale-105 transition-transform cursor-pointer">
+    <button id="taskbar-terminal" data-view="terminal" class="task-btn relative flex flex-col items-center justify-center text-outline p-2 hover:text-primary-fixed hover:scale-105 transition-transform cursor-pointer">
       <span class="material-symbols-outlined">code</span><span class="text-[8px] font-data-label mt-0.5">TERMINAL</span>
     </button>
     <button data-view="breach" class="task-btn flex flex-col items-center justify-center text-outline p-2 hover:text-primary-fixed hover:scale-105 transition-transform cursor-pointer">
@@ -788,6 +857,40 @@
       <span class="text-[8px] font-data-label text-outline" id="date-str">--.---.----</span>
     </div>
   </footer>
+
+  <!-- ===== DRAGGABLE WINDOWS MOUNT ===== -->
+  <div id="windows"></div>
+
+  <!-- ===== TOAST ===== -->
+  <div id="toast" class="bg-surface-container-highest border border-primary/40 px-4 py-2 text-data-label text-primary-fixed-dim"></div>
+
+  <!-- ===== COMMAND PALETTE ===== -->
+  <div id="cmdk">
+    <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" data-overlay-close></div>
+    <div class="relative max-w-xl mx-auto mt-24 bg-surface-container-lowest border border-primary/40 shadow-[0_0_40px_rgba(0,0,0,0.7)]">
+      <div class="flex items-center gap-2 px-4 py-3 border-b border-outline-variant/30">
+        <span class="material-symbols-outlined text-primary-fixed-dim">search</span>
+        <input id="cmdk-input" class="flex-1 bg-transparent border-none focus:ring-0 text-primary placeholder:text-outline/50 font-data-label" placeholder="Type a command or search…" autocomplete="off" spellcheck="false"/>
+        <span class="text-[9px] text-outline border border-outline-variant/40 px-1">ESC</span>
+      </div>
+      <div id="cmdk-list" class="max-h-80 overflow-y-auto py-2"></div>
+    </div>
+  </div>
+
+  <!-- ===== CHEATSHEET ===== -->
+  <div id="cheatsheet" class="ov flex items-center justify-center p-4">
+    <div class="bg-surface-container-lowest border border-primary/40 max-w-md w-full p-6">
+      <h3 class="text-terminal-bold text-primary-fixed-dim mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-base">keyboard</span> KEYBOARD SHORTCUTS</h3>
+      <div id="cheatsheet-list" class="space-y-2 text-data-label"></div>
+      <button data-overlay-close class="mt-5 w-full border border-outline-variant/40 py-2 text-outline hover:text-primary-fixed text-data-label">CLOSE (Esc)</button>
+    </div>
+  </div>
+
+  <!-- ===== GAME OVERLAY (snake) ===== -->
+  <div id="game-overlay" class="ov flex flex-col items-center justify-center gap-3"></div>
+
+  <!-- ===== MATRIX RAIN (cmatrix + screensaver) ===== -->
+  <canvas id="screensaver"></canvas>
 </div>
 
 <script>
@@ -854,19 +957,19 @@ const RESUME = {
     { id:"001", slug:"financial-doc-engine", type:"FLAGSHIP", tone:"#ffb4ab", ref:"LEADZEN", title:"AI Financial-Doc Engine",
       desc:"Automated generation of dynamic financial documents for Indian listed companies using CrewAI agents + LangChain & Hugging Face. 50% faster, 95%+ accuracy.",
       tech:["FastAPI","CrewAI","LangChain","HuggingFace"], link:LINKS.github },
-    { id:"002", slug:"data-pipeline", type:"BACKEND", tone:"#00e639", ref:"LEADZEN", title:"Company Data Pipeline",
+    { id:"002", slug:"data-pipeline", type:"BACKEND", tone:"var(--accent)", ref:"LEADZEN", title:"Company Data Pipeline",
       desc:"End-to-end pipeline for listed companies — scraping, cleaning, storage, analysis, realtime updates & caching powering the company web app.",
       tech:["Python","MongoDB","Redis","FastAPI"], link:LINKS.github },
     { id:"003", slug:"security-audit", type:"SECURITY", tone:"#fbbc00", ref:"AUDIT", title:"Web-App Security Audit",
       desc:"Comprehensive security audit & penetration test of production web apps — found vulnerabilities and drove remediation.",
       tech:["Burp Suite","nmap","sublist3r","Kali"], link:LINKS.github },
-    { id:"004", slug:"telegram-bot-api", type:"OPEN-SOURCE", tone:"#00e639", ref:"TG-API", title:"Telegram Bot API",
+    { id:"004", slug:"telegram-bot-api", type:"OPEN-SOURCE", tone:"var(--accent)", ref:"TG-API", title:"Telegram Bot API",
       desc:"End-to-end Telegram bot + backend APIs bringing LLMs/GenAI apps, movies and a Python code-executor to Telegram for free via reverse engineering. 3,000+ users.",
       tech:["Python","FastAPI","Telegram","LLM"], link:LINKS.tgbot },
     { id:"005", slug:"decrypto", type:"PYPI", tone:"#fbbc00", ref:"PKG", title:"Decrypto",
       desc:"Lightweight Python PyPI package providing state-of-the-art encryption/decryption — simple, easy to use, drop-in for any Python project.",
       tech:["Python","Cryptography","PyPI"], link:LINKS.pypi },
-    { id:"006", slug:"gita-translator", type:"GEN-AI", tone:"#00e639", ref:"PIXELNIB", title:"Gita Shloka Translator",
+    { id:"006", slug:"gita-translator", type:"GEN-AI", tone:"var(--accent)", ref:"PIXELNIB", title:"Gita Shloka Translator",
       desc:"Web/Telegram app translating Bhagavad Gita shlokas in real-time across languages, with GenAI-powered interactive Q&A.",
       tech:["Python","GenAI","Telegram"], link:LINKS.github },
     { id:"007", slug:"movies-bot", type:"BOT", tone:"#84967e", ref:"TG", title:"Movies Telegram Bot",
@@ -958,9 +1061,12 @@ document.getElementById('skip-boot').addEventListener('click', revealOS);
 window.addEventListener('load', ()=> setTimeout(bootStep, 400));
 
 /* ===================== VIEW ROUTER ===================== */
-const views = ['root','scan','breach','clearance','terminal'];
+const views = ['root','scan','breach','clearance','terminal','settings'];
+let prevView='clearance';
 function showView(name){
   if(!views.includes(name)) name='root';
+  const current=(location.hash||'').replace('#','');
+  if(current && current!==name && views.includes(current)) prevView=current;
   views.forEach(v=>{
     document.getElementById('view-'+v).classList.toggle('active', v===name);
   });
@@ -971,8 +1077,9 @@ function showView(name){
   if(window.innerWidth < 1024) document.getElementById('sidebar').classList.add('-translate-x-full');
   history.replaceState(null,'','#'+name);
   window.scrollTo({top:0,behavior:'smooth'});
-  if(name==='root'){ setTimeout(animateVitals, 150); }
-  if(name==='terminal'){ termInit(); setTimeout(()=>{ const i=document.getElementById('term-input'); if(i) i.focus(); }, 80); }
+  if(name==='root'){ setTimeout(animateVitals, 150); renderDesktopIcons(); }
+  if(name==='terminal'){ termMinimized=false; updateTaskbarTerm(); termInit(); updatePromptLabel(); setTimeout(()=>{ const i=document.getElementById('term-input'); if(i) i.focus(); }, 80); }
+  if(name==='settings'){ renderSettings(); }
 }
 document.addEventListener('click', (e)=>{
   const t = e.target.closest('[data-view]');
@@ -984,9 +1091,9 @@ document.addEventListener('click', (e)=>{
 });
 
 /* ===================== SIDEBAR (mobile) ===================== */
-document.getElementById('start-btn').addEventListener('click', ()=>{
-  document.getElementById('sidebar').classList.toggle('-translate-x-full');
-});
+document.getElementById('start-btn').addEventListener('click', ()=>{ showView('root'); });
+const menuBtn=document.getElementById('menu-btn');
+if(menuBtn) menuBtn.addEventListener('click', ()=>{ document.getElementById('sidebar').classList.toggle('-translate-x-full'); });
 document.getElementById('logout-btn').addEventListener('click', ()=>{
   if(confirm('REBOOT ITSPYGURU_OS? This will replay the boot sequence.')) location.reload();
 });
@@ -1046,7 +1153,7 @@ function animateVitals(){
 document.getElementById('skills-chips').innerHTML = RESUME.topSkills.map(s=>`<span class="px-2 py-0.5 border border-primary/40 text-[10px] text-primary-fixed-dim bg-primary/5 uppercase">${s}</span>`).join('');
 document.getElementById('experience-box').innerHTML = RESUME.experience.map(e=>`
   <div class="relative pl-5 border-l border-primary-fixed-dim/40">
-    <div class="absolute -left-1.5 top-1 w-3 h-3 bg-primary-fixed-dim rounded-full shadow-[0_0_8px_#00e639]"></div>
+    <div class="absolute -left-1.5 top-1 w-3 h-3 bg-primary-fixed-dim rounded-full shadow-[0_0_8px_var(--accent)]"></div>
     <div class="flex flex-wrap items-baseline justify-between gap-2">
       <span class="text-terminal-bold font-terminal-bold text-primary">${e.role}</span>
       <span class="text-[9px] font-data-label text-outline">${e.period}</span>
@@ -1156,7 +1263,76 @@ const termOut=document.getElementById('term-output');
 const termForm=document.getElementById('term-form');
 const termInput=document.getElementById('term-input');
 let termReady=false, termHist=[], termHistIdx=0;
-const PROMPT='<span class="text-primary-fixed-dim">itspyguru@os</span><span class="text-outline">:</span><span class="text-tertiary-fixed-dim">~</span><span class="text-outline">$</span> ';
+/* ===================== VIRTUAL FILESYSTEM ===================== */
+const GAMES = {
+  snake:    { label:'Snake',        kind:'canvas', icon:'restaurant',    launch:()=>startSnake() },
+  '2048':   { label:'2048',         kind:'canvas', icon:'grid_view',     launch:()=>start2048() },
+  pong:     { label:'Pong',         kind:'canvas', icon:'sports_tennis', launch:()=>startPong() },
+  tictactoe:{ label:'Tic-Tac-Toe',  kind:'canvas', icon:'grid_3x3',      launch:()=>startTicTacToe() },
+  typing:   { label:'Typing Test',  kind:'term',   icon:'keyboard',      launch:()=>startTyping() },
+  guess:    { label:'Number Guess', kind:'term',   icon:'casino',        launch:()=>startGuess() }
+};
+function launchGame(id){ const g=GAMES[id]; if(!g) return false; if(g.kind==='term' && getView()!=='terminal') showView('terminal'); g.launch(); return true; }
+const README_TEXT = '<span class="text-primary">itspyguru OS v3.0</span>\nA terminal-themed portfolio by Prajjwal Pathak (pyGuru).\n\nTry: <span class="text-primary-fixed-dim">ls</span> · <span class="text-primary-fixed-dim">cd games</span> · <span class="text-primary-fixed-dim">cat resume.pdf</span> · <span class="text-primary-fixed-dim">help</span>\nDesktop: open folders to see icons. ⌘/Ctrl+K for the command palette.';
+function fileNode(name, icon, render){ return { name, type:'file', icon, render }; }
+function buildVFS(){
+  const profile={ name:'profile', type:'dir', icon:'badge', children:[
+    fileNode('about.txt','person',()=>RESUME.bioLong),
+    fileNode('experience.log','work_history',catExperience),
+    fileNode('skills.txt','code',catSkills),
+    fileNode('education.txt','school',catEducation),
+    fileNode('certs.txt','verified',catCerts) ]};
+  const projects={ name:'projects', type:'dir', icon:'folder',
+    children:RESUME.projects.map(p=>({ name:p.slug, type:'link', icon:'deployed_code', url:p.link, label:p.title, render:()=>projectDetail(p.slug) })) };
+  const games={ name:'games', type:'dir', icon:'sports_esports',
+    children:Object.entries(GAMES).map(([id,g])=>({ name:id, type:'game', icon:g.icon, game:id, label:g.label })) };
+  const apps={ name:'apps', type:'dir', icon:'apps', children:[
+    { name:'terminal', type:'app', icon:'terminal', open:()=>showView('terminal'), label:'Terminal' },
+    { name:'settings', type:'app', icon:'settings', open:()=>showView('settings'), label:'Settings' } ]};
+  return { name:'~', type:'dir', icon:'home', children:[
+    profile, projects, games, apps,
+    fileNode('resume.pdf','description',buildResume),
+    fileNode('contact.txt','mail',catContact),
+    fileNode('README.md','article',()=>README_TEXT) ]};
+}
+const ROOT_VFS = buildVFS();
+let cwd = [];   // path segments from root
+function getView(){ return (location.hash||'').replace('#','')||'clearance'; }
+function nodeAt(segs){ let n=ROOT_VFS; for(const s of segs){ if(n.type!=='dir') return null; const c=(n.children||[]).find(x=>x.name.toLowerCase()===s.toLowerCase()); if(!c) return null; n=c; } return n; }
+function resolveSegs(pathIn){
+  let p=(pathIn||'').trim();
+  if(p===''||p==='~'||p==='/') return [];
+  let segs = (p[0]==='/'||p.startsWith('~/')) ? p.replace(/^~?\//,'').split('/') : cwd.concat(p.split('/'));
+  const out=[]; for(const s of segs){ if(s===''||s==='.') continue; if(s==='..') out.pop(); else out.push(s); } return out;
+}
+function pathLabel(segs){ return '~'+(segs.length?'/'+segs.join('/'):''); }
+function fullPath(segs){ return '/home/itspyguru'+(segs.length?'/'+segs.join('/'):''); }
+function promptStr(){ return '<span class="text-primary-fixed-dim">itspyguru@os</span><span class="text-outline">:</span><span class="text-tertiary-fixed-dim">'+pathLabel(cwd)+'</span><span class="text-outline">$</span> '; }
+function updatePromptLabel(){ const el=document.getElementById('term-prompt'); if(el) el.textContent='itspyguru@os:'+pathLabel(cwd)+'$'; }
+/* alias map so `cat skills` / `ls experience` keep working anywhere (bare words still error) */
+const VFS_ALIAS={ skills:['profile','skills.txt'], 'skills.txt':['profile','skills.txt'], experience:['profile','experience.log'], 'experience.log':['profile','experience.log'], education:['profile','education.txt'], certs:['profile','certs.txt'], certifications:['profile','certs.txt'], about:['profile','about.txt'], contact:['contact.txt'], 'contact.txt':['contact.txt'], resume:['resume.pdf'], 'resume.pdf':['resume.pdf'], readme:['README.md'], projects:['projects'], games:['games'], profile:['profile'], apps:['apps'] };
+function resolveWithAlias(arg){
+  const segs=resolveSegs(arg); const n=nodeAt(segs);
+  if(n) return { segs, n };
+  const a=(arg||'').trim().toLowerCase().replace(/\/$/,'');
+  if(a==='socials'||a==='links') return { special:'socials' };
+  if(VFS_ALIAS[a]){ const s=VFS_ALIAS[a], nn=nodeAt(s); if(nn) return { segs:s, n:nn }; }
+  return null;
+}
+function nodeLine(c){
+  if(c.type==='dir') return '<span class="text-primary-fixed-dim">'+c.name+'/</span>';
+  if(c.type==='game') return '<span class="text-tertiary-fixed-dim">'+c.name+'</span>  <span class="text-outline">[game]</span>';
+  if(c.type==='link') return '<span class="text-primary underline decoration-dotted">'+c.name+'</span>';
+  if(c.type==='app') return '<span class="text-tertiary-fixed-dim">'+c.name+'</span>  <span class="text-outline">[app]</span>';
+  return '<span class="text-on-surface">'+c.name+'</span>';
+}
+function lsNode(n){ if(!n.children||!n.children.length) return '<span class="text-outline">(empty)</span>'; return n.children.map(nodeLine).join('\n'); }
+function cmdCd(arg){
+  const target=resolveSegs(arg); const n=nodeAt(target);
+  if(!n) return '<span class="text-error">cd: '+esc(arg)+': no such directory</span>';
+  if(n.type!=='dir') return '<span class="text-error">cd: '+esc(arg)+': not a directory</span>';
+  cwd=target; updatePromptLabel(); return null;
+}
 
 function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 function termWrite(html){ const d=document.createElement('div'); d.className='term-line'; d.innerHTML=html; termOut.appendChild(d); termOut.scrollTop=termOut.scrollHeight; }
@@ -1259,54 +1435,55 @@ function cmdHelp(){
     '<span class="text-primary-fixed-dim font-bold">AVAILABLE COMMANDS</span>',
     '<span class="text-tertiary-fixed-dim">cat resume.pdf</span>      print the full resume',
     '<span class="text-tertiary-fixed-dim">download resume</span>     save resume as PDF',
-    '<span class="text-tertiary-fixed-dim">ls</span> / <span class="text-tertiary-fixed-dim">ls &lt;dir&gt;</span>          list (projects, skills, experience, education, certs, socials)',
-    '<span class="text-tertiary-fixed-dim">cat &lt;dir&gt;</span>           show a section (e.g. cat skills, cat experience)',
-    '<span class="text-tertiary-fixed-dim">cat projects/&lt;name&gt;</span>  open a project',
+    '<span class="text-tertiary-fixed-dim">cd &lt;dir&gt;</span> · <span class="text-tertiary-fixed-dim">ls</span> · <span class="text-tertiary-fixed-dim">pwd</span> · <span class="text-tertiary-fixed-dim">tree</span>   navigate the filesystem',
+    '<span class="text-tertiary-fixed-dim">cat &lt;file&gt;</span>          read a file (cat resume.pdf, cat skills)',
+    '<span class="text-tertiary-fixed-dim">cd games</span> then <span class="text-tertiary-fixed-dim">ls</span>      browse &amp; play games (snake, 2048, pong…)',
     '<span class="text-tertiary-fixed-dim">whoami</span> / <span class="text-tertiary-fixed-dim">whois</span>      short / long bio',
     '<span class="text-tertiary-fixed-dim">cat contact</span>         how to reach me',
     '<span class="text-tertiary-fixed-dim">open &lt;name&gt;</span>         open a link (github, linkedin...)',
     '<span class="text-tertiary-fixed-dim">neofetch</span>            system info',
-    '<span class="text-tertiary-fixed-dim">clear</span> · <span class="text-tertiary-fixed-dim">date</span> · <span class="text-tertiary-fixed-dim">echo</span> · <span class="text-tertiary-fixed-dim">history</span>',
-    '<span class="text-outline">also: sudo hire-me · ↑/↓ history · Tab autocomplete</span>'
+    '<span class="text-tertiary-fixed-dim">theme</span> / <span class="text-tertiary-fixed-dim">font</span> / <span class="text-tertiary-fixed-dim">settings</span>   customize the OS',
+    '<span class="text-tertiary-fixed-dim">gh</span> · <span class="text-tertiary-fixed-dim">cmatrix</span> · <span class="text-tertiary-fixed-dim">snake</span> · <span class="text-tertiary-fixed-dim">git log</span> · <span class="text-tertiary-fixed-dim">fortune</span> · <span class="text-tertiary-fixed-dim">cowsay</span>',
+    '<span class="text-tertiary-fixed-dim">clear</span> · <span class="text-tertiary-fixed-dim">date</span> · <span class="text-tertiary-fixed-dim">echo</span> · <span class="text-tertiary-fixed-dim">history</span> · <span class="text-tertiary-fixed-dim">man &lt;cmd&gt;</span>',
+    '<span class="text-outline">also: ⌘/Ctrl+K palette · 1–5 nav · / terminal · ? shortcuts · sudo hire-me</span>'
   ].join('\n');
 }
 function cmdCat(arg){
-  const a=(arg||'').trim().toLowerCase();
-  if(!a) return '<span class="text-error">usage: cat &lt;file&gt;</span>  (try: cat resume.pdf)';
-  if(a==='resume.pdf'||a==='resume.txt'||a==='resume') return buildResume();
-  if(a.startsWith('projects/')) return projectDetail(arg.trim().slice(9));
-  if(a==='experience'||a==='experience.log') return catExperience();
-  if(a==='skills'||a==='skills.txt') return catSkills();
-  if(a==='education') return catEducation();
-  if(a==='certs'||a==='certifications') return catCerts();
-  if(a==='contact'||a==='contact.txt') return catContact();
-  return `<span class="text-error">cat: ${esc(arg)}: No such file</span>  (try: ls)`;
+  if(!(arg||'').trim()) return '<span class="text-error">usage: cat &lt;file&gt;</span>  (try: cat resume.pdf)';
+  if(arg.trim().toLowerCase().startsWith('projects/')) return projectDetail(arg.trim().slice(9));
+  const r=resolveWithAlias(arg);
+  if(r&&r.special==='socials') return catSocials();
+  if(!r) return `<span class="text-error">cat: ${esc(arg)}: No such file</span>  (try: ls)`;
+  const n=r.n;
+  if(n.type==='dir') return `<span class="text-error">cat: ${esc(n.name)}: Is a directory</span>`;
+  if(n.type==='game') return `<span class="text-outline">${n.name} is a game — run </span><span class="text-primary-fixed-dim">${n.name}</span><span class="text-outline"> to play.</span>`;
+  if(n.render) return n.render();
+  if(n.type==='link') return `${n.name} → <a href="${n.url}" target="_blank" class="text-primary-fixed-dim underline">${n.url}</a>`;
+  return n.name;
 }
 function cmdLs(arg){
-  const a=(arg||'').trim().toLowerCase().replace(/\/$/,'');
-  if(!a||a==='.'||a==='~'||a==='-la'||a==='-a'||a==='-l') return [
-    '<span class="text-primary-fixed-dim">projects/</span>    <span class="text-primary-fixed-dim">experience/</span>  <span class="text-primary-fixed-dim">skills/</span>',
-    '<span class="text-primary-fixed-dim">education/</span>   <span class="text-primary-fixed-dim">certs/</span>       <span class="text-primary-fixed-dim">socials/</span>',
-    '<span class="text-tertiary-fixed-dim">resume.pdf</span>   <span class="text-tertiary-fixed-dim">contact.txt</span>'
-  ].join('\n');
-  switch(a){
-    case 'projects': return listProjects();
-    case 'experience': case 'exp': return catExperience();
-    case 'skills': return catSkills();
-    case 'education': case 'edu': return catEducation();
-    case 'certs': case 'certifications': return catCerts();
-    case 'socials': case 'links': return catSocials();
-    case 'contact': case 'contact.txt': return catContact();
-    case 'resume.pdf': case 'resume': case 'resume.txt': return buildResume();
-    default: return `<span class="text-error">ls: ${esc(arg)}: No such directory</span> — try <span class="text-primary-fixed-dim">ls</span>`;
-  }
+  if(['','.','~','-la','-a','-l','-al'].includes((arg||'').trim())) return lsNode(nodeAt(cwd)||ROOT_VFS);
+  const r=resolveWithAlias(arg);
+  if(r&&r.special==='socials') return catSocials();
+  if(!r) return `<span class="text-error">ls: ${esc(arg)}: no such file or directory</span> — try <span class="text-primary-fixed-dim">ls</span>`;
+  if(r.n.type==='dir') return lsNode(r.n);
+  if(r.n.type==='file'&&r.n.render) return r.n.render();   // convenience: ls of a section shows it
+  return nodeLine(r.n);
 }
 function cmdOpen(arg){
   const k=(arg||'').trim().toLowerCase();
-  const map={github:LINKS.github,linkedin:LINKS.linkedin,youtube:LINKS.youtube,yt:LINKS.youtube,telegram:LINKS.telegram,tg:LINKS.telegram,instagram:LINKS.instagram,ig:LINKS.instagram,pinterest:LINKS.pinterest,cybiqon:LINKS.cybiqon,udemy:LINKS.udemy,pypi:LINKS.pypi,decrypto:LINKS.pypi,email:LINKS.email,resume:null};
-  if(k==='resume'){ printResume(); return '<span class="text-primary-fixed-dim">Opening print dialog…</span>'; }
-  if(!(k in map)) return `<span class="text-error">open: unknown target '${esc(arg)}'</span>  (try: open github)`;
-  window.open(map[k],'_blank'); return `<span class="text-primary-fixed-dim">Opening ${k}…</span>`;
+  const map={github:LINKS.github,linkedin:LINKS.linkedin,youtube:LINKS.youtube,yt:LINKS.youtube,telegram:LINKS.telegram,tg:LINKS.telegram,instagram:LINKS.instagram,ig:LINKS.instagram,pinterest:LINKS.pinterest,cybiqon:LINKS.cybiqon,udemy:LINKS.udemy,pypi:LINKS.pypi,decrypto:LINKS.pypi,email:LINKS.email};
+  if(k==='resume'||k==='resume.pdf'){ printResume(); return '<span class="text-primary-fixed-dim">Opening print dialog…</span>'; }
+  if(k in map){ window.open(map[k],'_blank'); return `<span class="text-primary-fixed-dim">Opening ${k}…</span>`; }
+  const r=resolveWithAlias(arg);
+  if(r&&r.n){ const n=r.n;
+    if(n.type==='link'){ window.open(n.url,'_blank'); return `<span class="text-primary-fixed-dim">Opening ${n.name}…</span>`; }
+    if(n.type==='game'){ launchGame(n.game||n.name); return `<span class="text-outline">launching ${n.label||n.name}…</span>`; }
+    if(n.type==='app'){ n.open&&n.open(); return `<span class="text-primary-fixed-dim">opening ${n.name}…</span>`; }
+    if(n.type==='file'&&n.render){ return n.render(); }
+    if(n.type==='dir'){ openWindow(r.segs); return `<span class="text-outline">opening ${n.name}/ on desktop…</span>`; }
+  }
+  return `<span class="text-error">open: unknown target '${esc(arg)}'</span>  (try: open github)`;
 }
 function cmdSudo(arg){
   const a=(arg||'').trim().toLowerCase();
@@ -1323,47 +1500,67 @@ function cmdSudo(arg){
 function runCommand(raw, echo){
   termInit();
   const input=(raw||'').trim();
-  if(echo!==false) termWrite(PROMPT+'<span class="text-on-surface">'+esc(input)+'</span>');
+  if(echo!==false) termWrite(promptStr()+'<span class="text-on-surface">'+esc(input)+'</span>');
   if(input===''){ return; }
   if(termHist[termHist.length-1]!==input) termHist.push(input);
   termHistIdx=termHist.length;
   const parts=input.split(/\s+/); const cmd=parts[0].toLowerCase(); const arg=parts.slice(1).join(' ');
   let out;
   switch(cmd){
-    case 'help': case '?': case 'man': out=cmdHelp(); break;
+    case 'help': case '?': out=cmdHelp(); break;
+    case 'man': out=cmdMan(arg); break;
     case 'cat': out=cmdCat(arg); break;
     case 'resume': out=(arg==='--pdf')?(printResume(),'<span class="text-primary-fixed-dim">Opening print dialog…</span>'):buildResume(); break;
     case 'ls': case 'dir': out=cmdLs(arg); break;
+    case 'cd': out=cmdCd(arg); break;
     case 'whoami': out='<span class="text-primary">'+RESUME.bioShort+'</span>'; break;
     case 'whois': out=RESUME.bioLong; break;
     case 'open': out=cmdOpen(arg); break;
     case 'download': out=(arg.toLowerCase().includes('resume')||arg==='')?(printResume(),'<span class="text-primary-fixed-dim">Opening print dialog… choose “Save as PDF”.</span>'):'usage: download resume'; break;
     case 'neofetch': case 'screenfetch': out=neofetch(); break;
     case 'date': out=new Date().toString(); break;
-    case 'pwd': out='/home/itspyguru/dev'; break;
+    case 'pwd': out=fullPath(cwd); break;
     case 'echo': out=esc(arg); break;
     case 'history': out=termHist.map((h,i)=>`  ${(i+1).toString().padStart(3)}  ${esc(h)}`).join('\n')||'(empty)'; break;
     case 'clear': case 'cls': termOut.innerHTML=''; return;
     case 'sudo': out=cmdSudo(arg); break;
     case 'hire': case 'hire-me': out=cmdSudo('hire-me'); break;
-    case 'hack': case 'matrix': out='<span class="text-primary-fixed-dim">breaching… '+'10'.repeat(18)+' ACCESS GRANTED. (kidding \u{1f600})</span>'; break;
+    case 'theme': out=cmdTheme(arg); break;
+    case 'font': out=cmdFont(arg); break;
+    case 'settings': case 'config': showView('settings'); out='<span class="text-primary-fixed-dim">opening settings…</span>'; break;
+    case 'reset': settings=Object.assign({},defaultSettings); applySettings(); saveSettings(); out='<span class="text-primary-fixed-dim">settings reset to defaults.</span>'; break;
+    case 'cmatrix': startRain(); out='<span class="text-outline">entering the matrix… Esc / click to exit.</span>'; break;
+    case 'snake': case '2048': case 'pong': case 'tictactoe': case 'ttt': case 'typing': case 'guess': { const gid=(cmd==='ttt'?'tictactoe':cmd); launchGame(gid); out='<span class="text-outline">launching '+GAMES[gid].label+'…</span>'; break; }
+    case 'git': out=(arg.trim().toLowerCase().startsWith('log'))?cmdGitLog():'usage: git log'; break;
+    case 'tree': out=cmdTree(); break;
+    case 'fortune': out=cmdFortune(); break;
+    case 'cowsay': out=cmdCowsay(arg); break;
+    case 'gh': case 'github': out=cmdGh(arg.trim().toLowerCase()); break;
+    case 'hack': case 'matrix': out='<span class="text-primary-fixed-dim">breaching… '+'10'.repeat(18)+' ACCESS GRANTED. (kidding \u{1f600}) — try <span class="text-tertiary-fixed-dim">cmatrix</span></span>'; break;
     case 'exit': case 'logout': out='<span class="text-outline">There is no escape from itspyguru OS. Try the START menu instead.</span>'; break;
     default: out=`<span class="text-error">command not found: ${esc(cmd)}</span> — type <span class="text-primary-fixed-dim">help</span>`;
   }
   if(out!=null) termWrite(out);
 }
 function termAutocomplete(){
-  const v=termInput.value; const t=v.trim();
-  const cmds=['help','cat resume.pdf','cat projects/','cat skills','cat experience','cat education','cat certs','cat contact','ls','ls projects','ls skills','ls experience','ls education','ls certs','ls socials','ls contact','whoami','whois','open ','neofetch','download resume','history','clear','sudo hire-me','date','echo '];
-  if(t.startsWith('cat projects/')){
-    const frag=t.slice(13).toLowerCase();
-    const m=RESUME.projects.map(p=>p.slug).filter(s=>s.startsWith(frag));
-    if(m.length===1){ termInput.value='cat projects/'+m[0]; return; }
-    if(m.length>1){ termWrite(PROMPT+esc(t)); termWrite(m.join('   ')); return; }
+  const t=termInput.value;
+  const m=t.match(/^(cd|cat|ls|open)\s+(.*)$/i);
+  if(m){
+    const cmd=m[1], frag=m[2];
+    let dir='', leaf=frag;
+    if(frag.includes('/')){ dir=frag.slice(0,frag.lastIndexOf('/')+1); leaf=frag.slice(frag.lastIndexOf('/')+1); }
+    const dirNode=nodeAt(resolveSegs(dir||'.'))||nodeAt(cwd)||ROOT_VFS;
+    let kids=(dirNode.children||[]);
+    if(cmd.toLowerCase()==='cd') kids=kids.filter(c=>c.type==='dir');
+    const names=kids.map(c=>c.name+(c.type==='dir'?'/':'')).filter(n=>n.toLowerCase().startsWith(leaf.toLowerCase()));
+    if(names.length===1) termInput.value=cmd+' '+dir+names[0];
+    else if(names.length>1){ termWrite(promptStr()+esc(t)); termWrite(names.join('   ')); }
+    return;
   }
-  const matches=cmds.filter(c=>c.startsWith(t.toLowerCase()));
+  const cmds=['help','cd ','ls','cat ','open ','pwd','tree','whoami','whois','neofetch','theme ','font ','settings','reset','cmatrix','snake','2048','pong','tictactoe','typing','guess','git log','fortune','cowsay ','gh','gh repos','download resume','clear','history','man '];
+  const matches=cmds.filter(c=>c.startsWith(t.trim().toLowerCase()));
   if(matches.length===1) termInput.value=matches[0];
-  else if(matches.length>1){ termWrite(PROMPT+esc(t)); termWrite(matches.join('   ')); }
+  else if(matches.length>1){ termWrite(promptStr()+esc(t.trim())); termWrite(matches.join('   ')); }
 }
 function termInit(){
   if(termReady) return; termReady=true;
@@ -1371,18 +1568,28 @@ function termInit(){
   termWrite('');
   termWrite('<span class="text-outline">Welcome to itspyguru OS shell. Type </span><span class="text-primary-fixed-dim">help</span><span class="text-outline"> to list commands, or </span><span class="text-primary-fixed-dim">cat resume.pdf</span><span class="text-outline">.</span>');
   // command chips
-  const chips=['help','cat resume.pdf','ls projects','ls experience','ls skills','neofetch','sudo hire-me','cat contact'];
+  const chips=['help','ls','cd games','cat resume.pdf','tree','2048','neofetch','cat contact'];
   const wrap=document.getElementById('term-chips');
   wrap.innerHTML=chips.map(c=>`<button class="term-chip text-[9px] border border-primary/30 px-2 py-1 text-primary hover:bg-primary/10 font-data-label" data-cmd="${c}">${c}</button>`).join('');
   wrap.querySelectorAll('.term-chip').forEach(b=> b.addEventListener('click', ()=>{ runCommand(b.dataset.cmd); termInput.focus(); }));
 }
-termForm.addEventListener('submit', e=>{ e.preventDefault(); const v=termInput.value; termInput.value=''; runCommand(v); });
+let termGameHandler=null;
+termForm.addEventListener('submit', e=>{ e.preventDefault(); const v=termInput.value; termInput.value='';
+  if(termGameHandler){ termWrite(promptStr()+'<span class="text-on-surface">'+esc(v)+'</span>'); const h=termGameHandler; h(v.trim()); return; }
+  runCommand(v);
+});
 termInput.addEventListener('keydown', e=>{
   if(e.key==='ArrowUp'){ e.preventDefault(); if(termHist.length){ termHistIdx=Math.max(0,termHistIdx-1); termInput.value=termHist[termHistIdx]||''; } }
   else if(e.key==='ArrowDown'){ e.preventDefault(); if(termHist.length){ termHistIdx=Math.min(termHist.length,termHistIdx+1); termInput.value=termHist[termHistIdx]||''; } }
   else if(e.key==='Tab'){ e.preventDefault(); termAutocomplete(); }
 });
 document.getElementById('term-clear').addEventListener('click', ()=>{ termOut.innerHTML=''; termInput.focus(); });
+/* minimize terminal -> hide it (keep session), taskbar shows it's running */
+let termMinimized=false;
+function updateTaskbarTerm(){ const t=document.getElementById('taskbar-terminal'); if(t) t.classList.toggle('task-running', termMinimized); }
+function minimizeTerminal(){ termMinimized=true; updateTaskbarTerm(); showView(prevView && prevView!=='terminal' ? prevView : 'clearance'); toast('Terminal minimized — click TERMINAL to restore'); }
+document.getElementById('term-min').addEventListener('click', minimizeTerminal);
+document.getElementById('term-min-dot').addEventListener('click', minimizeTerminal);
 document.getElementById('view-terminal').addEventListener('click', e=>{ if(!e.target.closest('a,button,input')) termInput.focus(); });
 
 /* ===================== PRINT-TO-PDF RESUME ===================== */
@@ -1410,9 +1617,449 @@ function buildPrintResume(){
 }
 function printResume(){ buildPrintResume(); window.print(); }
 
+/* ===================== THEMES & SETTINGS ===================== */
+const THEMES = {
+  matrix:    { label:'Matrix',    accent:'#00e639', bright:'#00ff41' },
+  amber:     { label:'Amber',     accent:'#ffb000', bright:'#ffd000' },
+  cyber:     { label:'Cyber',     accent:'#00d8ff', bright:'#6df1ff' },
+  synthwave: { label:'Synthwave', accent:'#ff3caf', bright:'#ff77c8' },
+  dracula:   { label:'Dracula',   accent:'#bd93f9', bright:'#d6b8ff' },
+  hacker:    { label:'Hackerman', accent:'#39ff14', bright:'#aaff80' }
+};
+const FONTS = {
+  jetbrains:{ label:'JetBrains Mono', css:"'JetBrains Mono'" },
+  fira:     { label:'Fira Code',      css:"'Fira Code'" },
+  ibm:      { label:'IBM Plex Mono',  css:"'IBM Plex Mono'" },
+  vt323:    { label:'VT323',          css:"'VT323'" },
+  system:   { label:'System Mono',    css:"ui-monospace,SFMono-Regular,Menlo,monospace" }
+};
+function hexToRgb(hex){ const m=hex.replace('#','').match(/.{1,2}/g)||['0','0','0']; return m.map(x=>parseInt(x,16)).join(' '); }
+function setAccent(hex){ const r=document.documentElement.style; r.setProperty('--accent',hex); r.setProperty('--accent-rgb',hexToRgb(hex)); r.setProperty('--accent-bright',hex); r.setProperty('--accent-bright-rgb',hexToRgb(hex)); }
+function applyTheme(name){ const t=THEMES[name]; if(!t) return false; const r=document.documentElement.style; r.setProperty('--accent',t.accent); r.setProperty('--accent-rgb',hexToRgb(t.accent)); r.setProperty('--accent-bright',t.bright); r.setProperty('--accent-bright-rgb',hexToRgb(t.bright)); return true; }
+function applyFont(key){ const f=FONTS[key]; if(!f) return false; document.documentElement.style.setProperty('--mono',f.css); return true; }
+const WALLPAPERS={
+  server:{ label:'Server', kind:'img', src:'assets/os/bg-env.png' },
+  grid:{ label:'Grid', kind:'css', css:'linear-gradient(rgb(var(--accent-rgb) / 0.06) 1px,transparent 1px),linear-gradient(90deg,rgb(var(--accent-rgb) / 0.06) 1px,transparent 1px)', size:'42px 42px' },
+  scan:{ label:'Scan', kind:'css', css:'repeating-linear-gradient(0deg, rgb(var(--accent-rgb) / 0.05) 0 2px, transparent 2px 5px)', size:'auto' },
+  solid:{ label:'Solid', kind:'none' }
+};
+function applyWallpaper(){
+  const wrap=document.getElementById('desktop-bg'), img=document.getElementById('wallpaper-img'); if(!wrap||!img) return;
+  const w=settings.wallpaper||'server';
+  wrap.style.background=''; wrap.style.backgroundSize=''; img.style.display='none'; img.style.opacity=''; img.style.filter='';
+  if(typeof w==='object' && w.url){ img.src=w.url; img.style.display='block'; img.style.opacity='0.20'; img.style.filter='none'; return; }
+  if(w==='server'){ img.src='assets/os/bg-env.png'; img.style.display='block'; img.style.opacity='0.07'; img.style.filter='grayscale(1)'; return; }
+  if(w==='solid') return;
+  const def=WALLPAPERS[w]; if(def&&def.kind==='css'){ wrap.style.background=def.css; wrap.style.backgroundSize=def.size; }
+}
+const SETTINGS_KEY='itspyguru_os';
+const defaultSettings={ theme:'matrix', accent:null, font:'jetbrains', wallpaper:'server', scanlines:true, flicker:true, glow:true, motion:true, sound:false, screensaver:true };
+let settings=Object.assign({},defaultSettings);
+function loadSettings(){ try{ const s=JSON.parse(localStorage.getItem(SETTINGS_KEY)); if(s) settings=Object.assign({},defaultSettings,s); }catch(e){} }
+function saveSettings(){ try{ localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings)); }catch(e){} }
+function applySettings(){
+  if(settings.accent) setAccent(settings.accent); else applyTheme(settings.theme);
+  applyFont(settings.font);
+  const b=document.body.classList;
+  b.toggle('fx-noscan',!settings.scanlines);
+  b.toggle('fx-noflicker',!settings.flicker);
+  b.toggle('fx-noglow',!settings.glow);
+  b.toggle('fx-reduced',!settings.motion);
+  applyWallpaper();
+}
+function setThemePref(name){ if(!THEMES[name]) return; settings.theme=name; settings.accent=null; applySettings(); saveSettings(); toast('Theme: '+THEMES[name].label); }
+function renderSettings(){
+  const tw=document.getElementById('set-themes');
+  tw.innerHTML=Object.entries(THEMES).filter(([k])=>k!=='hacker').map(([k,t])=>
+    `<button class="swatch ${(!settings.accent&&settings.theme===k)?'sel':''}" data-set-theme="${k}" title="${t.label}" style="background:linear-gradient(135deg,${t.accent},${t.bright})"></button>`).join('');
+  const cu=document.getElementById('set-custom'); cu.value=settings.accent||(THEMES[settings.theme]||THEMES.matrix).accent;
+  document.getElementById('set-custom-hex').textContent=cu.value;
+  document.getElementById('set-fonts').innerHTML=Object.entries(FONTS).map(([k,f])=>
+    `<button class="text-left px-3 py-2 border ${settings.font===k?'border-primary-fixed-dim text-primary-fixed-dim':'border-outline-variant/30 text-outline'} hover:bg-primary/5 transition-all text-data-label" data-set-font="${k}" style="font-family:${f.css}">${f.label} — abcd 0123 {}</button>`).join('');
+  const defs=[['scanlines','Scanlines'],['flicker','CRT flicker'],['glow','Neon glow'],['motion','Animations'],['sound','Sound FX'],['screensaver','Idle screensaver']];
+  document.getElementById('set-toggles').innerHTML=defs.map(([k,label])=>
+    `<button class="flex items-center justify-between gap-4 text-left w-full" data-set-toggle="${k}"><span class="text-data-label text-on-surface-variant">${label}</span><span class="toggle-pill ${settings[k]?'on':''}"></span></button>`).join('');
+  const curW=(typeof settings.wallpaper==='object')?'custom':settings.wallpaper;
+  const ws=document.getElementById('set-walls');
+  if(ws){ ws.innerHTML=Object.entries(WALLPAPERS).map(([k,w])=>
+      `<button class="px-3 py-1.5 border text-[11px] font-data-label ${curW===k?'border-primary-fixed-dim text-primary-fixed-dim':'border-outline-variant/30 text-outline'} hover:bg-primary/5" data-set-wall="${k}">${w.label}</button>`).join('')
+      + `<span class="px-3 py-1.5 border text-[11px] font-data-label ${curW==='custom'?'border-primary-fixed-dim text-primary-fixed-dim':'border-outline-variant/30 text-outline/50'}">Custom URL ↓</span>`;
+    const wu=document.getElementById('set-wall-url'); if(wu) wu.value=(typeof settings.wallpaper==='object'?settings.wallpaper.url:'')||'';
+  }
+}
+document.addEventListener('click', e=>{
+  const th=e.target.closest('[data-set-theme]'); if(th){ setThemePref(th.dataset.setTheme); renderSettings(); return; }
+  const fo=e.target.closest('[data-set-font]'); if(fo){ settings.font=fo.dataset.setFont; applyFont(settings.font); saveSettings(); renderSettings(); return; }
+  const tg=e.target.closest('[data-set-toggle]'); if(tg){ const k=tg.dataset.setToggle; settings[k]=!settings[k]; applySettings(); saveSettings(); renderSettings(); if(k==='sound'&&settings.sound) beep(660,0.05); return; }
+  const wl=e.target.closest('[data-set-wall]'); if(wl){ settings.wallpaper=wl.dataset.setWall; applySettings(); saveSettings(); renderSettings(); return; }
+});
+document.getElementById('set-wall-apply').addEventListener('click', ()=>{ const u=document.getElementById('set-wall-url').value.trim(); if(u){ settings.wallpaper={url:u}; applySettings(); saveSettings(); renderSettings(); toast('Wallpaper set'); } });
+(function(){ const cu=document.getElementById('set-custom'); cu.addEventListener('input',()=>{ settings.accent=cu.value; settings.theme='custom'; setAccent(cu.value); document.getElementById('set-custom-hex').textContent=cu.value; saveSettings(); renderSettings(); }); })();
+document.getElementById('set-reset').addEventListener('click', ()=>{ settings=Object.assign({},defaultSettings); applySettings(); saveSettings(); renderSettings(); toast('Settings reset'); });
+document.getElementById('settings-close').addEventListener('click', ()=>{ showView(prevView && prevView!=='settings' ? prevView : 'clearance'); });
+
+/* ===================== TOAST ===================== */
+let toastT;
+function toast(msg){ const t=document.getElementById('toast'); t.innerHTML=msg; t.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),2200); }
+
+/* ===================== SOUND FX ===================== */
+let actx;
+function beep(freq=440,dur=0.04,type='square',vol=0.03){
+  if(!settings.sound) return;
+  try{ actx=actx||new (window.AudioContext||window.webkitAudioContext)();
+    const o=actx.createOscillator(), g=actx.createGain(); o.type=type; o.frequency.value=freq; g.gain.value=vol;
+    o.connect(g); g.connect(actx.destination); o.start(); g.gain.exponentialRampToValueAtTime(0.0001,actx.currentTime+dur); o.stop(actx.currentTime+dur);
+  }catch(e){}
+}
+document.addEventListener('keydown', e=>{ if(settings.sound && e.key && e.key.length===1) beep(220+Math.random()*60,0.025,'square',0.02); });
+
+/* ===================== COMMAND PALETTE ===================== */
+const cmdk=document.getElementById('cmdk'), cmdkInput=document.getElementById('cmdk-input'), cmdkList=document.getElementById('cmdk-list');
+let cmdkSel=0, cmdkFiltered=[];
+const ACTIONS=[
+  {label:'Go: Profile', icon:'badge', run:()=>showView('clearance')},
+  {label:'Go: Projects', icon:'folder', run:()=>showView('breach')},
+  {label:'Go: Dev Lab', icon:'build', run:()=>showView('scan')},
+  {label:'Go: Desktop', icon:'desktop_windows', run:()=>showView('root')},
+  {label:'Go: Terminal', icon:'terminal', run:()=>showView('terminal')},
+  {label:'Open: Settings', icon:'settings', run:()=>showView('settings')},
+  {label:'Resume: view in terminal', icon:'description', run:()=>{showView('terminal'); setTimeout(()=>runCommand('cat resume.pdf'),150);}},
+  {label:'Resume: download PDF', icon:'download', run:()=>printResume()},
+  {label:'Run: matrix rain', icon:'grid_on', run:()=>startRain()},
+  {label:'Open: Featured project', icon:'troubleshoot', run:()=>{ showView('root'); const fw=document.getElementById('featured-win'); if(fw){ fw.style.display=''; fw.style.zIndex=++winZ; } }},
+  {label:'Open: Games folder', icon:'sports_esports', run:()=>{showView('root'); openWindow(['games']);}},
+  {label:'Open: Projects folder', icon:'folder', run:()=>{showView('root'); openWindow(['projects']);}},
+  {label:'Run: snake game', icon:'sports_esports', run:()=>startSnake()},
+  {label:'Run: 2048', icon:'grid_view', run:()=>start2048()},
+  {label:'Run: Pong', icon:'sports_tennis', run:()=>startPong()},
+  {label:'Run: Tic-Tac-Toe', icon:'grid_3x3', run:()=>startTicTacToe()},
+  {label:'Theme: Matrix', icon:'palette', run:()=>setThemePref('matrix')},
+  {label:'Theme: Amber', icon:'palette', run:()=>setThemePref('amber')},
+  {label:'Theme: Cyber', icon:'palette', run:()=>setThemePref('cyber')},
+  {label:'Theme: Synthwave', icon:'palette', run:()=>setThemePref('synthwave')},
+  {label:'Theme: Dracula', icon:'palette', run:()=>setThemePref('dracula')},
+  {label:'Open: GitHub', icon:'open_in_new', run:()=>window.open(LINKS.github,'_blank')},
+  {label:'Open: LinkedIn', icon:'open_in_new', run:()=>window.open(LINKS.linkedin,'_blank')},
+  {label:'Email Prajjwal', icon:'mail', run:()=>window.open(LINKS.email)}
+];
+function cmdkRender(){
+  const q=cmdkInput.value.toLowerCase().trim();
+  cmdkFiltered=ACTIONS.filter(a=>a.label.toLowerCase().includes(q));
+  if(cmdkSel>=cmdkFiltered.length) cmdkSel=0;
+  cmdkList.innerHTML=cmdkFiltered.map((a,i)=>`<div class="cmdk-item flex items-center gap-3 px-4 py-2 cursor-pointer ${i===cmdkSel?'sel':''}" data-cmdk-i="${i}"><span class="material-symbols-outlined text-base text-primary-fixed-dim">${a.icon}</span><span class="text-data-label text-on-surface">${a.label}</span></div>`).join('')||'<div class="px-4 py-3 text-outline text-data-label">no matches</div>';
+}
+function openCmdk(){ cmdk.style.display='block'; cmdkInput.value=''; cmdkSel=0; cmdkRender(); setTimeout(()=>cmdkInput.focus(),30); }
+function closeCmdk(){ cmdk.style.display='none'; }
+function cmdkRun(i){ const a=cmdkFiltered[i]; if(a){ closeCmdk(); a.run(); } }
+cmdkInput.addEventListener('input', ()=>{cmdkSel=0;cmdkRender();});
+cmdkInput.addEventListener('keydown', e=>{
+  if(e.key==='ArrowDown'){e.preventDefault(); cmdkSel=Math.min(cmdkFiltered.length-1,cmdkSel+1); cmdkRender();}
+  else if(e.key==='ArrowUp'){e.preventDefault(); cmdkSel=Math.max(0,cmdkSel-1); cmdkRender();}
+  else if(e.key==='Enter'){e.preventDefault(); cmdkRun(cmdkSel);}
+});
+cmdkList.addEventListener('click', e=>{ const it=e.target.closest('[data-cmdk-i]'); if(it) cmdkRun(+it.dataset.cmdkI); });
+document.addEventListener('click', e=>{ if(e.target.closest('[data-overlay-close]')){ closeCmdk(); closeOverlays(); } });
+function closeOverlays(){ document.getElementById('cheatsheet').style.display='none'; if(typeof stopGame==='function') stopGame(); }
+
+/* ===================== KEYBOARD SHORTCUTS ===================== */
+const SHORTCUTS=[['1','Desktop'],['2','Dev Lab'],['3','Projects'],['4','Profile'],['5','Terminal'],[',','Settings'],['/','Focus terminal'],['Ctrl/⌘ K','Command palette'],['?','This help'],['Esc','Close overlay']];
+function renderCheatsheet(){ document.getElementById('cheatsheet-list').innerHTML=SHORTCUTS.map(([k,d])=>`<div class="flex justify-between"><span class="text-outline">${d}</span><span class="text-primary-fixed-dim border border-outline-variant/40 px-2">${k}</span></div>`).join(''); }
+document.addEventListener('keydown', e=>{
+  if((e.metaKey||e.ctrlKey) && e.key.toLowerCase()==='k'){ e.preventDefault(); cmdk.style.display==='block'?closeCmdk():openCmdk(); return; }
+  if(e.key==='Escape'){
+    const overlayOpen = cmdk.style.display==='block' || document.getElementById('cheatsheet').style.display==='flex' || screensaverOn || gameOn;
+    if(termGameHandler){ termGameHandler=null; termWrite('<span class="text-outline">(game exited)</span>'); return; }
+    closeCmdk(); closeOverlays(); if(screensaverOn) stopRain();
+    if(!overlayOpen){
+      const cur=(location.hash||'').replace('#','');
+      if(cur==='settings') showView(prevView && prevView!=='settings' ? prevView : 'clearance');
+      else if(cur==='terminal') minimizeTerminal();
+    }
+    return;
+  }
+  const tag=(document.activeElement&&document.activeElement.tagName)||'';
+  if(tag==='INPUT'||tag==='TEXTAREA'||gameOn) return;
+  const map={'1':'root','2':'scan','3':'breach','4':'clearance','5':'terminal'};
+  if(map[e.key]) showView(map[e.key]);
+  else if(e.key===',') showView('settings');
+  else if(e.key==='/'){ e.preventDefault(); showView('terminal'); setTimeout(()=>{const i=document.getElementById('term-input'); if(i)i.focus();},100); }
+  else if(e.key==='?'){ const c=document.getElementById('cheatsheet'); renderCheatsheet(); c.style.display=(c.style.display==='flex')?'none':'flex'; }
+});
+
+/* ===================== MATRIX RAIN (cmatrix + screensaver) ===================== */
+const ssCanvas=document.getElementById('screensaver');
+let rainTimer=null, screensaverOn=false;
+function startRain(){
+  if(screensaverOn) return;
+  const cv=ssCanvas, ctx=cv.getContext('2d');
+  cv.width=innerWidth; cv.height=innerHeight; cv.style.display='block'; screensaverOn=true;
+  const fontSize=14, cols=Math.floor(cv.width/fontSize); const drops=Array(cols).fill(1);
+  const chars='アイウカキ0123456789ABCDEF<>/{}$#'.split('');
+  rainTimer=setInterval(()=>{
+    ctx.fillStyle='rgba(0,0,0,0.08)'; ctx.fillRect(0,0,cv.width,cv.height);
+    ctx.fillStyle=(getComputedStyle(document.documentElement).getPropertyValue('--accent')||'#00e639').trim();
+    ctx.font=fontSize+'px monospace';
+    for(let i=0;i<drops.length;i++){ ctx.fillText(chars[(Math.random()*chars.length)|0], i*fontSize, drops[i]*fontSize); if(drops[i]*fontSize>cv.height && Math.random()>0.975) drops[i]=0; drops[i]++; }
+  },45);
+}
+function stopRain(){ clearInterval(rainTimer); rainTimer=null; screensaverOn=false; idleScreensaverActive=false; ssCanvas.style.display='none'; }
+addEventListener('resize', ()=>{ if(screensaverOn){ ssCanvas.width=innerWidth; ssCanvas.height=innerHeight; } });
+ssCanvas.addEventListener('click', stopRain);
+
+/* ===================== IDLE SCREENSAVER ===================== */
+let idleT, idleScreensaverActive=false;
+function resetIdle(){ clearTimeout(idleT); if(!settings.screensaver) return; idleT=setTimeout(()=>{ if(settings.screensaver && !document.hidden && !gameOn && cmdk.style.display!=='block' && !screensaverOn){ idleScreensaverActive=true; startRain(); } },60000); }
+['mousemove','keydown','click','touchstart','scroll'].forEach(ev=>addEventListener(ev,()=>{ if(screensaverOn&&idleScreensaverActive) stopRain(); resetIdle(); },{passive:true}));
+
+/* ===================== SNAKE ===================== */
+let gameOn=false, stopGame=null;
+function startSnake(){
+  const ov=document.getElementById('game-overlay'); ov.style.display='flex'; gameOn=true;
+  ov.innerHTML='<canvas id="snake-cv" width="320" height="320" class="border border-primary/40"></canvas><div class="text-data-label text-outline">score: <span id="snake-score" class="text-primary-fixed-dim">0</span> · arrows/WASD · Esc to quit</div>';
+  const cv=document.getElementById('snake-cv'), ctx=cv.getContext('2d'), N=16, S=cv.width/N;
+  let snake=[{x:8,y:8}], dir={x:1,y:0}, food={x:4,y:4}, score=0, loop;
+  function place(){ food={x:(Math.random()*N)|0,y:(Math.random()*N)|0}; }
+  function key(e){ const k=e.key.toLowerCase();
+    if((k==='arrowup'||k==='w')&&dir.y===0) dir={x:0,y:-1};
+    else if((k==='arrowdown'||k==='s')&&dir.y===0) dir={x:0,y:1};
+    else if((k==='arrowleft'||k==='a')&&dir.x===0) dir={x:-1,y:0};
+    else if((k==='arrowright'||k==='d')&&dir.x===0) dir={x:1,y:0};
+    if(k.startsWith('arrow')) e.preventDefault();
+  }
+  document.addEventListener('keydown',key);
+  function tick(){
+    const h={x:(snake[0].x+dir.x+N)%N,y:(snake[0].y+dir.y+N)%N};
+    if(snake.some(s=>s.x===h.x&&s.y===h.y)){ end(); return; }
+    snake.unshift(h);
+    if(h.x===food.x&&h.y===food.y){ score++; document.getElementById('snake-score').textContent=score; beep(880,0.05); place(); } else snake.pop();
+    const accent=(getComputedStyle(document.documentElement).getPropertyValue('--accent')||'#00e639').trim();
+    ctx.fillStyle='#0a0a0a'; ctx.fillRect(0,0,cv.width,cv.height);
+    ctx.fillStyle='#ff6b6b'; ctx.fillRect(food.x*S,food.y*S,S-1,S-1);
+    ctx.fillStyle=accent; snake.forEach(s=>ctx.fillRect(s.x*S,s.y*S,S-1,S-1));
+  }
+  loop=setInterval(tick,110);
+  function end(){ clearInterval(loop); const accent=(getComputedStyle(document.documentElement).getPropertyValue('--accent')||'#00e639').trim(); ctx.fillStyle='rgba(0,0,0,0.7)'; ctx.fillRect(0,0,cv.width,cv.height); ctx.fillStyle=accent; ctx.font='20px monospace'; ctx.fillText('GAME OVER · '+score,70,160); }
+  stopGame=function(){ clearInterval(loop); document.removeEventListener('keydown',key); ov.style.display='none'; ov.innerHTML=''; gameOn=false; stopGame=null; const i=document.getElementById('term-input'); if(i)i.focus(); };
+}
+function hexCommas(hex){ return hexToRgb(hex).trim().split(/\s+/).join(','); }
+function gameAccent(){ return (getComputedStyle(document.documentElement).getPropertyValue('--accent')||'#00e639').trim(); }
+function gameOverlay(html){ const ov=document.getElementById('game-overlay'); ov.style.display='flex'; ov.innerHTML=html; gameOn=true; return ov; }
+function gameCleanup(extra){ return function(){ if(extra) extra(); const ov=document.getElementById('game-overlay'); ov.style.display='none'; ov.innerHTML=''; gameOn=false; stopGame=null; const i=document.getElementById('term-input'); if(i)i.focus(); }; }
+
+/* ---- 2048 ---- */
+function start2048(){
+  gameOverlay('<canvas id="g2048" width="360" height="360" class="border border-primary/40"></canvas><div class="text-data-label text-outline">score: <span id="g2048-score" class="text-primary-fixed-dim">0</span> · arrows/WASD · Esc to quit</div>');
+  const cv=document.getElementById('g2048'), ctx=cv.getContext('2d'), N=4, gap=8, S=(cv.width-gap*(N+1))/N;
+  let board=Array.from({length:N},()=>Array(N).fill(0)), score=0, over=false;
+  function add(){ const e=[]; for(let r=0;r<N;r++)for(let c=0;c<N;c++) if(!board[r][c]) e.push([r,c]); if(!e.length)return; const [r,c]=e[(Math.random()*e.length)|0]; board[r][c]=Math.random()<0.9?2:4; }
+  function slide(row){ let a=row.filter(x=>x); for(let i=0;i<a.length-1;i++){ if(a[i]===a[i+1]){ a[i]*=2; score+=a[i]; a.splice(i+1,1);} } while(a.length<N)a.push(0); return a; }
+  function rot(b){ const n=b.length,m=Array.from({length:n},()=>Array(n).fill(0)); for(let r=0;r<n;r++)for(let c=0;c<n;c++)m[c][n-1-r]=b[r][c]; return m; }
+  function move(dir){ let b=board.map(r=>r.slice()); for(let i=0;i<dir;i++)b=rot(b); let moved=false; const nb=b.map(row=>{const s=slide(row); if(s.join()!==row.join())moved=true; return s;}); let res=nb; for(let i=0;i<(4-dir)%4;i++)res=rot(res); if(moved){ board=res; add(); document.getElementById('g2048-score').textContent=score; beep(330,0.02); draw(); if(isOver()){over=true;drawOver();} } }
+  function isOver(){ for(let r=0;r<N;r++)for(let c=0;c<N;c++){ if(!board[r][c])return false; if(c<N-1&&board[r][c]===board[r][c+1])return false; if(r<N-1&&board[r][c]===board[r+1][c])return false;} return true; }
+  function draw(){ const rgb=hexCommas(gameAccent()); ctx.fillStyle='#0a0a0a'; ctx.fillRect(0,0,cv.width,cv.height);
+    for(let r=0;r<N;r++)for(let c=0;c<N;c++){ const x=gap+c*(S+gap),y=gap+r*(S+gap),v=board[r][c];
+      ctx.fillStyle=v?'rgba('+rgb+','+Math.min(0.15+Math.log2(v)/11,0.95)+')':'rgba(255,255,255,0.04)'; ctx.fillRect(x,y,S,S);
+      if(v){ ctx.fillStyle='#0a0a0a'; ctx.font='bold '+(v>=1024?20:26)+'px JetBrains Mono,monospace'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(v,x+S/2,y+S/2);} } }
+  function drawOver(){ ctx.fillStyle='rgba(0,0,0,0.72)'; ctx.fillRect(0,0,cv.width,cv.height); ctx.fillStyle=gameAccent(); ctx.font='22px monospace'; ctx.textAlign='center'; ctx.fillText('GAME OVER · '+score,cv.width/2,cv.height/2); }
+  function key(e){ const k=e.key.toLowerCase(); let d=-1; if(k==='arrowleft'||k==='a')d=0; else if(k==='arrowup'||k==='w')d=1; else if(k==='arrowright'||k==='d')d=2; else if(k==='arrowdown'||k==='s')d=3; if(d>=0){ e.preventDefault(); if(!over)move(d);} }
+  document.addEventListener('keydown',key); add(); add(); draw();
+  stopGame=gameCleanup(()=>document.removeEventListener('keydown',key));
+}
+
+/* ---- Pong ---- */
+function startPong(){
+  gameOverlay('<canvas id="pong" width="480" height="300" class="border border-primary/40"></canvas><div class="text-data-label text-outline">you <span id="pong-p" class="text-primary-fixed-dim">0</span> — <span id="pong-a" class="text-error">0</span> cpu · mouse / ↑↓ · first to 5 · Esc quit</div>');
+  const cv=document.getElementById('pong'), ctx=cv.getContext('2d'), W=cv.width,H=cv.height,PH=58,PW=8;
+  let py=H/2-PH/2, ay=py, bx=W/2, by=H/2, vx=4, vy=2.4, ps=0, as=0, loop;
+  function mouse(e){ const r=cv.getBoundingClientRect(); py=Math.max(0,Math.min(H-PH,e.clientY-r.top-PH/2)); }
+  function key(e){ const k=e.key.toLowerCase(); if(k==='arrowup'){py=Math.max(0,py-26);e.preventDefault();} else if(k==='arrowdown'){py=Math.min(H-PH,py+26);e.preventDefault();} }
+  cv.addEventListener('mousemove',mouse); document.addEventListener('keydown',key);
+  function reset(d){ bx=W/2; by=H/2; vx=4*d; vy=(Math.random()*4-2)||2; }
+  function tick(){ const acc=gameAccent(); bx+=vx; by+=vy; if(by<0||by>H){vy=-vy; by=Math.max(0,Math.min(H,by));}
+    ay+=Math.max(-3.1,Math.min(3.1,(by-PH/2)-ay));
+    if(bx<PW+6&&by>py&&by<py+PH){ vx=Math.abs(vx)+0.25; vy+=(by-(py+PH/2))/16; beep(440,0.03); }
+    if(bx>W-PW-6&&by>ay&&by<ay+PH){ vx=-(Math.abs(vx)+0.25); }
+    if(bx<0){ as++; document.getElementById('pong-a').textContent=as; reset(1); }
+    if(bx>W){ ps++; document.getElementById('pong-p').textContent=ps; beep(660,0.05); reset(-1); }
+    ctx.fillStyle='#0a0a0a'; ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle='rgba(255,255,255,0.1)'; ctx.setLineDash([6,8]); ctx.beginPath(); ctx.moveTo(W/2,0); ctx.lineTo(W/2,H); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle=acc; ctx.fillRect(4,py,PW,PH); ctx.fillStyle='#ff6b6b'; ctx.fillRect(W-PW-4,ay,PW,PH);
+    ctx.fillStyle=acc; ctx.beginPath(); ctx.arc(bx,by,5,0,7); ctx.fill();
+    if(ps>=5||as>=5){ clearInterval(loop); ctx.fillStyle='rgba(0,0,0,0.72)'; ctx.fillRect(0,0,W,H); ctx.fillStyle=acc; ctx.font='22px monospace'; ctx.textAlign='center'; ctx.fillText(ps>=5?'YOU WIN 🏆':'CPU WINS',W/2,H/2); }
+  }
+  loop=setInterval(tick,1000/60);
+  stopGame=gameCleanup(()=>{ clearInterval(loop); cv.removeEventListener('mousemove',mouse); document.removeEventListener('keydown',key); });
+}
+
+/* ---- Tic-Tac-Toe (vs unbeatable AI) ---- */
+function startTicTacToe(){
+  const ov=gameOverlay('<div id="ttt" class="grid grid-cols-3 gap-1"></div><div id="ttt-msg" class="text-data-label text-outline">you are X · click a cell · Esc quit</div>');
+  const grid=document.getElementById('ttt'), msg=document.getElementById('ttt-msg'); let b=Array(9).fill(''); const H='X',A='O';
+  const L=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  const wins=(bd,p)=>L.some(l=>l.every(i=>bd[i]===p)); const full=bd=>bd.every(x=>x);
+  function mm(bd,pl){ if(wins(bd,A))return{s:1}; if(wins(bd,H))return{s:-1}; if(full(bd))return{s:0}; let best=pl===A?{s:-2}:{s:2};
+    for(let i=0;i<9;i++){ if(!bd[i]){ bd[i]=pl; const r=mm(bd,pl===A?H:A); bd[i]=''; if(pl===A){if(r.s>best.s)best={s:r.s,i};}else{if(r.s<best.s)best={s:r.s,i};} } } return best; }
+  function render(){ grid.innerHTML=b.map((v,i)=>`<button data-i="${i}" class="w-20 h-20 border border-primary/30 text-3xl font-display-lg ${v==='X'?'text-primary-fixed-dim':'text-error'} hover:bg-primary/5">${v}</button>`).join(''); }
+  function done(t){ msg.innerHTML=t+' · <button id="ttt-again" class="text-primary-fixed-dim underline">play again</button>'; }
+  function check(){ if(wins(b,H)){done('<span class="text-primary-fixed-dim">YOU WIN</span>');return true;} if(wins(b,A)){done('<span class="text-error">CPU WINS</span>');return true;} if(full(b)){done('DRAW');return true;} return false; }
+  grid.addEventListener('click',e=>{ const t=e.target.closest('[data-i]'); if(!t)return; const i=+t.dataset.i; if(b[i]||wins(b,H)||wins(b,A))return; b[i]=H; beep(520,0.03); render(); if(check())return; const m=mm(b.slice(),A); if(m.i!=null) b[m.i]=A; render(); check(); });
+  ov.addEventListener('click',e=>{ if(e.target.id==='ttt-again'){ b=Array(9).fill(''); msg.textContent='you are X · click a cell · Esc quit'; render(); } });
+  render(); stopGame=gameCleanup();
+}
+
+/* ---- Typing test (terminal) ---- */
+const TYPING=["The quick brown fox jumps over the lazy dog.","Ship early, ship often, and iterate fast.","Make it work, make it right, make it fast.","Code is poetry written for machines and humans."];
+function startTyping(){
+  const target=TYPING[(Math.random()*TYPING.length)|0], t0=performance.now();
+  termWrite('<span class="text-outline">— TYPING TEST — retype the line, then Enter (or </span>quit<span class="text-outline">):</span>');
+  termWrite('<span class="text-primary">'+esc(target)+'</span>');
+  termGameHandler=function(line){
+    if(line.toLowerCase()==='quit'){ termGameHandler=null; termWrite('<span class="text-outline">cancelled.</span>'); return; }
+    const secs=(performance.now()-t0)/1000, words=target.trim().split(/\s+/).length, wpm=Math.max(0,Math.round(words/(secs/60)));
+    let ok=0; for(let i=0;i<Math.min(line.length,target.length);i++) if(line[i]===target[i])ok++;
+    const acc=Math.round(ok/target.length*100); termGameHandler=null; beep(700,0.05);
+    termWrite('<span class="text-primary-fixed-dim">'+wpm+' WPM</span> · accuracy <span class="text-primary-fixed-dim">'+acc+'%</span> · '+secs.toFixed(1)+'s');
+  };
+}
+
+/* ---- Number guess (terminal) ---- */
+function startGuess(){
+  const secret=1+((Math.random()*100)|0); let tries=0;
+  termWrite('<span class="text-outline">— NUMBER GUESS — I picked 1–100. Type a guess (or </span>quit<span class="text-outline">):</span>');
+  termGameHandler=function(line){
+    if(line.toLowerCase()==='quit'){ termGameHandler=null; termWrite('<span class="text-outline">it was '+secret+'.</span>'); return; }
+    const g=parseInt(line,10); if(isNaN(g)){ termWrite('<span class="text-error">enter a number 1–100</span>'); return; }
+    tries++;
+    if(g===secret){ termGameHandler=null; beep(880,0.08); termWrite('<span class="text-primary-fixed-dim">correct! 🎉 '+secret+' in '+tries+' tries.</span>'); }
+    else termWrite(g<secret?'<span class="text-tertiary-fixed-dim">higher ↑</span>':'<span class="text-tertiary-fixed-dim">lower ↓</span>');
+  };
+}
+
+/* ===================== TERMINAL EXTRAS ===================== */
+function cmdTheme(arg){ arg=(arg||'').trim().toLowerCase();
+  if(!arg) return 'usage: theme &lt;'+Object.keys(THEMES).filter(k=>k!=='hacker').join('|')+'|#hex&gt;  · current: '+(settings.accent||settings.theme);
+  if(/^#?[0-9a-f]{6}$/.test(arg)){ const hex=arg[0]==='#'?arg:'#'+arg; settings.accent=hex; settings.theme='custom'; setAccent(hex); saveSettings(); return 'accent set to '+hex; }
+  if(THEMES[arg]){ setThemePref(arg); return 'theme → '+THEMES[arg].label; }
+  return '<span class="text-error">unknown theme: '+esc(arg)+'</span> (try: '+Object.keys(THEMES).filter(k=>k!=='hacker').join(', ')+')';
+}
+function cmdFont(arg){ arg=(arg||'').trim().toLowerCase();
+  const alias={jetbrains:'jetbrains',jb:'jetbrains',fira:'fira','fira-code':'fira',firacode:'fira',ibm:'ibm',plex:'ibm',vt323:'vt323',vt:'vt323',retro:'vt323',system:'system',mono:'system'};
+  const k=alias[arg]; if(!k) return 'usage: font &lt;jetbrains|fira|ibm|vt323|system&gt;  · current: '+settings.font;
+  settings.font=k; applyFont(k); saveSettings(); return 'font → '+FONTS[k].label;
+}
+function cmdGitLog(){ return RESUME.experience.map((e,i)=>{ const hash=(0x9f0+i*0x37).toString(16).padStart(7,'0');
+  return `<span class="text-tertiary-fixed-dim">commit ${hash}</span>\n<span class="text-outline">Author:</span> Prajjwal Pathak\n<span class="text-outline">Date:</span>   ${e.period}\n\n    <span class="text-primary">${e.role} @ ${e.org}</span>\n`+e.bullets.map(b=>'    '+b).join('\n'); }).join('\n\n'); }
+function cmdTree(){
+  const lines=['<span class="text-primary-fixed-dim">~</span>'];
+  (function walk(node, prefix){ const ch=node.children||[]; ch.forEach((c,i)=>{ const last=i===ch.length-1;
+    lines.push('<span class="text-outline">'+prefix+(last?'└── ':'├── ')+'</span>'+(c.type==='dir'?'<span class="text-primary-fixed-dim">'+c.name+'/</span>':c.name));
+    if(c.type==='dir') walk(c, prefix+(last?'    ':'│   ')); }); })(ROOT_VFS,'');
+  return lines.join('\n');
+}
+const FORTUNES=["Talk is cheap. Show me the code. — Linus","First, solve the problem. Then, write the code.","Premature optimization is the root of all evil. — Knuth","Code never lies; comments sometimes do.","Weeks of coding can save you hours of planning.","It works on my machine. ¯\\_(ツ)_/¯","Ship it. 🚀"];
+function cmdFortune(){ return FORTUNES[(Math.random()*FORTUNES.length)|0]; }
+function cmdCowsay(t){ t=(t||'moo').slice(0,60); const line='-'.repeat(t.length+2);
+  return ` _${line}_\n&lt; ${esc(t)} &gt;\n -${line}-\n        \\   ^__^\n         \\  (oo)\\_______\n            (__)\\       )\\/\\\n                ||----w |\n                ||     ||`; }
+const MANPAGES={ ls:'ls — list a section. usage: ls [projects|skills|experience|education|certs|socials]', cat:'cat — print a section/file. usage: cat &lt;dir&gt; | cat projects/&lt;name&gt; | cat resume.pdf', theme:'theme — change accent. usage: theme &lt;matrix|amber|cyber|synthwave|dracula|#hex&gt;', font:'font — change typeface. usage: font &lt;jetbrains|fira|ibm|vt323|system&gt;', gh:'gh — GitHub stats. usage: gh [stats|repos]', cmatrix:'cmatrix — enter the matrix. Esc/click exits.' };
+function cmdMan(a){ a=(a||'').trim().toLowerCase(); return MANPAGES[a]||(a?`No manual entry for ${esc(a)}`:'usage: man &lt;command&gt;  (try: man theme)'); }
+
+/* Konami */
+const KONAMI=['arrowup','arrowup','arrowdown','arrowdown','arrowleft','arrowright','arrowleft','arrowright','b','a']; let konamiI=0;
+document.addEventListener('keydown', e=>{ const k=(e.key||'').toLowerCase(); konamiI=(k===KONAMI[konamiI])?konamiI+1:(k===KONAMI[0]?1:0); if(konamiI===KONAMI.length){ konamiI=0; applyTheme('hacker'); settings.theme='hacker'; settings.accent=null; saveSettings(); toast('🎮 HACKERMAN MODE UNLOCKED'); } });
+
+/* ===================== GITHUB STATS ===================== */
+const GH_USER='itspyguru', GH_KEY='itspyguru_gh', GH_TTL=6*3600*1000;
+let ghData=null;
+async function fetchGitHub(){
+  try{ const c=JSON.parse(localStorage.getItem(GH_KEY)||'null'); if(c && Date.now()-c.t<GH_TTL){ ghData=c.d; return c.d; } }catch(e){}
+  try{
+    const [u,r]=await Promise.all([
+      fetch(`https://api.github.com/users/${GH_USER}`).then(x=>{if(!x.ok)throw 0;return x.json();}),
+      fetch(`https://api.github.com/users/${GH_USER}/repos?sort=updated&per_page=100`).then(x=>{if(!x.ok)throw 0;return x.json();})
+    ]);
+    const repos=(Array.isArray(r)?r:[]).filter(x=>!x.fork);
+    const stars=repos.reduce((a,x)=>a+(x.stargazers_count||0),0);
+    const langs={}; repos.forEach(x=>{ if(x.language) langs[x.language]=(langs[x.language]||0)+1; });
+    ghData={ followers:u.followers, public_repos:u.public_repos, stars,
+      topLangs:Object.entries(langs).sort((a,b)=>b[1]-a[1]).slice(0,5).map(x=>x[0]),
+      repos:repos.sort((a,b)=>(b.stargazers_count||0)-(a.stargazers_count||0)).slice(0,6).map(x=>({name:x.name,desc:x.description,stars:x.stargazers_count,lang:x.language,url:x.html_url})) };
+    try{ localStorage.setItem(GH_KEY,JSON.stringify({t:Date.now(),d:ghData})); }catch(e){}
+    return ghData;
+  }catch(e){ console.log('[gh] live stats unavailable — static fallback in use'); return null; }
+}
+function renderGitHubPanel(d){
+  const el=document.getElementById('gh-panel'); if(!el) return;
+  if(!d){ el.innerHTML='<span class="text-outline">stats unavailable — see <a href="'+LINKS.github+'" target="_blank" class="text-primary-fixed-dim underline">github.com/itspyguru</a></span>'; return; }
+  el.innerHTML=`<div class="grid grid-cols-3 gap-2 mb-2">
+    <div class="text-center"><div class="text-lg font-display-lg text-primary-fixed-dim">${d.public_repos}</div><div class="text-[8px] text-outline">REPOS</div></div>
+    <div class="text-center"><div class="text-lg font-display-lg text-primary-fixed-dim">${d.stars}</div><div class="text-[8px] text-outline">STARS</div></div>
+    <div class="text-center"><div class="text-lg font-display-lg text-primary-fixed-dim">${d.followers}</div><div class="text-[8px] text-outline">FOLLOWERS</div></div>
+  </div><div class="flex flex-wrap gap-1">${d.topLangs.map(l=>`<span class="text-[8px] border border-outline-variant px-1 text-outline">${l}</span>`).join('')}</div>`;
+}
+function cmdGh(arg){
+  if(!ghData) return '<span class="text-outline">fetching GitHub… try again in a moment, or see <a href="'+LINKS.github+'" target="_blank" class="text-primary-fixed-dim underline">github.com/itspyguru</a></span>';
+  if(arg==='repos') return ghData.repos.map(r=>`<span class="text-tertiary-fixed-dim">${r.name}</span> ${r.stars?('★'+r.stars):''} <span class="text-outline">${r.lang||''}</span>\n  <span class="text-outline">${esc(r.desc||'')}</span>`).join('\n');
+  return `<span class="text-primary">@${GH_USER}</span> · ${ghData.public_repos} repos · ${ghData.stars}★ · ${ghData.followers} followers\ntop langs: ${ghData.topLangs.join(', ')}`;
+}
+
+/* ===================== DESKTOP + WINDOW MANAGER ===================== */
+let winZ=200, winN=0;
+function deskIconHTML(node, dataAttr){
+  return `<button class="desk-icon flex flex-col items-center group cursor-pointer" ${dataAttr}>
+    <div class="ic border border-primary/20 bg-surface-container-low flex items-center justify-center group-hover:bg-primary/10 group-hover:border-primary-fixed-dim transition-all"><span class="material-symbols-outlined text-primary-fixed-dim text-3xl">${node.icon||'description'}</span></div>
+    <span class="mt-2 text-[10px] font-data-label text-outline group-hover:text-primary-fixed text-center bg-background/50 px-1 truncate max-w-[84px]">${node.label||node.name}</span></button>`;
+}
+function renderDesktopIcons(){
+  const wrap=document.getElementById('desktop-icons'); if(!wrap) return;
+  const items=ROOT_VFS.children;
+  wrap.innerHTML=items.map((n,i)=>deskIconHTML(n,'data-desk="'+i+'"')).join('');
+  wrap.querySelectorAll('[data-desk]').forEach(btn=>btn.addEventListener('click',()=>{ const n=items[+btn.dataset.desk]; openNode(n,[n.name]); }));
+}
+function openNode(node, segs){
+  if(!node) return;
+  if(node.type==='dir') openWindow(segs);
+  else if(node.type==='game') launchGame(node.game||node.name);
+  else if(node.type==='link') window.open(node.url,'_blank');
+  else if(node.type==='app'){ node.open&&node.open(); }
+  else if(node.type==='file'){ if(node.name==='resume.pdf') printResume(); else openTextWindow(node); }
+}
+function winChrome(title, icon){
+  return `<div class="titlebar bg-surface-container-highest px-3 py-2 border-b border-outline-variant/50 flex justify-between items-center">
+    <span class="text-data-label font-data-label text-primary-fixed-dim flex items-center gap-2 truncate"><span class="material-symbols-outlined text-sm">${icon||'folder'}</span>${title}</span>
+    <button data-wclose class="material-symbols-outlined text-outline hover:text-error text-[18px] leading-none">close</button></div>`;
+}
+function mountWindow(win){ win.style.zIndex=++winZ; win.querySelector('[data-wclose]').addEventListener('click',()=>win.remove()); win.addEventListener('pointerdown',()=>{ win.style.zIndex=++winZ; }); makeDraggable(win, win.querySelector('.titlebar')); document.getElementById('windows').appendChild(win); }
+function openWindow(segs){
+  const node=nodeAt(segs); if(!node||node.type!=='dir') return;
+  const off=(winN++%5)*26;
+  const win=document.createElement('div'); win.className='os-window'; win.style.left=(120+off)+'px'; win.style.top=(96+off)+'px'; win.style.width='430px';
+  win.innerHTML=winChrome('~/'+segs.join('/'), node.icon)+'<div class="win-body p-4 grid grid-cols-3 sm:grid-cols-4 gap-4 overflow-y-auto" style="max-height:60vh"></div>';
+  const body=win.querySelector('.win-body');
+  body.innerHTML=node.children.length? node.children.map((c,i)=>deskIconHTML(c,'data-ci="'+i+'"')).join('') : '<span class="text-outline text-data-label col-span-full">(empty)</span>';
+  body.querySelectorAll('[data-ci]').forEach(b=>b.addEventListener('click',()=>{ const c=node.children[+b.dataset.ci]; openNode(c, segs.concat(c.name)); }));
+  mountWindow(win);
+}
+function openTextWindow(node){
+  const win=document.createElement('div'); win.className='os-window'; win.style.left='160px'; win.style.top='110px'; win.style.width='min(560px,92vw)';
+  win.innerHTML=winChrome(node.name, node.icon)+'<div class="win-body term-line p-4 font-terminal-code text-[12px] text-primary-fixed-dim/90 overflow-y-auto leading-relaxed" style="max-height:62vh"></div>';
+  win.querySelector('.win-body').innerHTML=node.render?node.render():node.name;
+  mountWindow(win);
+}
+function makeDraggable(win, handle){
+  let sx,sy,ox,oy,drag=false;
+  handle.addEventListener('pointerdown',e=>{ if(e.target.closest('[data-wclose]'))return; drag=true; sx=e.clientX; sy=e.clientY; const r=win.getBoundingClientRect(); ox=r.left; oy=r.top; win.style.zIndex=++winZ; try{handle.setPointerCapture(e.pointerId);}catch(_){} });
+  handle.addEventListener('pointermove',e=>{ if(!drag)return; const nx=Math.max(0,Math.min(innerWidth-60,ox+e.clientX-sx)); const ny=Math.max(56,Math.min(innerHeight-40,oy+e.clientY-sy)); win.style.left=nx+'px'; win.style.top=ny+'px'; win.style.right='auto'; });
+  handle.addEventListener('pointerup',e=>{ drag=false; try{handle.releasePointerCapture(e.pointerId);}catch(_){} });
+}
+
 /* ===================== INIT ===================== */
+loadSettings(); applySettings();
+renderDesktopIcons();
+(function(){ const fw=document.getElementById('featured-win'); if(fw){ makeDraggable(fw, fw.querySelector('.titlebar')); fw.addEventListener('pointerdown',()=>{ fw.style.zIndex=++winZ; }); fw.querySelector('[data-feat-close]').addEventListener('click',()=>{ fw.style.display='none'; }); } })();
 // default landing view = PROFILE (clearance); deep-links via #hash still win
 showView( location.hash ? location.hash.slice(1) : 'clearance' );
+fetchGitHub().then(renderGitHubPanel);
+resetIdle();
 </script>
 </body>
 </html>
