@@ -51,6 +51,11 @@ export const sfx = {
   oneup: () => seq([[660, 0], [880, 0], [1320, 0]], 'triangle', 0.05),
   pipe: () => beep(200, 0.18, 'sine', 0.05),
   spring: () => seq([[300, 0], [700, 0]], 'square', 0.04),
+  // FPS feedback for the raycaster shooter
+  shoot: () => { beep(220, 0.05, 'square', 0.05); beep(110, 0.07, 'sawtooth', 0.04) },
+  shotgun: () => { beep(140, 0.09, 'sawtooth', 0.06); beep(90, 0.14, 'square', 0.05) },
+  plasma: () => beep(880, 0.05, 'sawtooth', 0.035),
+  hurt: () => { beep(180, 0.14, 'sawtooth', 0.05); beep(120, 0.18, 'square', 0.04) },
 }
 
 // ---- tiny procedural chiptune loop (varies per world) ----

@@ -1,21 +1,23 @@
 import { RESUME, LINKS } from '../data/resume'
-import { buildResume, catExperience, catSkills, catEducation, catCerts, catContact, projectDetail, README_TEXT } from './render'
+import { buildResume, catExperience, catSkills, catEducation, catCerts, catContact, projectDetail, blogPostDetail, README_TEXT } from './render'
+import { BLOG_POSTS } from '../data/blog'
 
 export type NodeType = 'dir' | 'file' | 'game' | 'link' | 'app'
 export interface VNode {
   name: string; type: NodeType; icon: string
-  children?: VNode[]; render?: () => string; url?: string; game?: string; label?: string
+  children?: VNode[]; render?: () => string; url?: string; game?: string; label?: string; featured?: boolean
 }
 
-export interface GameMeta { id: string; label: string; icon: string; kind: 'canvas' | 'term' }
+export interface GameMeta { id: string; label: string; icon: string; kind: 'canvas' | 'term'; featured?: boolean }
 export const GAMES: GameMeta[] = [
   { id: 'snake', label: 'Snake', icon: 'restaurant', kind: 'canvas' },
   { id: '2048', label: '2048', icon: 'grid_view', kind: 'canvas' },
   { id: 'tetris', label: 'Tetris', icon: 'view_compact', kind: 'canvas' },
   { id: 'bubble', label: 'Bubble Shooter', icon: 'bubble_chart', kind: 'canvas' },
   { id: 'spaceimpact', label: 'Space Impact', icon: 'rocket_launch', kind: 'canvas' },
-  { id: 'platformer', label: 'Platformer', icon: 'directions_run', kind: 'canvas' },
-  { id: 'racing', label: 'Racing', icon: 'directions_car', kind: 'canvas' },
+  { id: 'descent', label: 'Neon Descent', icon: 'gps_fixed', kind: 'canvas', featured: true },
+  { id: 'platformer', label: 'Mario', icon: 'directions_run', kind: 'canvas', featured: true },
+  { id: 'racing', label: 'Racing', icon: 'directions_car', kind: 'canvas', featured: true },
   { id: 'pong', label: 'Pong', icon: 'sports_tennis', kind: 'canvas' },
   { id: 'tictactoe', label: 'Tic-Tac-Toe', icon: 'grid_3x3', kind: 'canvas' },
   { id: 'minesweeper', label: 'Minesweeper', icon: 'flag', kind: 'canvas' },
@@ -40,7 +42,9 @@ export const ROOT_VFS: VNode = {
     { name: 'projects', type: 'dir', icon: 'folder', children:
       RESUME.projects.map((p) => ({ name: p.slug, type: 'link', icon: 'deployed_code', url: p.link, label: p.title, render: () => projectDetail(p.slug) } as VNode)) },
     { name: 'games', type: 'dir', icon: 'sports_esports', children:
-      GAMES.map((g) => ({ name: g.id, type: 'game', icon: g.icon, game: g.id, label: g.label } as VNode)) },
+      GAMES.map((g) => ({ name: g.id, type: 'game', icon: g.icon, game: g.id, label: g.label, featured: g.featured } as VNode)) },
+    { name: 'blog', type: 'dir', icon: 'article', children:
+      BLOG_POSTS.map((p) => ({ name: p.slug, type: 'file', icon: 'description', label: p.title, render: () => blogPostDetail(p.slug) } as VNode)) },
     { name: 'apps', type: 'dir', icon: 'apps', children: [
       { name: 'calculator', type: 'app', icon: 'calculate', label: 'Calculator' },
       { name: 'calendar', type: 'app', icon: 'calendar_month', label: 'Calendar' },
@@ -51,6 +55,9 @@ export const ROOT_VFS: VNode = {
       { name: 'paint', type: 'app', icon: 'brush', label: 'Paint' },
       { name: 'weather', type: 'app', icon: 'partly_cloudy_day', label: 'Weather' },
       { name: 'maps', type: 'app', icon: 'map', label: 'Maps' },
+      { name: 'ask', type: 'app', icon: 'neurology', label: 'Ask pyGuru' },
+      { name: 'contact', type: 'app', icon: 'forward_to_inbox', label: 'Contact' },
+      { name: 'achievements', type: 'app', icon: 'military_tech', label: 'Achievements' },
       { name: 'clock', type: 'app', icon: 'schedule', label: 'Clock' },
       { name: 'notes', type: 'app', icon: 'sticky_note_2', label: 'Notes' },
       { name: 'terminal', type: 'app', icon: 'terminal', label: 'Terminal' },
@@ -87,14 +94,17 @@ const ALIAS: Record<string, string[]> = {
   skills: ['profile', 'skills.txt'], 'skills.txt': ['profile', 'skills.txt'],
   experience: ['profile', 'experience.log'], 'experience.log': ['profile', 'experience.log'],
   education: ['profile', 'education.txt'], certs: ['profile', 'certs.txt'], certifications: ['profile', 'certs.txt'],
-  about: ['profile', 'about.txt'], contact: ['contact.txt'], 'contact.txt': ['contact.txt'],
+  about: ['profile', 'about.txt'], contact: ['apps', 'contact'], 'contact.txt': ['contact.txt'], contactinfo: ['contact.txt'],
   resume: ['resume.pdf'], 'resume.pdf': ['resume.pdf'], readme: ['README.md'],
-  projects: ['projects'], games: ['games'], profile: ['profile'], apps: ['apps'],
+  projects: ['projects'], games: ['games'], profile: ['profile'], apps: ['apps'], blog: ['blog'],
   calculator: ['apps', 'calculator'], calendar: ['apps', 'calendar'], camera: ['apps', 'camera'], clock: ['apps', 'clock'], notes: ['apps', 'notes'],
   gallery: ['apps', 'gallery'], photos: ['apps', 'gallery'],
   radio: ['apps', 'radio'], music: ['apps', 'radio'],
   files: ['apps', 'files'], explorer: ['apps', 'files'], paint: ['apps', 'paint'], weather: ['apps', 'weather'],
   maps: ['apps', 'maps'], map: ['apps', 'maps'],
+  ask: ['apps', 'ask'], pyguru: ['apps', 'ask'], assistant: ['apps', 'ask'],
+  hello: ['apps', 'contact'], message: ['apps', 'contact'],
+  achievements: ['apps', 'achievements'], trophies: ['apps', 'achievements'], trophy: ['apps', 'achievements'],
 }
 export function resolveWithAlias(arg: string, cwd: string[]): { segs?: string[]; n?: VNode; special?: 'socials' } | null {
   const segs = resolveSegs(arg, cwd); const n = nodeAt(segs)

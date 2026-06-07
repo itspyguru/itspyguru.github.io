@@ -1,4 +1,7 @@
 import { RESUME, LINKS } from '../data/resume'
+import { BLOG_POSTS, postBySlug } from '../data/blog'
+import { CASE_STUDIES, hasCaseStudy } from '../data/caseStudies'
+import { md } from './markdown'
 
 export const esc = (s: string) =>
   (s || '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!))
@@ -64,7 +67,19 @@ export function projectDetail(slug: string): string {
     `<span class="text-outline">ref:</span> ${p.ref}`, '', p.desc, '',
     `<span class="text-outline">tech:</span> ${p.tech.join(', ')}`,
     `<span class="text-outline">link:</span> <a href="${p.link}" target="_blank" class="text-primary-fixed-dim underline">${p.link}</a>`,
-  ].join('\n')
+  ].join('\n') + (hasCaseStudy(p.slug) ? '\n\n' + md(CASE_STUDIES[p.slug]) : '')
+}
+export function caseStudyDetail(slug: string): string {
+  const p = RESUME.projects.find((x) => x.slug === slug)
+  if (!p || !hasCaseStudy(slug)) return `<span class="text-error">no case study for ${esc(slug)}</span>`
+  return `<span class="text-primary font-bold">${esc(p.title)}</span> <span class="text-outline">— case study</span>\n` + md(CASE_STUDIES[slug])
+}
+export const catBlog = () => BLOG_POSTS.map((p) =>
+  `<span class="text-primary">${esc(p.title)}</span>\n  <span class="text-outline">${p.date} · ${p.tags.join(', ')}</span>\n  <span class="text-outline">${esc(p.excerpt)}</span>\n  <span class="text-outline">read:</span> <span class="text-primary-fixed-dim">cat blog/${p.slug}</span>`).join('\n\n')
+export function blogPostDetail(slug: string): string {
+  const p = postBySlug(slug)
+  if (!p) return `<span class="text-error">cat: blog/${esc(slug)}: No such post</span>\nRun <span class="text-primary-fixed-dim">ls blog</span>.`
+  return `<span class="text-primary font-bold">${esc(p.title)}</span>\n<span class="text-outline">${p.date} · ${p.tags.join(', ')}</span>\n` + md(p.body)
 }
 export function neofetch(): string {
   return [

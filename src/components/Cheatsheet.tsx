@@ -1,7 +1,7 @@
 import { useOS } from '../store/os'
 
 const SHORTCUTS: [string, string][] = [
-  ['1', 'Desktop'], ['2', 'Dev Lab'], ['3', 'Projects'], ['4', 'Profile'], ['5', 'Terminal'],
+  ['1', 'Desktop'], ['2', 'Dev Lab'], ['3', 'Projects'], ['4', 'Profile'], ['5', 'Blog'], ['6', 'Terminal'],
   [',', 'Settings'], ['/', 'Focus terminal'], ['Ctrl/⌘ K', 'Command palette'], ['?', 'This help'], ['Esc', 'Close overlay'],
 ]
 

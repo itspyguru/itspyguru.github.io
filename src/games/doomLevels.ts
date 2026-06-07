@@ -1,0 +1,100 @@
+// Grid maps for the Doom-like raycaster "Neon Descent". One char per cell; rows pad on parse
+// and anything out-of-bounds is treated as solid wall, so exact row widths aren't critical.
+// Legend:
+//   # 1 2 3  wall types (different neon shades)      (space) floor
+//   @ player start   K keycard   X locked exit   D door (open with E)
+//   g grunt (melee rush)   i imp (ranged fireball)   b brute (slow, tanky)
+//   a ammo   H health/medkit   A armor   S shotgun pickup   P plasma pickup
+export const LEVELS: string[][] = [
+  // 1 — intro: two rooms, a couple of grunts, find the key, reach the exit
+  [
+    '########################',
+    '#@         1           #',
+    '#    a     1    g      #',
+    '#          D           #',
+    '#    g     1      H    #',
+    '#          1           #',
+    '#####  ##111    ########',
+    '#          1           #',
+    '#     S    1    K      #',
+    '#          D           #',
+    '#          1      i    #',
+    '#    H     1           #',
+    '#          1      X    #',
+    '########################',
+  ],
+  // 2 — maze: twisting corridors, imps in alcoves, shotgun reward
+  [
+    '##########################',
+    '#@   #     i   #        K #',
+    '## # # ### ### # ##### ## #',
+    '#  #   #     #     #   #  #',
+    '#  ### # ### ##### # ### ##',
+    '#    # #   #     # #   i  #',
+    '## # # ### # ### # # #### #',
+    '#  #     #   # a #   #    #',
+    '#  ##### ##### # ### # ## #',
+    '#a   g #     # #   # #  # #',
+    '## ### # ### # ### # ## # #',
+    '#    #   # i #   #   #  S #',
+    '# ###### # ####### ##### ##',
+    '#      g #       #     X  #',
+    '##########################',
+  ],
+  // 3 — ambush arena: open hall with pillars, brutes and imps, plasma pickup
+  [
+    '##########################',
+    '#@        a              #',
+    '#   22      22     22    #',
+    '#   22  i   22     22  H #',
+    '#   22      22     22    #',
+    '#         g       g      #',
+    '#   33      b      33    #',
+    '#   33             33  P #',
+    '#   33      g      33    #',
+    '#         i       i      #',
+    '#   22      22     22  A #',
+    '#   22      22     22    #',
+    '#   22  K   22     22  X #',
+    '##########################',
+  ],
+  // 4 — keycard hunt: key locked behind doors guarded by brutes; backtrack to exit
+  [
+    '############################',
+    '#@      D      #       a    #',
+    '# ##### #  g   # ##### # ## #',
+    '#     # #      D     # #  i #',
+    '##### # ####### ### # # ## ##',
+    '#   # #   i   #   # #    #  #',
+    '# # # ### ### # # # #### # ##',
+    '# #   #     # # #    H #    #',
+    '# ##### ### # # ###### #### #',
+    '#   b   # # # #      #    # #',
+    '### ### # # # ###### # ## # #',
+    '#     # # #   #    # #  # # #',
+    '# ### # # ##### ## # ## # # #',
+    '# # K D #      S  #    #   X#',
+    '# #   ###### ######### #### #',
+    '#   A         b           i #',
+    '############################',
+  ],
+  // 5 — gauntlet: everything at once; brutes, imp crossfire, all weapons, then VICTORY
+  [
+    '##############################',
+    '#@    a    11      b       P #',
+    '#  ##  ##  11  ##  ##  ##    #',
+    '#  ##  ##  11  ##  ##  ##  H #',
+    '#      i           i        #',
+    '#  ##  ##  DD  ##  ##  ##  A #',
+    '#  ##  ##      ##  ##  ##    #',
+    '#         g       g     b   #',
+    '#  33  33  33  33  33  33    #',
+    '#  33  33  33  33  33  33  S #',
+    '#      i           i        #',
+    '#  ##  ##  DD  ##  ##  ##    #',
+    '#  ##  ##      ##  ##  ##  a #',
+    '#         b       g         #',
+    '#  K   11  11      11   11 X #',
+    '##############################',
+  ],
+]

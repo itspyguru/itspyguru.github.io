@@ -17,6 +17,7 @@ import Desktop from './views/Desktop'
 import DevLab from './views/DevLab'
 import Projects from './views/Projects'
 import Profile from './views/Profile'
+import Blog from './views/Blog'
 import SettingsView from './views/SettingsView'
 import Terminal from './terminal/Terminal'
 
@@ -52,7 +53,7 @@ export default function App() {
       if (e.key === 'Escape') { if (s.cmdkOpen) { s.setCmdk(false); return } if (s.cheatOpen) { s.setCheat(false); return } return }
       const tag = (document.activeElement && document.activeElement.tagName) || ''
       if (tag === 'INPUT' || tag === 'TEXTAREA' || s.activeGame || s.screensaverOn || s.cmdkOpen) return
-      const map: Record<string, any> = { '1': 'root', '2': 'scan', '3': 'breach', '4': 'clearance', '5': 'terminal' }
+      const map: Record<string, any> = { '1': 'root', '2': 'scan', '3': 'breach', '4': 'clearance', '5': 'blog', '6': 'terminal' }
       if (map[e.key]) s.setView(map[e.key])
       else if (e.key === ',') s.setView('settings')
       else if (e.key === '/') { e.preventDefault(); s.setView('terminal'); setTimeout(() => (document.querySelector('input[placeholder="type a command... (help)"]') as HTMLInputElement | null)?.focus(), 100) }
@@ -85,6 +86,7 @@ export default function App() {
             {view === 'scan' && <DevLab />}
             {view === 'breach' && <Projects />}
             {view === 'clearance' && <Profile />}
+            {view === 'blog' && <Blog />}
             {view === 'settings' && <SettingsView />}
           </div>
           {/* Terminal stays mounted so its session survives minimize/restore */}

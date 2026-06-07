@@ -24,6 +24,7 @@ export default function CommandPalette() {
     { label: 'Go: Projects', icon: 'folder', run: () => setView('breach') },
     { label: 'Go: Dev Lab', icon: 'build', run: () => setView('scan') },
     { label: 'Go: Desktop', icon: 'desktop_windows', run: () => setView('root') },
+    { label: 'Go: Blog', icon: 'article', run: () => setView('blog') },
     { label: 'Go: Terminal', icon: 'terminal', run: () => setView('terminal') },
     { label: 'Open: Settings', icon: 'settings', run: () => setView('settings') },
     { label: 'Open: Games folder', icon: 'sports_esports', run: () => { setView('root'); openWindow(['games']) } },

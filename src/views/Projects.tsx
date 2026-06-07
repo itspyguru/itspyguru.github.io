@@ -1,6 +1,10 @@
 import { RESUME } from '../data/resume'
+import { hasCaseStudy } from '../data/caseStudies'
+import { caseStudyDetail } from '../os/render'
+import { useOS } from '../store/os'
 
 export default function Projects() {
+  const openTextWindow = useOS((s) => s.openTextWindow)
   return (
     <section className="relative z-10 px-margin-page">
       <div className="flex justify-between items-end mb-8 border-l-2 border-primary-fixed-dim pl-4">
@@ -34,9 +38,17 @@ export default function Projects() {
               <div className="flex flex-wrap gap-2 mt-4">
                 {p.tech.map((t) => <span key={t} className="text-[9px] border border-outline-variant px-1.5 py-0.5 text-outline font-data-label">{t}</span>)}
               </div>
-              <a href={p.link} target="_blank" rel="noopener" className="mt-4 inline-flex items-center gap-2 self-start border border-primary-fixed-dim/30 px-3 py-1.5 hover:bg-primary-fixed-dim/10 transition-all text-primary text-[10px] font-data-label">
-                <span className="material-symbols-outlined text-sm">open_in_new</span> OPEN_PROJECT
-              </a>
+              <div className="flex flex-wrap gap-2 mt-4">
+                <a href={p.link} target="_blank" rel="noopener" className="inline-flex items-center gap-2 border border-primary-fixed-dim/30 px-3 py-1.5 hover:bg-primary-fixed-dim/10 transition-all text-primary text-[10px] font-data-label">
+                  <span className="material-symbols-outlined text-sm">open_in_new</span> OPEN_PROJECT
+                </a>
+                {hasCaseStudy(p.slug) && (
+                  <button onClick={() => openTextWindow({ name: p.title + ' — case study', type: 'file', icon: 'article', render: () => caseStudyDetail(p.slug) })}
+                    className="inline-flex items-center gap-2 border border-primary-fixed-dim/30 px-3 py-1.5 hover:bg-primary-fixed-dim/10 transition-all text-primary-fixed-dim text-[10px] font-data-label">
+                    <span className="material-symbols-outlined text-sm">article</span> CASE_STUDY
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         ))}

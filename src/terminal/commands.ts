@@ -8,6 +8,9 @@ import {
   fullPath, GAME_BY_ID, GAMES, VNode,
 } from '../os/vfs'
 import { getGitHub } from '../os/github'
+import { answer } from '../os/ask'
+import { md } from '../os/markdown'
+import { useOS } from '../store/os'
 
 function cmdGh(arg: string): string {
   const d = getGitHub()
@@ -28,7 +31,7 @@ export interface TermCtx {
   startScreensaver: () => void
   printResume: () => void
   os: {
-    setView: (v: 'root' | 'scan' | 'breach' | 'clearance' | 'terminal' | 'settings') => void
+    setView: (v: 'root' | 'scan' | 'breach' | 'clearance' | 'blog' | 'terminal' | 'settings') => void
     settings: Settings
     patchSettings: (p: Partial<Settings>) => void
     resetSettings: () => void
@@ -126,6 +129,7 @@ export function runCommand(ctx: TermCtx, raw: string, echo = true) {
   const input = (raw || '').trim()
   if (echo) ctx.write(promptEcho(ctx, input))
   if (input === '') return
+  try { useOS.getState().bumpCmd() } catch {}
   const parts = input.split(/\s+/); const cmd = parts[0].toLowerCase(); const arg = parts.slice(1).join(' ')
   let out: string | null | undefined
   switch (cmd) {
@@ -145,11 +149,13 @@ export function runCommand(ctx: TermCtx, raw: string, echo = true) {
     case 'echo': out = esc(arg); break
     case 'history': out = ctx.history.map((h, i) => `  ${(i + 1).toString().padStart(3)}  ${esc(h)}`).join('\n') || '(empty)'; break
     case 'clear': case 'cls': ctx.clear(); return
-    case 'sudo': out = cmdSudo(arg); break
+    case 'sudo': useOS.getState().unlock('sudo'); out = cmdSudo(arg); break
+    case 'ask': useOS.getState().unlock('ask'); out = arg.trim() ? md(answer(arg)) : '<span class="text-outline">usage: ask &lt;question&gt; — e.g. <span class="text-primary-fixed-dim">ask what is your stack</span></span>'; break
     case 'hire': case 'hire-me': out = cmdSudo('hire-me'); break
     case 'theme': out = cmdTheme(ctx, arg); break
     case 'font': out = cmdFont(ctx, arg); break
     case 'settings': case 'config': ctx.os.setView('settings'); out = '<span class="text-primary-fixed-dim">opening settings…</span>'; break
+    case 'blog': ctx.os.setView('blog'); out = '<span class="text-primary-fixed-dim">opening blog… (or <span class="text-tertiary-fixed-dim">ls blog</span> · <span class="text-tertiary-fixed-dim">cat blog/&lt;slug&gt;</span>)</span>'; break
     case 'reset': ctx.os.resetSettings(); out = '<span class="text-primary-fixed-dim">settings reset to defaults.</span>'; break
     case 'tree': out = treeStr(); break
     case 'git': out = arg.trim().toLowerCase().startsWith('log') ? gitLog() : 'usage: git log'; break
@@ -160,7 +166,7 @@ export function runCommand(ctx: TermCtx, raw: string, echo = true) {
     case 'hack': case 'matrix': out = '<span class="text-primary-fixed-dim">breaching… ' + '10'.repeat(18) + ' ACCESS GRANTED. (kidding 😀) — try <span class="text-tertiary-fixed-dim">cmatrix</span></span>'; break
     case 'exit': case 'logout': out = '<span class="text-outline">There is no escape from itspyguru OS. Try the START menu instead.</span>'; break
     default: {
-      const gid = cmd === 'ttt' ? 'tictactoe' : cmd
+      const gid = cmd === 'ttt' ? 'tictactoe' : cmd === 'mario' ? 'platformer' : cmd
       if (GAME_BY_ID[gid]) { ctx.launchGame(gid); out = '<span class="text-outline">launching ' + GAME_BY_ID[gid].label + '…</span>' }
       else out = `<span class="text-error">command not found: ${esc(cmd)}</span> — type <span class="text-primary-fixed-dim">help</span>`
     }

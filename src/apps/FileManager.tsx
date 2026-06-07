@@ -27,9 +27,10 @@ export default function FileManager() {
       {!children.length ? <div className="p-6 text-center text-outline text-data-label">(empty)</div> : grid ? (
         <div className="p-3 grid grid-cols-4 gap-3">
           {children.map((c) => (
-            <button key={c.name} onClick={() => open(c)} className="flex flex-col items-center gap-1 p-2 hover:bg-primary-fixed-dim/5 group">
-              <span className="material-symbols-outlined text-primary-fixed-dim text-3xl group-hover:scale-110 transition-transform">{c.icon || 'description'}</span>
-              <span className="text-[9px] font-data-label text-outline group-hover:text-primary-fixed text-center truncate w-full">{c.label || c.name}</span>
+            <button key={c.name} onClick={() => open(c)} className="relative flex flex-col items-center gap-1 p-2 hover:bg-primary-fixed-dim/5 group">
+              <span className={'material-symbols-outlined text-3xl group-hover:scale-110 transition-transform ' + (c.featured ? 'feat-ico' : 'text-primary-fixed-dim')}>{c.icon || 'description'}</span>
+              {c.featured && <span className="material-symbols-outlined feat-badge" style={{ top: 0, right: '50%', marginRight: -22 }} title="featured game">star</span>}
+              <span className={'text-[9px] font-data-label text-center truncate w-full ' + (c.featured ? 'text-primary-fixed' : 'text-outline group-hover:text-primary-fixed')}>{c.label || c.name}</span>
             </button>
           ))}
         </div>
@@ -37,9 +38,9 @@ export default function FileManager() {
         <div className="p-1">
           {children.map((c) => (
             <button key={c.name} onClick={() => open(c)} className="w-full flex items-center gap-3 px-3 py-1.5 hover:bg-primary-fixed-dim/5 text-left">
-              <span className="material-symbols-outlined text-primary-fixed-dim text-base">{c.icon || 'description'}</span>
-              <span className="text-[11px] text-on-surface font-data-label flex-1 truncate">{c.label || c.name}</span>
-              <span className="text-[9px] text-outline font-data-label">{typeTag(c.type)}</span>
+              <span className={'material-symbols-outlined text-base ' + (c.featured ? 'feat-ico' : 'text-primary-fixed-dim')}>{c.icon || 'description'}</span>
+              <span className={'text-[11px] font-data-label flex-1 truncate ' + (c.featured ? 'text-primary-fixed' : 'text-on-surface')}>{c.label || c.name}</span>
+              <span className="text-[9px] font-data-label flex items-center gap-1">{c.featured && <span className="material-symbols-outlined feat-ico" style={{ fontSize: 11 }}>star</span>}<span className="text-outline">{typeTag(c.type)}</span></span>
             </button>
           ))}
         </div>

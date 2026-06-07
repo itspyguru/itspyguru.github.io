@@ -5,6 +5,7 @@ const NAV: { view: View; icon: string; label: string }[] = [
   { view: 'scan', icon: 'build', label: 'BUILD' },
   { view: 'breach', icon: 'folder', label: 'PROJECTS' },
   { view: 'clearance', icon: 'badge', label: 'PROFILE' },
+  { view: 'blog', icon: 'article', label: 'BLOG' },
 ]
 
 export default function Sidebar() {
@@ -35,14 +36,6 @@ export default function Sidebar() {
         ))}
       </nav>
       <div className="px-6 space-y-4">
-        <div className="p-3 border border-outline-variant/30 bg-surface-container-low">
-          <div className="text-data-label font-data-label text-outline mb-2">QUICK START</div>
-          <ul className="space-y-2 text-data-label">
-            <li className="flex items-center gap-2"><span className="material-symbols-outlined text-primary-fixed-dim text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>check_box</span><span className="text-primary-fixed-dim">Boot the system</span></li>
-            <li className="flex items-center gap-2"><span className="material-symbols-outlined text-outline text-sm">check_box_outline_blank</span><span className="text-outline">Browse the projects</span></li>
-            <li className="flex items-center gap-2"><span className="material-symbols-outlined text-outline text-sm">check_box_outline_blank</span><span className="text-outline">Say hello</span></li>
-          </ul>
-        </div>
         <button onClick={() => setView('clearance')} className="w-full py-2 bg-primary-fixed-dim text-on-primary-fixed font-terminal-bold hover:bg-primary transition-all active:scale-95 shadow-[0_0_10px_rgb(var(--accent-rgb)_/_0.3)]">EXECUTE_TASK</button>
         <div className="flex justify-between text-outline pt-1">
           <button onClick={() => setView('settings')} title="Settings" className="material-symbols-outlined cursor-pointer hover:text-primary">settings</button>

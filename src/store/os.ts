@@ -1,9 +1,10 @@
 import { create } from 'zustand'
 import { Settings, defaultSettings, loadSettings, saveSettings, applySettings } from '../os/themes'
-import { setSoundEnabled } from '../os/sound'
-import { nodeAt, VNode } from '../os/vfs'
+import { setSoundEnabled, sfx } from '../os/sound'
+import { nodeAt, VNode, GAME_BY_ID } from '../os/vfs'
+import { ACH_BY_ID } from '../data/achievements'
 
-export type View = 'root' | 'scan' | 'breach' | 'clearance' | 'terminal' | 'settings'
+export type View = 'root' | 'scan' | 'breach' | 'clearance' | 'blog' | 'terminal' | 'settings'
 export type SnapZone = 'left' | 'right' | 'tl' | 'tr' | 'bl' | 'br' | 'max'
 export interface Rect { x: number; y: number; w?: number; h?: number }
 export interface WinSpec { id: number; type: 'folder' | 'text' | 'app'; segs?: string[]; node?: VNode; appId?: string; title?: string; icon?: string; x: number; y: number; z: number; w?: number; h?: number; min?: boolean; max?: boolean; prev?: Rect }
@@ -11,7 +12,11 @@ let winSeq = 0, winZ = 200
 export const SESSION_START = Date.now()
 const ts = () => { const d = new Date(), p = (n: number) => String(n).padStart(2, '0'); return `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}` }
 
-const TOPBAR = 56, TASKBAR = 64, WIN_KEY = 'itspyguru_windows'
+const TOPBAR = 56, TASKBAR = 64, WIN_KEY = 'itspyguru_windows', ACH_KEY = 'itspyguru_ach'
+const loadAch = (): string[] => { try { return JSON.parse(localStorage.getItem(ACH_KEY) || '[]') } catch { return [] } }
+const saveAch = (a: string[]) => { try { localStorage.setItem(ACH_KEY, JSON.stringify(a)) } catch {} }
+const visited = new Set<string>() // for the "visit every section" achievement
+const SECTIONS = ['root', 'scan', 'breach', 'clearance', 'blog']
 export function workspaceRect(): Required<Rect> { return { x: 0, y: TOPBAR, w: window.innerWidth, h: window.innerHeight - TOPBAR - TASKBAR } }
 export function snapRect(zone: SnapZone): Required<Rect> {
   const ws = workspaceRect(), hw = Math.round(ws.w / 2), hh = Math.round(ws.h / 2)
@@ -78,6 +83,10 @@ interface OSState {
   setCheat: (b: boolean) => void
   events: string[]
   logEvent: (msg: string) => void
+  unlocked: string[]
+  unlock: (id: string) => void
+  cmdCount: number
+  bumpCmd: () => void
   ctxMenu: { x: number; y: number; items: CtxItem[] } | null
   openContextMenu: (x: number, y: number, items: CtxItem[]) => void
   closeContextMenu: () => void
@@ -89,7 +98,7 @@ let toastTimer: ReturnType<typeof setTimeout> | undefined
 
 export const useOS = create<OSState>((set, get) => ({
   booted: false,
-  setBooted: (b) => set({ booted: b }),
+  setBooted: (b) => { set({ booted: b }); if (b) get().unlock('boot') },
   view: (location.hash.replace('#', '') as View) || 'clearance',
   prevView: 'clearance',
   setView: (v) => {
@@ -98,6 +107,9 @@ export const useOS = create<OSState>((set, get) => ({
     history.replaceState(null, '', '#' + v)
     window.scrollTo({ top: 0, behavior: 'smooth' })
     if (cur !== v) get().logEvent('view: ' + v)
+    if (v === 'blog') get().unlock('reader')
+    if (v === 'terminal') get().unlock('terminal')
+    if (SECTIONS.includes(v)) { visited.add(v); if (SECTIONS.every((s) => visited.has(s))) get().unlock('explorer') }
   },
   sidebarOpen: false,
   toggleSidebar: () => set((s) => ({ sidebarOpen: !s.sidebarOpen })),
@@ -106,7 +118,7 @@ export const useOS = create<OSState>((set, get) => ({
   patchSettings: (p) => {
     const next = { ...get().settings, ...p }
     set({ settings: next }); saveSettings(next); applySettings(next); setSoundEnabled(next.sound)
-    if (p.theme) get().logEvent('theme → ' + p.theme)
+    if (p.theme) { get().logEvent('theme → ' + p.theme); get().unlock('theme') }
     if (p.wallpaper) get().logEvent('wallpaper → ' + (typeof p.wallpaper === 'string' ? p.wallpaper : 'custom'))
   },
   resetSettings: () => {
@@ -121,7 +133,7 @@ export const useOS = create<OSState>((set, get) => ({
   termRunning: false,
   setTermRunning: (b) => set({ termRunning: b }),
   activeGame: null,
-  setActiveGame: (id) => { set({ activeGame: id }); if (id) get().logEvent('played ' + id) },
+  setActiveGame: (id) => { set({ activeGame: id }); if (id) { get().logEvent('played ' + id); get().unlock('gamer'); if (GAME_BY_ID[id]?.featured) get().unlock('featured') } },
   windows: loadWins(),
   openWindow: (segs) => {
     const node = nodeAt(segs)
@@ -132,6 +144,9 @@ export const useOS = create<OSState>((set, get) => ({
   },
   openTextWindow: (node) => { set((s) => ({ windows: [...s.windows, { id: ++winSeq, type: 'text', node, x: 160, y: 110, z: ++winZ }] })); get().logEvent('viewed ' + node.name) },
   openAppWindow: (appId, title, icon) => {
+    get().unlock('windows')
+    if (appId === 'contact') get().unlock('contact')
+    if (appId === 'achievements') get().unlock('trophies')
     const existing = get().windows.find((w) => w.type === 'app' && w.appId === appId)
     if (existing) { set((s) => ({ windows: s.windows.map((w) => (w === existing ? { ...w, min: false, z: ++winZ } : w)) })); saveWins(get().windows); return } // focus/restore if already open
     const off = (get().windows.length % 5) * 26
@@ -158,13 +173,22 @@ export const useOS = create<OSState>((set, get) => ({
     saveWins(get().windows)
   },
   screensaverOn: false,
-  setScreensaver: (b) => set({ screensaverOn: b }),
+  setScreensaver: (b) => { set({ screensaverOn: b }); if (b) get().unlock('matrix') },
   cmdkOpen: false,
   setCmdk: (b) => set({ cmdkOpen: b }),
   cheatOpen: false,
   setCheat: (b) => set({ cheatOpen: b }),
   events: ['[boot] kernel loaded · itspyguru_OS v3.0', '[boot] mounting /home/itspyguru … ok', '[boot] session started'],
   logEvent: (msg) => set((s) => ({ events: [`[${ts()}] ${msg}`, ...s.events].slice(0, 40) })),
+  unlocked: loadAch(),
+  unlock: (id) => {
+    if (get().unlocked.includes(id)) return
+    const next = [...get().unlocked, id]; set({ unlocked: next }); saveAch(next)
+    const a = ACH_BY_ID[id]; get().showToast('🏆 ' + (a ? a.title : id)); get().logEvent('achievement: ' + (a ? a.title : id))
+    try { sfx.oneup() } catch {}
+  },
+  cmdCount: 0,
+  bumpCmd: () => { const n = get().cmdCount + 1; set({ cmdCount: n }); if (n >= 10) get().unlock('commands10') },
   ctxMenu: null,
   openContextMenu: (x, y, items) => set({ ctxMenu: { x, y, items } }),
   closeContextMenu: () => set({ ctxMenu: null }),

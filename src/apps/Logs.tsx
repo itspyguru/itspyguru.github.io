@@ -10,6 +10,8 @@ const CHANGELOG: [string, string][] = [
   ['v3.6', '5 new games: tetris, bubble, space impact, platformer, racing'],
   ['v3.7', 'Gallery + Radio (internet stations + custom URL)'],
   ['v3.8', 'System / Network / Logs panels + live task & status bar'],
+  ['v3.9', 'Neon Descent (Doom-like raycaster shooter); featured game icons; Platformer → Mario'],
+  ['v4.0', 'Blog · "Ask pyGuru" assistant · contact form · achievements · project case-studies'],
 ]
 
 export default function Logs() {

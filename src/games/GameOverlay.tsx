@@ -14,11 +14,12 @@ import Racing from './Racing'
 import Minesweeper from './Minesweeper'
 import Breakout from './Breakout'
 import Flappy from './Flappy'
+import NeonDescent from './NeonDescent'
 
 const MAP: Record<string, React.FC> = {
   snake: Snake, '2048': Game2048, pong: Pong, tictactoe: TicTacToe, typing: Typing, guess: Guess,
   tetris: Tetris, bubble: BubbleShooter, spaceimpact: SpaceImpact, platformer: Platformer, racing: Racing,
-  minesweeper: Minesweeper, breakout: Breakout, flappy: Flappy,
+  minesweeper: Minesweeper, breakout: Breakout, flappy: Flappy, descent: NeonDescent,
 }
 
 export default function GameOverlay() {

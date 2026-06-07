@@ -12,6 +12,9 @@ import FileManager from './FileManager'
 import Paint from './Paint'
 import Weather from './Weather'
 import Maps from './Maps'
+import AskAI from './AskAI'
+import Contact from './Contact'
+import Achievements from './Achievements'
 
 export interface AppMeta { id: string; label: string; icon: string; w: number; Component: React.FC }
 export const APPS: Record<string, AppMeta> = {
@@ -29,4 +32,7 @@ export const APPS: Record<string, AppMeta> = {
   about: { id: 'about', label: 'About', icon: 'info', w: 360, Component: About },
   network: { id: 'network', label: 'Network', icon: 'lan', w: 360, Component: Network },
   logs: { id: 'logs', label: 'Logs', icon: 'receipt_long', w: 384, Component: Logs },
+  ask: { id: 'ask', label: 'Ask pyGuru', icon: 'neurology', w: 380, Component: AskAI },
+  contact: { id: 'contact', label: 'Contact', icon: 'forward_to_inbox', w: 360, Component: Contact },
+  achievements: { id: 'achievements', label: 'Achievements', icon: 'military_tech', w: 380, Component: Achievements },
 }

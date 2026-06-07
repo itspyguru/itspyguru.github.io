@@ -9,15 +9,35 @@ import { useDrag } from '../hooks/useDrag'
 const REPO = 'https://github.com/itspyguru/itspyguru.github.io'
 const KEY = 'itspyguru_deskicons'
 const items = ROOT_VFS.children || []
+const COL_W = 100, ROW_H = 104, X0 = 20, Y0 = 150
 type Pos = Record<string, { x: number; y: number }>
 
+// the desktop section sits below the top bar (~120px from the viewport top) and above the fixed taskbar (~64px)
+const TOP_OFFSET = 120, TASKBAR = 64, ICON_H = 84, MARGIN = 10
+// how many icons fit vertically between the vitals bar (Y0) and the taskbar — so columns wrap instead of overflowing
+function rowsFit(): number {
+  const h = typeof window !== 'undefined' ? window.innerHeight : 800
+  return Math.max(2, Math.floor((h - TOP_OFFSET - Y0 - TASKBAR - ICON_H - MARGIN) / ROW_H) + 1)
+}
+function bounds() {
+  const w = typeof window !== 'undefined' ? window.innerWidth : 1280
+  const h = typeof window !== 'undefined' ? window.innerHeight : 800
+  const lg = typeof window !== 'undefined' && window.matchMedia('(min-width:1024px)').matches
+  return { maxX: Math.max(X0, w - (lg ? 256 : 0) - 96), maxY: Math.max(Y0, h - TOP_OFFSET - TASKBAR - ICON_H - MARGIN) }
+}
+const clampPt = (x: number, y: number) => { const b = bounds(); return { x: Math.min(Math.max(8, x), b.maxX), y: Math.min(Math.max(96, y), b.maxY) } }
 function defaultPos(): Pos {
-  const p: Pos = {}, perCol = 5
-  items.forEach((n, i) => { p[n.name] = { x: 24 + Math.floor(i / perCol) * 104, y: 150 + (i % perCol) * 104 } })
+  const p: Pos = {}, perCol = rowsFit()
+  items.forEach((n, i) => { p[n.name] = { x: X0 + Math.floor(i / perCol) * COL_W, y: Y0 + (i % perCol) * ROW_H } })
   return p
 }
 function load(): Pos {
-  try { const saved = JSON.parse(localStorage.getItem(KEY) || '{}'); return { ...defaultPos(), ...saved } } catch { return defaultPos() }
+  try {
+    const saved = JSON.parse(localStorage.getItem(KEY) || '{}')
+    const merged = { ...defaultPos(), ...saved }
+    const out: Pos = {}; for (const k in merged) out[k] = clampPt(merged[k].x, merged[k].y) // keep icons inside the viewport
+    return out
+  } catch { return defaultPos() }
 }
 const save = (p: Pos) => { try { localStorage.setItem(KEY, JSON.stringify(p)) } catch {} }
 
@@ -37,7 +57,7 @@ export default function Desktop() {
       onMove: (dx, dy) => {
         if (!moved.current && Math.abs(dx) < 4 && Math.abs(dy) < 4) return
         moved.current = true
-        setPos((p) => ({ ...p, [name]: { x: Math.max(8, start.x + dx), y: Math.max(96, start.y + dy) } }))
+        setPos((p) => ({ ...p, [name]: clampPt(start.x + dx, start.y + dy) }))
       },
       onEnd: () => { if (moved.current) setPos((p) => { save(p); return p }) },
     })
