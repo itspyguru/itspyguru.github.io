@@ -11,6 +11,7 @@ import { build } from 'esbuild'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { H as OG_H, W as OG_W, renderCard } from './og.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const OUT = join(ROOT, 'docs')
@@ -38,30 +39,50 @@ const { BLOG_POSTS, md } = await import(
 
 const shell = await readFile(join(OUT, 'index.html'), 'utf8')
 
-function page({ title, description, canonical, head = '', body }) {
-  return shell
+// Tags this function re-supplies per page. The shell carries the home page's own
+// copies, and a scraper reads whichever comes first — so strip them before
+// injecting, or every post would advertise the site-wide card.
+const OWNED = ['og:type', 'og:url', 'og:site_name', 'og:image', 'og:image:width', 'og:image:height',
+  'og:image:alt', 'twitter:card', 'twitter:title', 'twitter:description', 'twitter:image']
+
+const stripOwned = (html) => OWNED.reduce((acc, key) =>
+  acc.replace(new RegExp(`\\s*<meta (?:property|name)="${key}" content="[^"]*"/>`, 'g'), ''), html)
+  .replace(/\s*<link rel="canonical"[^>]*>/g, '')
+
+function page({ title, description, canonical, image, imageAlt, head = '', body }) {
+  return stripOwned(shell)
     .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(title)}</title>`)
     .replace(/<meta name="description" content="[\s\S]*?"\/>/, `<meta name="description" content="${esc(description)}"/>`)
     .replace(/<meta property="og:title" content="[\s\S]*?"\/>/, `<meta property="og:title" content="${esc(title)}"/>`)
     .replace(/<meta property="og:description" content="[\s\S]*?"\/>/, `<meta property="og:description" content="${esc(description)}"/>`)
-    // drop the shell's og:type so `head` is the only one — two would be ambiguous to scrapers
-    .replace(/<meta property="og:type" content="[\s\S]*?"\/>\n?/, '')
     .replace('</head>', `<link rel="canonical" href="${canonical}"/>
 <meta property="og:url" content="${canonical}"/>
 <meta property="og:site_name" content="itspyguru OS"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="${esc(title)}"/>
 <meta name="twitter:description" content="${esc(description)}"/>
+<meta property="og:image" content="${image}"/>
+<meta property="og:image:width" content="${OG_W}"/>
+<meta property="og:image:height" content="${OG_H}"/>
+<meta property="og:image:alt" content="${esc(imageAlt || title)}"/>
+<meta name="twitter:image" content="${image}"/>
 ${head}</head>`)
     .replace('<div id="root"></div>', `<div id="prerender">${body}</div>\n<div id="root"></div>`)
 }
 
 const written = []
-async function emit(relPath, html) {
+async function emit(relPath, contents) {
   const full = join(OUT, relPath)
   await mkdir(dirname(full), { recursive: true })
-  await writeFile(full, html, 'utf8')
+  await writeFile(full, contents)
   written.push(relPath)
+}
+
+// One share card per post, plus a site-wide fallback used by / and /blog/.
+async function card(name, spec) {
+  const rel = `assets/og/${name}.png`
+  await emit(rel, renderCard(spec))
+  return `${SITE}/${rel}`
 }
 
 // ---- one page per post ----
@@ -69,10 +90,16 @@ for (const post of BLOG_POSTS) {
   const url = `${SITE}/blog/${post.slug}/`
   const description = clip(post.excerpt)
   const tags = post.tags.map((t) => `<span>${esc(t)}</span>`).join(' · ')
+  const image = await card(post.slug, {
+    title: post.title,
+    meta: `${post.date} · ${post.tags.slice(0, 3).join(' · ')}`,
+  })
   await emit(`blog/${post.slug}/index.html`, page({
     title: `${post.title} — ${AUTHOR}`,
     description,
     canonical: url,
+    image,
+    imageAlt: post.title,
     head: `<meta property="og:type" content="article"/>
 <meta property="article:published_time" content="${post.date}"/>
 <meta property="article:author" content="${esc(AUTHOR)}"/>
@@ -99,10 +126,17 @@ ${md(post.body)}
 
 // ---- blog index ----
 const byNewest = [...BLOG_POSTS].sort((a, b) => (a.date < b.date ? 1 : -1))
+const defaultCard = await card('default', {
+  title: 'itspyguru OS',
+  meta: 'BACKEND · AI · SECURITY',
+  footer: 'A DEVELOPER PORTFOLIO',
+})
 await emit('blog/index.html', page({
   title: `Blog — ${AUTHOR}`,
   description: `Writing by ${AUTHOR} on AI, backend engineering and technology policy.`,
   canonical: `${SITE}/blog/`,
+  image: defaultCard,
+  imageAlt: `Blog by ${AUTHOR}`,
   head: '<meta property="og:type" content="website"/>',
   body: `<h1>Blog</h1>\n<ul>${byNewest.map((p) =>
     `<li><a href="/blog/${p.slug}/">${esc(p.title)}</a> — <time datetime="${p.date}">${p.date}</time><br/>${esc(p.excerpt)}</li>`
