@@ -1,10 +1,21 @@
-import { useState } from 'react'
 import { BLOG_POSTS } from '../data/blog'
 import { md } from '../os/markdown'
+import { useOS } from '../store/os'
+import { postUrl } from '../os/router'
 
 export default function Blog() {
-  const [slug, setSlug] = useState(BLOG_POSTS[0]?.slug)
+  const slug = useOS((s) => s.blogSlug)
+  const setSlug = useOS((s) => s.setBlogSlug)
+  const showToast = useOS((s) => s.showToast)
   const post = BLOG_POSTS.find((p) => p.slug === slug) || BLOG_POSTS[0]
+
+  // Each post is a real prerendered page, so the canonical link is always shareable.
+  const copyLink = async () => {
+    const url = postUrl(post.slug)
+    try { await navigator.clipboard.writeText(url); showToast('link copied — ' + url) }
+    catch { showToast(url) }
+  }
+
   return (
     <section className="relative">
       <div className="relative z-10 max-w-5xl mx-auto px-4 py-8">
@@ -12,9 +23,16 @@ export default function Blog() {
           <div className="h-8 bg-surface-container-high flex items-center justify-between px-4 border-b border-outline-variant/30">
             <div className="flex items-center gap-2">
               <div className="flex gap-1"><div className="w-2 h-2 rounded-full bg-error/50" /><div className="w-2 h-2 rounded-full bg-tertiary-fixed-dim/50" /><div className="w-2 h-2 rounded-full bg-primary-fixed-dim/50" /></div>
-              <span className="text-data-label text-outline ml-4 hidden sm:inline">~/blog/{post?.slug}.md</span>
+              <span className="text-data-label text-outline ml-4 hidden sm:inline">/blog/{post?.slug}/</span>
             </div>
-            <span className="text-data-label text-primary-fixed-dim font-bold">DEV_LOG</span>
+            <div className="flex items-center gap-3">
+              <button onClick={copyLink} title="Copy link to this post"
+                className="flex items-center gap-1 text-data-label text-outline hover:text-primary-fixed-dim transition-colors">
+                <span className="material-symbols-outlined text-[13px] leading-none">link</span>
+                <span className="hidden sm:inline">COPY LINK</span>
+              </button>
+              <span className="text-data-label text-primary-fixed-dim font-bold">DEV_LOG</span>
+            </div>
           </div>
 
           <div className="flex flex-col md:flex-row">

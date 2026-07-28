@@ -6,6 +6,10 @@ import { useOS } from './store/os'
 import { applySettings } from './os/themes'
 import { setSoundEnabled } from './os/sound'
 
+// Static article markup emitted by scripts/prerender.mjs for crawlers and no-JS
+// readers — drop it now that the real app is about to take over.
+document.getElementById('prerender')?.remove()
+
 // apply persisted theme/font/wallpaper/effects before first paint
 const s = useOS.getState().settings
 applySettings(s)

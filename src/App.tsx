@@ -28,6 +28,14 @@ export default function App() {
   // wallpaper depends on the #wallpaper-img element, which doesn't exist during the pre-render applySettings — re-apply once mounted
   useEffect(() => { applyWallpaper(useOS.getState().settings) }, [])
 
+  // deep links: /blog/<slug>/ lands here with the view already set, and Back/forward re-reads the URL
+  useEffect(() => {
+    if (useOS.getState().view === 'blog') useOS.getState().unlock('reader')
+    const onPop = () => useOS.getState().syncRoute()
+    window.addEventListener('popstate', onPop)
+    return () => window.removeEventListener('popstate', onPop)
+  }, [])
+
   // idle screensaver
   useEffect(() => {
     let t: ReturnType<typeof setTimeout>

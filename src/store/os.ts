@@ -3,6 +3,7 @@ import { Settings, defaultSettings, loadSettings, saveSettings, applySettings } 
 import { setSoundEnabled, sfx } from '../os/sound'
 import { nodeAt, VNode, GAME_BY_ID } from '../os/vfs'
 import { ACH_BY_ID } from '../data/achievements'
+import { parseRoute, writeRoute } from '../os/router'
 
 export type View = 'root' | 'scan' | 'breach' | 'clearance' | 'blog' | 'terminal' | 'settings'
 export type SnapZone = 'left' | 'right' | 'tl' | 'tr' | 'bl' | 'br' | 'max'
@@ -52,6 +53,9 @@ interface OSState {
   view: View
   prevView: View
   setView: (v: View) => void
+  blogSlug: string
+  setBlogSlug: (slug: string) => void
+  syncRoute: () => void
   sidebarOpen: boolean
   toggleSidebar: () => void
   closeSidebar: () => void
@@ -95,22 +99,32 @@ interface OSState {
 export interface CtxItem { label: string; icon?: string; danger?: boolean; run: () => void }
 
 let toastTimer: ReturnType<typeof setTimeout> | undefined
+const INITIAL_ROUTE = parseRoute()
 
 export const useOS = create<OSState>((set, get) => ({
   booted: false,
   setBooted: (b) => { set({ booted: b }); if (b) get().unlock('boot') },
-  view: (location.hash.replace('#', '') as View) || 'clearance',
+  view: INITIAL_ROUTE.view,
   prevView: 'clearance',
   setView: (v) => {
     const cur = get().view
     set({ view: v, prevView: cur !== v ? cur : get().prevView, sidebarOpen: false })
-    history.replaceState(null, '', '#' + v)
+    writeRoute(v, get().blogSlug)
     window.scrollTo({ top: 0, behavior: 'smooth' })
     if (cur !== v) get().logEvent('view: ' + v)
     if (v === 'blog') get().unlock('reader')
     if (v === 'terminal') get().unlock('terminal')
     if (SECTIONS.includes(v)) { visited.add(v); if (SECTIONS.every((s) => visited.has(s))) get().unlock('explorer') }
   },
+  blogSlug: INITIAL_ROUTE.slug,
+  // pushState (not replace) so the browser Back button steps between posts
+  setBlogSlug: (slug) => {
+    if (get().blogSlug === slug) return
+    set({ blogSlug: slug }); writeRoute('blog', slug, true)
+    get().logEvent('blog: ' + slug)
+  },
+  // Back/forward: adopt whatever the URL now says, without writing history again.
+  syncRoute: () => { const r = parseRoute(); set({ view: r.view, blogSlug: r.slug }) },
   sidebarOpen: false,
   toggleSidebar: () => set((s) => ({ sidebarOpen: !s.sidebarOpen })),
   closeSidebar: () => set({ sidebarOpen: false }),
