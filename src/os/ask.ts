@@ -19,7 +19,7 @@ const INTENTS: Intent[] = [
   { keys: ['project', 'built', 'build', 'portfolio', 'made', 'ship'], reply: () =>
     `Highlights:\n\n` + RESUME.projects.slice(0, 5).map((p) => `- **${p.title}** [${p.type}] — ${p.desc}`).join('\n') + `\n\nRun \`ls projects\` or open the **Projects** section for all eight.` },
   { keys: ['ai', 'agent', 'crewai', 'langchain', 'llm', 'genai', 'generative', 'machine learning'], reply: () =>
-    `He builds **production AI agents**: an AI Financial-Doc Engine (CrewAI + LangChain + Hugging Face) that generates dynamic documents for Indian listed companies — 50% faster at 95%+ accuracy. Stack: FastAPI · CrewAI · LangChain · Redis. See the blog post _"Shipping AI agents that don't fall over in production"_.` },
+    `He builds **production AI agents**: an AI Financial-Doc Engine (CrewAI + LangChain + Hugging Face) that generates dynamic documents for Indian listed companies — 50% faster at 95%+ accuracy. Stack: FastAPI · CrewAI · LangChain · Redis.` },
   { keys: ['security', 'hack', 'pentest', 'penetration', 'vulnerab', 'bug bounty', 'ethical', 'cyber'], reply: () =>
     `Security is a core focus: ran full **security audits & penetration tests** of production web apps (found and helped fix vulns), holds a **Cyber Security & Bug Bounty** cert from IIT Kanpur, and teaches an **Ethical Hacking** course (4,500+ enrollments). Tooling: Burp Suite, nmap, sublist3r, Kali.` },
   { keys: ['contact', 'hire', 'email', 'reach', 'connect', 'available', 'touch', 'message'], reply: () =>
@@ -29,7 +29,7 @@ const INTENTS: Intent[] = [
   { keys: ['education', 'study', 'degree', 'college', 'university', 'msc', 'bsc'], reply: () =>
     RESUME.education.map((e) => `- **${e.degree}** — ${e.school} _(${e.period})_`).join('\n') },
   { keys: ['site', 'this os', 'how built', 'made this', 'website', 'built this', 'portfolio site'], reply: () =>
-    `This portfolio **is a desktop OS in the browser** — React + TypeScript + Vite + Zustand + Tailwind, no heavy deps. Window manager, terminal, virtual filesystem, a dozen+ canvas games (including a Doom-like raycaster), and this assistant. There's a blog post on it: _"I built a desktop OS in the browser"_.` },
+    `This portfolio **is a desktop OS in the browser** — React + TypeScript + Vite + Zustand + Tailwind, no heavy deps. Window manager, terminal, virtual filesystem, a dozen+ canvas games (including a Doom-like raycaster), and this assistant.` },
   { keys: ['game', 'neon descent', 'doom', 'mario', 'racing', 'play'], reply: () =>
     `There are 15 games in \`~/games\`. The featured ones are **Neon Descent** (a Doom-like raycaster), **Mario** (a platformer) and **Racing** (a 2.5D racer). Type a game's name in the terminal or open the Games folder.` },
   { keys: ['location', 'where', 'based', 'live', 'city', 'country', 'remote'], reply: () =>
