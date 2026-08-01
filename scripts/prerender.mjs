@@ -87,7 +87,11 @@ async function card(name, spec) {
 
 // ---- one page per post ----
 for (const post of BLOG_POSTS) {
-  const url = `${SITE}/blog/${post.slug}/`
+  // A post that moved keeps its page here but points every ranking signal at its new
+  // home — canonical, og:url and the JSON-LD @id all follow post.canonical. Serving a
+  // stub under our own canonical would compete with the full article on cybiqon.in for
+  // the same query, which is the one outcome the move was meant to avoid.
+  const url = post.canonical ?? `${SITE}/blog/${post.slug}/`
   const description = clip(post.excerpt)
   const tags = post.tags.map((t) => `<span>${esc(t)}</span>`).join(' · ')
   const image = await card(post.slug, {
@@ -150,8 +154,11 @@ await emit('404.html', `<!DOCTYPE html><html lang="en"><head><meta charset="utf-
 <body><p>Not found. <a href="/">Return to itspyguru OS</a>.</p></body></html>`)
 
 // ---- sitemap + robots ----
+// Moved posts are left out: a sitemap entry asks Google to index a URL, and these ones
+// carry a canonical pointing at cybiqon.in. Listing them would be asking for indexing
+// and disclaiming it in the same breath. They stay reachable and linked, just unlisted.
 const urls = [{ loc: SITE + '/', date: byNewest[0]?.date }, { loc: `${SITE}/blog/`, date: byNewest[0]?.date },
-  ...byNewest.map((p) => ({ loc: `${SITE}/blog/${p.slug}/`, date: p.date }))]
+  ...byNewest.filter((p) => !p.canonical).map((p) => ({ loc: `${SITE}/blog/${p.slug}/`, date: p.date }))]
 await emit('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map((u) => `  <url><loc>${u.loc}</loc>${u.date ? `<lastmod>${u.date}</lastmod>` : ''}</url>`).join('\n')}
